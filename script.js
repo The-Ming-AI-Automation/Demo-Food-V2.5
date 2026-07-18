@@ -186,4 +186,67 @@ findFoodButton.addEventListener("click", function () {
 
     }, 1800);
 
+   /* =========================
+   LANGUAGE SELECTOR
+========================= */
+
+
+const languageButton =
+    document.getElementById(
+        "languageButton"
+    );
+
+
+const languageMenu =
+    document.getElementById(
+        "languageMenu"
+    );
+
+
+languageButton.onclick =
+    function () {
+
+        languageMenu.classList.toggle(
+            "active"
+        );
+
+    };
+
+
+const languageOptions =
+    document.querySelectorAll(
+        "[data-language]"
+    );
+
+
+languageOptions.forEach(
+    function (option) {
+
+        option.onclick =
+            function () {
+
+
+                const language =
+                    option.dataset.language;
+
+
+                languageButton.textContent =
+                    language.toUpperCase() +
+                    " ▾";
+
+
+                languageMenu.classList.remove(
+                    "active"
+                );
+
+
+                changeLanguage(
+                    language
+                );
+
+            };
+
+    }
+);
+
 });
