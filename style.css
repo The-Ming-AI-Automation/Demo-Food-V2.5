@@ -1255,3 +1255,218 @@ footer .brand {
     background: var(--background);
 
 }
+/* =========================
+   GOOGLE MAPS V2.5
+========================= */
+
+.map-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 3000;
+
+    display: none;
+
+    background: var(--background);
+
+}
+
+
+.map-modal.active {
+
+    display: block;
+
+}
+
+
+/* MAP HEADER */
+
+.map-header {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    right: 0;
+
+    z-index: 10;
+
+    height: 75px;
+
+    padding: 0 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background: var(--card-background);
+
+    border-bottom: 1px solid var(--border);
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.map-header-content h2 {
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    color: var(--text);
+
+}
+
+
+.map-header-content p {
+
+    margin-top: 4px;
+
+    color: var(--secondary-text);
+
+    font-size: 13px;
+
+}
+
+
+.close-map {
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.close-map:hover {
+
+    transform: rotate(90deg);
+
+}
+
+
+/* GOOGLE MAP CONTAINER */
+
+#googleMap {
+
+    width: 100%;
+
+    height: 100vh;
+
+}
+
+
+/* MAP SEARCH PANEL */
+
+.map-search-panel {
+
+    position: absolute;
+
+    top: 95px;
+
+    left: 25px;
+
+    z-index: 10;
+
+    width: 320px;
+
+    max-width: calc(100% - 50px);
+
+    padding: 18px;
+
+    border-radius: 18px;
+
+    background: var(--card-background);
+
+    border: 1px solid var(--border);
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+
+}
+
+
+.map-search-panel h3 {
+
+    margin-bottom: 6px;
+
+    color: var(--text);
+
+    font-size: 16px;
+
+}
+
+
+.map-search-panel p {
+
+    color: var(--secondary-text);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .map-header {
+
+        height: 70px;
+
+        padding: 0 18px;
+
+    }
+
+
+    .map-header-content h2 {
+
+        font-size: 16px;
+
+    }
+
+
+    .map-header-content p {
+
+        font-size: 11px;
+
+    }
+
+
+    .map-search-panel {
+
+        top: 85px;
+
+        left: 15px;
+
+        right: 15px;
+
+        width: auto;
+
+        max-width: none;
+
+    }
+
+}
