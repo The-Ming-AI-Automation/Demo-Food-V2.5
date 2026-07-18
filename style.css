@@ -1470,3 +1470,45 @@ footer .brand {
     }
 
 }
+
+/* =========================
+   NEARBY FOOD MAP
+========================= */
+
+.map-container {
+
+    display: none;
+
+    width: 100%;
+
+    height: 350px;
+
+    margin-top: 25px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    background: var(--background);
+
+}
+
+
+.map-container.active {
+
+    display: block;
+
+}
+
+
+.map-container iframe {
+
+    width: 100%;
+
+    height: 100%;
+
+    border: none;
+
+}
