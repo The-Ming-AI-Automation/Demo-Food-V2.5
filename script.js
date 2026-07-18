@@ -17,9 +17,7 @@ if (themeToggle) {
 
     if (savedTheme === "dark") {
 
-        document.body.classList.add(
-            "dark-mode"
-        );
+        document.body.classList.add("dark-mode");
 
         themeToggle.textContent = "☾";
 
@@ -30,15 +28,11 @@ if (themeToggle) {
         "click",
         function () {
 
-            document.body.classList.toggle(
-                "dark-mode"
-            );
+            document.body.classList.toggle("dark-mode");
 
 
             const isDarkMode =
-                document.body.classList.contains(
-                    "dark-mode"
-                );
+                document.body.classList.contains("dark-mode");
 
 
             if (isDarkMode) {
@@ -72,15 +66,11 @@ if (themeToggle) {
 ========================= */
 
 const languageButton =
-    document.getElementById(
-        "languageButton"
-    );
+    document.getElementById("languageButton");
 
 
 const languageMenu =
-    document.getElementById(
-        "languageMenu"
-    );
+    document.getElementById("languageMenu");
 
 
 if (
@@ -95,18 +85,14 @@ if (
 
             event.stopPropagation();
 
-            languageMenu.classList.toggle(
-                "active"
-            );
+            languageMenu.classList.toggle("active");
 
         }
     );
 
 
     const languageOptions =
-        languageMenu.querySelectorAll(
-            "[data-language]"
-        );
+        languageMenu.querySelectorAll("[data-language]");
 
 
     languageOptions.forEach(
@@ -114,34 +100,23 @@ if (
 
             option.addEventListener(
                 "click",
-                function () {
+                function (event) {
+
+                    event.stopPropagation();
 
 
                     const language =
-                        option.getAttribute(
-                            "data-language"
-                        );
+                        option.getAttribute("data-language");
 
 
                     languageButton.textContent =
-                        language.toUpperCase() +
-                        " ▾";
+                        language.toUpperCase() + " ▾";
 
 
-                    languageMenu.classList.remove(
-                        "active"
-                    );
+                    languageMenu.classList.remove("active");
 
 
-                    changeLanguage(
-                        language
-                    );
-
-
-                    localStorage.setItem(
-                        "language",
-                        language
-                    );
+                    changeLanguage(language);
 
                 }
             );
@@ -154,9 +129,7 @@ if (
         "click",
         function () {
 
-            languageMenu.classList.remove(
-                "active"
-            );
+            languageMenu.classList.remove("active");
 
         }
     );
@@ -168,374 +141,257 @@ if (
    LANGUAGE TRANSLATION
 ========================= */
 
-function changeLanguage(
-    language
-) {
+function changeLanguage(language) {
 
 
-    const translations = {
+    /* =========================
+       ENGLISH
+    ========================= */
 
+    if (language === "en") {
 
-        /* =====================
-           ENGLISH
-        ===================== */
 
-        en: {
+        /* NAVIGATION */
 
-            navDiscover:
-                "Discover",
+        document.querySelector(
+            '.nav-links a[href="#discover"]'
+        ).textContent =
+            "Discover";
 
-            navTrending:
-                "Trending",
 
-            navHow:
-                "How it works",
+        document.querySelector(
+            '.nav-links a[href="#trending"]'
+        ).textContent =
+            "Trending";
 
-            tryDemo:
-                "Try the demo ↗",
 
-            heroEyebrow:
-                "AI-POWERED FOOD DISCOVERY",
+        document.querySelector(
+            '.nav-links a[href="#how-it-works"]'
+        ).textContent =
+            "How it works";
 
-            heroTitle:
-                "Discover food<br><span>you'll love.</span>",
 
-            heroDescription:
-                "Find your next favourite meal with a little help from AI.",
+        document.querySelector(
+            ".demo-button"
+        ).textContent =
+            "Try the demo ↗";
 
-            startDiscovering:
-                "Start discovering ↗",
 
-            trendingLabel:
-                "TRENDING NOW",
+        /* HERO */
 
-            trendingTitle:
-                "What people are craving",
+        document.querySelector(
+            ".hero .eyebrow"
+        ).textContent =
+            "AI-POWERED FOOD DISCOVERY";
 
-            seeAll:
-                "See all →",
 
-            japanese:
-                "Japanese",
+        document.querySelector(
+            ".hero h1"
+        ).innerHTML =
+            "Discover food<br><span>you'll love.</span>";
 
-            ramenTitle:
-                "Rich Tonkotsu Ramen",
 
-            sushiTitle:
-                "Fresh Sushi",
+        document.querySelector(
+            ".hero-description"
+        ).textContent =
+            "Find your next favourite meal with a little help from AI.";
 
-            matchaTitle:
-                "Premium Matcha",
 
-            howLabel:
-                "HOW IT WORKS",
+        document.querySelector(
+            ".hero-button"
+        ).textContent =
+            "Start discovering ↗";
 
-            howTitle:
-                "Your next favourite meal<br>is closer than you think.",
 
-            readyLabel:
-                "READY TO EXPLORE?",
+        /* TRENDING */
 
-            demoTitle:
-                "Let AI help you<br>find something delicious.",
+        document.querySelector(
+            ".section-header .section-label"
+        ).textContent =
+            "TRENDING NOW";
 
-            modalBrand:
-                "MING AI FOOD",
 
-            modalTitle:
-                "What are you<br>craving today?",
+        document.querySelector(
+            ".section-header h2"
+        ).textContent =
+            "What people are craving";
 
-            modalDescription:
-                "Tell Ming AI what you're in the mood for. There are no wrong answers.",
 
-            warm:
-                "🍜 Something warm",
+        document.querySelector(
+            ".section-header > a"
+        ).textContent =
+            "See all →";
 
-            spicy:
-                "🌶️ Something spicy",
 
-            indulgent:
-                "🍔 Something indulgent",
+        /* FOOD CARDS */
 
-            healthy:
-                "🥗 Something healthy",
+        const foodCategories =
+            document.querySelectorAll(
+                ".food-card-content span"
+            );
 
-            foodPlaceholder:
-                "Example: I'm tired, it's raining and I want something warm and comforting...",
 
-            askMingAI:
-                "Ask Ming AI ✨",
+        foodCategories[0].textContent =
+            "Japanese";
 
-            loadingText:
-                "Ming AI is thinking about food...",
 
-            recommendationLabel:
-                "MING AI RECOMMENDS",
+        foodCategories[1].textContent =
+            "Japanese";
 
-            resultDescription:
-                "A rich, warming bowl of ramen with a spicy kick.",
 
-            warmReason:
-                "✓ Warm",
+        foodCategories[2].textContent =
+            "Italian";
 
-            comfortingReason:
-                "✓ Comforting",
 
-            flavourReason:
-                "✓ Full of flavour",
+        document.querySelector(
+            ".food-card:nth-child(1) h3"
+        ).textContent =
+            "Rich Tonkotsu Ramen";
 
-            nearbyButton:
-                "📍 Find this near me",
 
-            footerDescription:
-                "Discover something delicious."
+        document.querySelector(
+            ".food-card:nth-child(2) h3"
+        ).textContent =
+            "Fresh Sushi";
 
-        },
 
+        document.querySelector(
+            ".food-card:nth-child(3) h3"
+        ).textContent =
+            "Handmade Pasta";
 
-        /* =====================
-           CHINESE
-        ===================== */
 
-        zh: {
+        /* HOW IT WORKS */
 
-            navDiscover:
-                "探索",
+        document.querySelector(
+            ".how-section .section-label"
+        ).textContent =
+            "HOW IT WORKS";
 
-            navTrending:
-                "热门",
 
-            navHow:
-                "运作方式",
+        document.querySelector(
+            ".how-section h2"
+        ).innerHTML =
+            "Your next favourite meal<br>is closer than you think.";
 
-            tryDemo:
-                "试用演示 ↗",
 
-            heroEyebrow:
-                "AI 驱动的美食探索",
+        /* DEMO SECTION */
 
-            heroTitle:
-                "发现美食<br><span>找到你的最爱。</span>",
+        document.querySelector(
+            ".demo-section .section-label"
+        ).textContent =
+            "READY TO EXPLORE?";
 
-            heroDescription:
-                "让 AI 帮助你找到下一道最喜欢的美食。",
 
-            startDiscovering:
-                "开始探索 ↗",
+        document.querySelector(
+            ".demo-section h2"
+        ).innerHTML =
+            "Let AI help you<br>find something delicious.";
 
-            trendingLabel:
-                "当前热门",
 
-            trendingTitle:
-                "大家正在想吃什么",
+        document.querySelector(
+            ".demo-button-large"
+        ).textContent =
+            "Try the demo ↗";
 
-            seeAll:
-                "查看全部 →",
 
-            japanese:
-                "日本料理",
+        /* MODAL */
 
-            ramenTitle:
-                "浓郁豚骨拉面",
+        document.querySelector(
+            ".food-modal-header .section-label"
+        ).textContent =
+            "MING AI FOOD";
 
-            sushiTitle:
-                "新鲜寿司",
 
-            matchaTitle:
-                "高级抹茶",
+        document.querySelector(
+            ".food-modal-header h2"
+        ).innerHTML =
+            "What are you<br>craving today?";
 
-            howLabel:
-                "运作方式",
 
-            howTitle:
-                "你的下一顿最爱美食<br>比你想象的更近。",
+        document.querySelector(
+            ".food-modal-header > p:last-child"
+        ).textContent =
+            "Tell Ming AI what you're in the mood for. There are no wrong answers.";
 
-            readyLabel:
-                "准备好探索了吗？",
 
-            demoTitle:
-                "让 AI 帮助你<br>找到美味的食物。",
+        const suggestions =
+            document.querySelectorAll(
+                ".suggestion-button"
+            );
 
-            modalBrand:
-                "MING AI 美食",
 
-            modalTitle:
-                "今天<br>想吃什么？",
+        suggestions[0].textContent =
+            "🍜 Something warm";
 
-            modalDescription:
-                "告诉 Ming AI 你现在想吃什么。没有错误的答案。",
 
-            warm:
-                "🍜 温暖的食物",
+        suggestions[1].textContent =
+            "🌶️ Something spicy";
 
-            spicy:
-                "🌶️ 辣味美食",
 
-            indulgent:
-                "🍔 丰盛享受",
+        suggestions[2].textContent =
+            "🍔 Something indulgent";
 
-            healthy:
-                "🥗 健康美食",
 
-            foodPlaceholder:
-                "例如：我累了，外面正在下雨，我想吃一些温暖又舒适的食物...",
+        suggestions[3].textContent =
+            "🥗 Something healthy";
 
-            askMingAI:
-                "询问 Ming AI ✨",
 
-            loadingText:
-                "Ming AI 正在思考美食...",
+        document.querySelector(
+            "#foodInput"
+        ).placeholder =
+            "Example: I'm tired, it's raining and I want something warm and comforting...";
 
-            recommendationLabel:
-                "MING AI 推荐",
 
-            resultDescription:
-                "一碗浓郁温暖、带有辛辣风味的豚骨拉面。",
+        document.querySelector(
+            "#findFoodButton"
+        ).textContent =
+            "Ask Ming AI ✨";
 
-            warmReason:
-                "✓ 温暖",
 
-            comfortingReason:
-                "✓ 舒适",
+        document.querySelector(
+            ".food-loading p"
+        ).textContent =
+            "Ming AI is thinking about food...";
 
-            flavourReason:
-                "✓ 充满风味",
 
-            nearbyButton:
-                "📍 查找附近美食",
+        document.querySelector(
+            ".result-label"
+        ).textContent =
+            "MING AI RECOMMENDS";
 
-            footerDescription:
-                "发现美味的食物。"
 
-        },
+        document.querySelector(
+            ".result-reasons span:nth-child(1)"
+        ).textContent =
+            "✓ Warm";
 
 
-        /* =====================
-           MALAY
-        ===================== */
+        document.querySelector(
+            ".result-reasons span:nth-child(2)"
+        ).textContent =
+            "✓ Comforting";
 
-        ms: {
 
-            navDiscover:
-                "Terokai",
+        document.querySelector(
+            ".result-reasons span:nth-child(3)"
+        ).textContent =
+            "✓ Full of flavour";
 
-            navTrending:
-                "Trending",
 
-            navHow:
-                "Cara ia berfungsi",
+        document.querySelector(
+            ".nearby-food-button"
+        ).textContent =
+            "📍 Find this near me";
 
-            tryDemo:
-                "Cuba demo ↗",
 
-            heroEyebrow:
-                "PENEMUAN MAKANAN BERKUASA AI",
+        /* FOOTER */
 
-            heroTitle:
-                "Temui makanan<br><span>yang anda akan suka.</span>",
+        document.querySelector(
+            "footer p"
+        ).textContent =
+            "Discover something delicious.";
 
-            heroDescription:
-                "Cari hidangan kegemaran anda yang seterusnya dengan bantuan AI.",
-
-            startDiscovering:
-                "Mula meneroka ↗",
-
-            trendingLabel:
-                "SEDANG TRENDING",
-
-            trendingTitle:
-                "Apa yang orang sedang mengidam",
-
-            seeAll:
-                "Lihat semua →",
-
-            japanese:
-                "Jepun",
-
-            ramenTitle:
-                "Ramen Tonkotsu yang Kaya",
-
-            sushiTitle:
-                "Sushi Segar",
-
-            matchaTitle:
-                "Matcha Premium",
-
-            howLabel:
-                "CARA IA BERFUNGSI",
-
-            howTitle:
-                "Hidangan kegemaran anda seterusnya<br>lebih dekat daripada yang anda sangka.",
-
-            readyLabel:
-                "SEDIA UNTUK MENEROKA?",
-
-            demoTitle:
-                "Biarkan AI membantu anda<br>mencari sesuatu yang lazat.",
-
-            modalBrand:
-                "MING AI FOOD",
-
-            modalTitle:
-                "Apa yang anda<br>teringin hari ini?",
-
-            modalDescription:
-                "Beritahu Ming AI apa yang anda sedang teringin. Tiada jawapan yang salah.",
-
-            warm:
-                "🍜 Sesuatu yang panas",
-
-            spicy:
-                "🌶️ Sesuatu yang pedas",
-
-            indulgent:
-                "🍔 Sesuatu yang mengenyangkan",
-
-            healthy:
-                "🥗 Sesuatu yang sihat",
-
-            foodPlaceholder:
-                "Contoh: Saya penat, hujan sedang turun dan saya mahu sesuatu yang panas dan menenangkan...",
-
-            askMingAI:
-                "Tanya Ming AI ✨",
-
-            loadingText:
-                "Ming AI sedang memikirkan makanan...",
-
-            recommendationLabel:
-                "MING AI MENCADANGKAN",
-
-            resultDescription:
-                "Semangkuk ramen tonkotsu yang kaya, panas dan mempunyai rasa pedas.",
-
-            warmReason:
-                "✓ Panas",
-
-            comfortingReason:
-                "✓ Menenangkan",
-
-            flavourReason:
-                "✓ Penuh dengan rasa",
-
-            nearbyButton:
-                "📍 Cari makanan berdekatan",
-
-            footerDescription:
-                "Temui sesuatu yang lazat."
-
-        }
-
-    };
-
-
-    const selectedLanguage =
-        translations[language];
-
-
-    if (
-        !selectedLanguage
-    ) {
 
         return;
 
@@ -543,95 +399,506 @@ function changeLanguage(
 
 
     /* =========================
-       TRANSLATE NORMAL TEXT
+       CHINESE
     ========================= */
 
-    document
-        .querySelectorAll(
-            "[data-i18n]"
-        )
-        .forEach(
-            function (element) {
+    if (language === "zh") {
 
 
-                const key =
-                    element.getAttribute(
-                        "data-i18n"
-                    );
+        /* NAVIGATION */
+
+        document.querySelector(
+            '.nav-links a[href="#discover"]'
+        ).textContent =
+            "探索";
 
 
-                if (
-                    selectedLanguage[key]
-                ) {
+        document.querySelector(
+            '.nav-links a[href="#trending"]'
+        ).textContent =
+            "热门美食";
 
-                    element.innerHTML =
-                        selectedLanguage[key];
 
-                }
+        document.querySelector(
+            '.nav-links a[href="#how-it-works"]'
+        ).textContent =
+            "使用方式";
 
-            }
-        );
+
+        document.querySelector(
+            ".demo-button"
+        ).textContent =
+            "立即体验 ↗";
+
+
+        /* HERO */
+
+        document.querySelector(
+            ".hero .eyebrow"
+        ).textContent =
+            "AI 驱动的美食探索";
+
+
+        document.querySelector(
+            ".hero h1"
+        ).innerHTML =
+            "发现美食<br><span>找到你的最爱。</span>";
+
+
+        document.querySelector(
+            ".hero-description"
+        ).textContent =
+            "让 AI 帮助你找到下一道最喜欢的美食。";
+
+
+        document.querySelector(
+            ".hero-button"
+        ).textContent =
+            "开始探索 ↗";
+
+
+        /* TRENDING */
+
+        document.querySelector(
+            ".section-header .section-label"
+        ).textContent =
+            "当前热门";
+
+
+        document.querySelector(
+            ".section-header h2"
+        ).textContent =
+            "大家最近想吃什么";
+
+
+        document.querySelector(
+            ".section-header > a"
+        ).textContent =
+            "查看全部 →";
+
+
+        /* FOOD CARDS */
+
+        const foodCategories =
+            document.querySelectorAll(
+                ".food-card-content span"
+            );
+
+
+        foodCategories[0].textContent =
+            "日本料理";
+
+
+        foodCategories[1].textContent =
+            "日本料理";
+
+
+        foodCategories[2].textContent =
+            "意大利料理";
+
+
+        document.querySelector(
+            ".food-card:nth-child(1) h3"
+        ).textContent =
+            "浓郁豚骨拉面";
+
+
+        document.querySelector(
+            ".food-card:nth-child(2) h3"
+        ).textContent =
+            "新鲜寿司";
+
+
+        document.querySelector(
+            ".food-card:nth-child(3) h3"
+        ).textContent =
+            "手工意大利面";
+
+
+        /* HOW IT WORKS */
+
+        document.querySelector(
+            ".how-section .section-label"
+        ).textContent =
+            "使用方式";
+
+
+        document.querySelector(
+            ".how-section h2"
+        ).innerHTML =
+            "你的下一道最爱美食<br>可能比你想象中更近。";
+
+
+        /* DEMO SECTION */
+
+        document.querySelector(
+            ".demo-section .section-label"
+        ).textContent =
+            "准备好探索了吗？";
+
+
+        document.querySelector(
+            ".demo-section h2"
+        ).innerHTML =
+            "让 AI 帮助你<br>找到美味的选择。";
+
+
+        document.querySelector(
+            ".demo-button-large"
+        ).textContent =
+            "立即体验 ↗";
+
+
+        /* MODAL */
+
+        document.querySelector(
+            ".food-modal-header .section-label"
+        ).textContent =
+            "MING AI 美食";
+
+
+        document.querySelector(
+            ".food-modal-header h2"
+        ).innerHTML =
+            "今天想吃什么？<br>告诉我们你的心情。";
+
+
+        document.querySelector(
+            ".food-modal-header > p:last-child"
+        ).textContent =
+            "告诉 Ming AI 你现在想吃什么。没有错误的答案。";
+
+
+        const suggestions =
+            document.querySelectorAll(
+                ".suggestion-button"
+            );
+
+
+        suggestions[0].textContent =
+            "🍜 温暖的食物";
+
+
+        suggestions[1].textContent =
+            "🌶️ 辣一点的食物";
+
+
+        suggestions[2].textContent =
+            "🍔 放纵一下";
+
+
+        suggestions[3].textContent =
+            "🥗 健康的食物";
+
+
+        document.querySelector(
+            "#foodInput"
+        ).placeholder =
+            "例如：我今天很累，外面正在下雨，我想吃一些温暖又舒服的食物...";
+
+
+        document.querySelector(
+            "#findFoodButton"
+        ).textContent =
+            "询问 Ming AI ✨";
+
+
+        document.querySelector(
+            ".food-loading p"
+        ).textContent =
+            "Ming AI 正在思考美食推荐...";
+
+
+        document.querySelector(
+            ".result-label"
+        ).textContent =
+            "MING AI 推荐";
+
+
+        document.querySelector(
+            ".result-reasons span:nth-child(1)"
+        ).textContent =
+            "✓ 温暖";
+
+
+        document.querySelector(
+            ".result-reasons span:nth-child(2)"
+        ).textContent =
+            "✓ 舒适";
+
+
+        document.querySelector(
+            ".result-reasons span:nth-child(3)"
+        ).textContent =
+            "✓ 充满风味";
+
+
+        document.querySelector(
+            ".nearby-food-button"
+        ).textContent =
+            "📍 查找附近的美食";
+
+
+        /* FOOTER */
+
+        document.querySelector(
+            "footer p"
+        ).textContent =
+            "发现美味的食物。";
+
+
+        return;
+
+    }
 
 
     /* =========================
-       TRANSLATE PLACEHOLDERS
+       BAHASA MELAYU
     ========================= */
 
-    document
-        .querySelectorAll(
-            "[data-i18n-placeholder]"
-        )
-        .forEach(
-            function (element) {
+    if (language === "ms") {
 
 
-                const key =
-                    element.getAttribute(
-                        "data-i18n-placeholder"
-                    );
+        /* NAVIGATION */
+
+        document.querySelector(
+            '.nav-links a[href="#discover"]'
+        ).textContent =
+            "Terokai";
 
 
-                if (
-                    selectedLanguage[key]
-                ) {
-
-                    element.placeholder =
-                        selectedLanguage[key];
-
-                }
-
-            }
-        );
-
-}
+        document.querySelector(
+            '.nav-links a[href="#trending"]'
+        ).textContent =
+            "Trending";
 
 
-/* =========================
-   LOAD SAVED LANGUAGE
-========================= */
-
-const savedLanguage =
-    localStorage.getItem(
-        "language"
-    );
+        document.querySelector(
+            '.nav-links a[href="#how-it-works"]'
+        ).textContent =
+            "Cara ia berfungsi";
 
 
-if (
-    savedLanguage
-) {
-
-    changeLanguage(
-        savedLanguage
-    );
+        document.querySelector(
+            ".demo-button"
+        ).textContent =
+            "Cuba demo ↗";
 
 
-    if (
-        languageButton
-    ) {
+        /* HERO */
 
-        languageButton.textContent =
-            savedLanguage.toUpperCase() +
-            " ▾";
+        document.querySelector(
+            ".hero .eyebrow"
+        ).textContent =
+            "PENEMUAN MAKANAN BERKUASA AI";
+
+
+        document.querySelector(
+            ".hero h1"
+        ).innerHTML =
+            "Temui makanan<br><span>yang anda akan suka.</span>";
+
+
+        document.querySelector(
+            ".hero-description"
+        ).textContent =
+            "Cari hidangan kegemaran anda yang seterusnya dengan bantuan AI.";
+
+
+        document.querySelector(
+            ".hero-button"
+        ).textContent =
+            "Mula meneroka ↗";
+
+
+        /* TRENDING */
+
+        document.querySelector(
+            ".section-header .section-label"
+        ).textContent =
+            "TRENDING SEKARANG";
+
+
+        document.querySelector(
+            ".section-header h2"
+        ).textContent =
+            "Apa yang orang sedang mengidam";
+
+
+        document.querySelector(
+            ".section-header > a"
+        ).textContent =
+            "Lihat semua →";
+
+
+        /* FOOD CARDS */
+
+        const foodCategories =
+            document.querySelectorAll(
+                ".food-card-content span"
+            );
+
+
+        foodCategories[0].textContent =
+            "Jepun";
+
+
+        foodCategories[1].textContent =
+            "Jepun";
+
+
+        foodCategories[2].textContent =
+            "Itali";
+
+
+        document.querySelector(
+            ".food-card:nth-child(1) h3"
+        ).textContent =
+            "Ramen Tonkotsu Berkrim";
+
+
+        document.querySelector(
+            ".food-card:nth-child(2) h3"
+        ).textContent =
+            "Sushi Segar";
+
+
+        document.querySelector(
+            ".food-card:nth-child(3) h3"
+        ).textContent =
+            "Pasta Buatan Tangan";
+
+
+        /* HOW IT WORKS */
+
+        document.querySelector(
+            ".how-section .section-label"
+        ).textContent =
+            "CARA IA BERFUNGSI";
+
+
+        document.querySelector(
+            ".how-section h2"
+        ).innerHTML =
+            "Hidangan kegemaran anda yang seterusnya<br>mungkin lebih dekat daripada yang anda sangka.";
+
+
+        /* DEMO SECTION */
+
+        document.querySelector(
+            ".demo-section .section-label"
+        ).textContent =
+            "SEDIA UNTUK MENEROKA?";
+
+
+        document.querySelector(
+            ".demo-section h2"
+        ).innerHTML =
+            "Biarkan AI membantu anda<br>mencari sesuatu yang lazat.";
+
+
+        document.querySelector(
+            ".demo-button-large"
+        ).textContent =
+            "Cuba demo ↗";
+
+
+        /* MODAL */
+
+        document.querySelector(
+            ".food-modal-header .section-label"
+        ).textContent =
+            "MING AI MAKANAN";
+
+
+        document.querySelector(
+            ".food-modal-header h2"
+        ).innerHTML =
+            "Apa yang anda<br>teringin hari ini?";
+
+
+        document.querySelector(
+            ".food-modal-header > p:last-child"
+        ).textContent =
+            "Beritahu Ming AI apa yang anda ingin makan. Tiada jawapan yang salah.";
+
+
+        const suggestions =
+            document.querySelectorAll(
+                ".suggestion-button"
+            );
+
+
+        suggestions[0].textContent =
+            "🍜 Sesuatu yang panas";
+
+
+        suggestions[1].textContent =
+            "🌶️ Sesuatu yang pedas";
+
+
+        suggestions[2].textContent =
+            "🍔 Sesuatu yang mengenyangkan";
+
+
+        suggestions[3].textContent =
+            "🥗 Sesuatu yang sihat";
+
+
+        document.querySelector(
+            "#foodInput"
+        ).placeholder =
+            "Contoh: Saya penat, hari hujan dan saya mahu sesuatu yang panas dan menenangkan...";
+
+
+        document.querySelector(
+            "#findFoodButton"
+        ).textContent =
+            "Tanya Ming AI ✨";
+
+
+        document.querySelector(
+            ".food-loading p"
+        ).textContent =
+            "Ming AI sedang memikirkan makanan...";
+
+
+        document.querySelector(
+            ".result-label"
+        ).textContent =
+            "MING AI MENCADANGKAN";
+
+
+        document.querySelector(
+            ".result-reasons span:nth-child(1)"
+        ).textContent =
+            "✓ Panas";
+
+
+        document.querySelector(
+            ".result-reasons span:nth-child(2)"
+        ).textContent =
+            "✓ Menenangkan";
+
+
+        document.querySelector(
+            ".result-reasons span:nth-child(3)"
+        ).textContent =
+            "✓ Penuh dengan rasa";
+
+
+        document.querySelector(
+            ".nearby-food-button"
+        ).textContent =
+            "📍 Cari berdekatan";
+
+
+        /* FOOTER */
+
+        document.querySelector(
+            "footer p"
+        ).textContent =
+            "Temui sesuatu yang lazat.";
 
     }
 
@@ -640,65 +907,46 @@ if (
 
 /* =========================
    AI FOOD DEMO
+   FAKE RESPONSE
 ========================= */
 
 const openFoodDemo =
-    document.getElementById(
-        "openFoodDemo"
-    );
+    document.getElementById("openFoodDemo");
 
 
 const closeFoodDemo =
-    document.getElementById(
-        "closeFoodDemo"
-    );
+    document.getElementById("closeFoodDemo");
 
 
 const foodModal =
-    document.getElementById(
-        "foodModal"
-    );
+    document.getElementById("foodModal");
 
 
 const foodInput =
-    document.getElementById(
-        "foodInput"
-    );
+    document.getElementById("foodInput");
 
 
 const findFoodButton =
-    document.getElementById(
-        "findFoodButton"
-    );
+    document.getElementById("findFoodButton");
 
 
 const foodLoading =
-    document.getElementById(
-        "foodLoading"
-    );
+    document.getElementById("foodLoading");
 
 
 const foodResult =
-    document.getElementById(
-        "foodResult"
-    );
+    document.getElementById("foodResult");
 
 
 const resultTitle =
-    document.getElementById(
-        "resultTitle"
-    );
+    document.getElementById("resultTitle");
 
 
 const resultDescription =
-    document.getElementById(
-        "resultDescription"
-    );
+    document.getElementById("resultDescription");
 
 
-/* =========================
-   OPEN MODAL
-========================= */
+/* OPEN MODAL */
 
 if (
     openFoodDemo &&
@@ -709,9 +957,7 @@ if (
         "click",
         function () {
 
-            foodModal.classList.add(
-                "active"
-            );
+            foodModal.classList.add("active");
 
         }
     );
@@ -719,9 +965,7 @@ if (
 }
 
 
-/* =========================
-   CLOSE MODAL
-========================= */
+/* CLOSE MODAL */
 
 if (
     closeFoodDemo &&
@@ -732,9 +976,7 @@ if (
         "click",
         function () {
 
-            foodModal.classList.remove(
-                "active"
-            );
+            foodModal.classList.remove("active");
 
         }
     );
@@ -742,14 +984,10 @@ if (
 }
 
 
-/* =========================
-   CLICK OUTSIDE MODAL
-========================= */
+/* CLICK OUTSIDE MODAL */
 
 const modalOverlay =
-    document.querySelector(
-        ".food-modal-overlay"
-    );
+    document.querySelector(".food-modal-overlay");
 
 
 if (
@@ -761,9 +999,7 @@ if (
         "click",
         function () {
 
-            foodModal.classList.remove(
-                "active"
-            );
+            foodModal.classList.remove("active");
 
         }
     );
@@ -771,40 +1007,27 @@ if (
 }
 
 
-/* =========================
-   SUGGESTION BUTTONS
-========================= */
+/* SUGGESTION BUTTONS */
 
 const suggestionButtons =
-    document.querySelectorAll(
-        ".suggestion-button"
-    );
+    document.querySelectorAll(".suggestion-button");
 
 
 suggestionButtons.forEach(
     function (button) {
 
-
         button.addEventListener(
             "click",
             function () {
 
-
-                if (
-                    !foodInput
-                ) {
-
+                if (!foodInput) {
                     return;
-
                 }
 
 
                 const text =
                     button.textContent
-                        .replace(
-                            /[^\w\s]/gi,
-                            ""
-                        )
+                        .replace(/[^\w\s]/gi, "")
                         .trim();
 
 
@@ -819,9 +1042,7 @@ suggestionButtons.forEach(
 );
 
 
-/* =========================
-   FAKE AI RESPONSE
-========================= */
+/* FAKE AI RESPONSE */
 
 if (
     findFoodButton &&
@@ -842,10 +1063,7 @@ if (
                 foodInput.value.trim();
 
 
-            if (
-                !userInput
-            ) {
-
+            if (!userInput) {
 
                 foodInput.focus();
 
@@ -859,14 +1077,10 @@ if (
             }
 
 
-            foodResult.classList.remove(
-                "active"
-            );
+            foodResult.classList.remove("active");
 
 
-            foodLoading.classList.add(
-                "active"
-            );
+            foodLoading.classList.add("active");
 
 
             findFoodButton.disabled =
@@ -881,14 +1095,10 @@ if (
                 function () {
 
 
-                    foodLoading.classList.remove(
-                        "active"
-                    );
+                    foodLoading.classList.remove("active");
 
 
-                    foodResult.classList.add(
-                        "active"
-                    );
+                    foodResult.classList.add("active");
 
 
                     findFoodButton.disabled =
