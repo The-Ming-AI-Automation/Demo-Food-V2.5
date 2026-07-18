@@ -1147,3 +1147,111 @@ footer .brand {
     }
 
 }
+
+/* =========================
+   LANGUAGE SELECTOR
+========================= */
+
+.language-selector {
+
+    position: relative;
+
+}
+
+
+.language-button {
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    padding: 10px 4px;
+
+}
+
+
+.language-menu {
+
+    position: absolute;
+
+    top: 45px;
+
+    right: 0;
+
+    min-width: 170px;
+
+    padding: 8px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background: var(--card-background);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.15);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 2000;
+
+}
+
+
+.language-menu.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+}
+
+
+.language-menu button {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+}
+
+
+.language-menu button:hover {
+
+    background: var(--background);
+
+}
