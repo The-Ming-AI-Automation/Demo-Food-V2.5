@@ -1,10 +1,7 @@
-
-That makes the entire JavaScript file fail to parse, so **dark mode, the language selector, the popup, and the fake AI response all stop working**.
-
-Replace your **entire `script.js`** with this clean version:
-
-```javascript
 document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("Ming AI Food script loaded");
+
 
     /* =========================
        DARK MODE
@@ -17,15 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const savedTheme = localStorage.getItem("theme");
 
         if (savedTheme === "dark") {
-
             document.body.classList.add("dark-mode");
-
             themeToggle.textContent = "☾";
-
         } else {
-
             themeToggle.textContent = "☼";
-
         }
 
         themeToggle.addEventListener("click", function () {
@@ -61,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================
-       LANGUAGE DROPDOWN
+       LANGUAGE SELECTOR
     ========================= */
 
     const languageButton =
@@ -95,7 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             option.addEventListener(
                 "click",
-                function () {
+                function (event) {
+
+                    event.stopPropagation();
 
                     const language =
                         option.getAttribute(
@@ -184,22 +178,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 "#trending h2"
             );
 
-        const seeAll =
+        const trendingLink =
             document.querySelector(
-                ".section-header > a"
+                "#trending .section-header > a"
             );
 
 
         /* FOOD CARDS */
 
-        const foodCardCategories =
+        const foodCards =
             document.querySelectorAll(
-                ".food-card-content span"
-            );
-
-        const foodCardTitles =
-            document.querySelectorAll(
-                ".food-card-content h3"
+                ".food-card"
             );
 
 
@@ -276,16 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 ".result-label"
             );
 
-        const resultTitle =
-            document.getElementById(
-                "resultTitle"
-            );
-
-        const resultDescription =
-            document.getElementById(
-                "resultDescription"
-            );
-
         const nearbyButton =
             document.querySelector(
                 ".nearby-food-button"
@@ -294,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         /* FOOTER */
 
-        const footerDescription =
+        const footerText =
             document.querySelector(
                 "footer p"
             );
@@ -305,6 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ========================= */
 
         if (language === "en") {
+
 
             navLinks[0].textContent =
                 "Discover";
@@ -335,28 +315,27 @@ document.addEventListener("DOMContentLoaded", function () {
             trendingTitle.textContent =
                 "What people are craving";
 
-            seeAll.textContent =
+            trendingLink.textContent =
                 "See all →";
 
 
-            foodCardCategories[0].textContent =
+            foodCards[0].querySelector("span").textContent =
                 "Japanese";
 
-            foodCardCategories[1].textContent =
-                "Japanese";
-
-            foodCardCategories[2].textContent =
-                "Italian";
-
-
-            foodCardTitles[0].textContent =
+            foodCards[0].querySelector("h3").textContent =
                 "Rich Tonkotsu Ramen";
 
-            foodCardTitles[1].textContent =
+            foodCards[1].querySelector("span").textContent =
+                "Japanese";
+
+            foodCards[1].querySelector("h3").textContent =
                 "Fresh Sushi";
 
-            foodCardTitles[2].textContent =
-                "Handmade Pasta";
+            foodCards[2].querySelector("span").textContent =
+                "Japanese";
+
+            foodCards[2].querySelector("h3").textContent =
+                "Matcha";
 
 
             howLabel.textContent =
@@ -415,19 +394,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "MING AI RECOMMENDS";
 
 
-            resultTitle.textContent =
-                "Spicy Tonkotsu Ramen";
-
-
-            resultDescription.textContent =
-                "A rich, warming bowl of ramen with a spicy kick. Perfect when you want something comforting, satisfying and full of flavour.";
-
-
             nearbyButton.textContent =
                 "📍 Find this near me";
 
 
-            footerDescription.textContent =
+            footerText.textContent =
                 "Discover something delicious.";
 
         }
@@ -439,14 +410,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (language === "zh") {
 
+
             navLinks[0].textContent =
-                "探索美食";
+                "探索";
 
             navLinks[1].textContent =
                 "热门美食";
 
             navLinks[2].textContent =
-                "运作方式";
+                "使用方式";
 
 
             heroEyebrow.textContent =
@@ -463,40 +435,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             trendingLabel.textContent =
-                "当前热门";
+                "现在热门";
 
             trendingTitle.textContent =
                 "大家最近想吃什么";
 
-            seeAll.textContent =
+            trendingLink.textContent =
                 "查看全部 →";
 
 
-            foodCardCategories[0].textContent =
+            foodCards[0].querySelector("span").textContent =
                 "日本料理";
 
-            foodCardCategories[1].textContent =
-                "日本料理";
-
-            foodCardCategories[2].textContent =
-                "意大利料理";
-
-
-            foodCardTitles[0].textContent =
+            foodCards[0].querySelector("h3").textContent =
                 "浓郁豚骨拉面";
 
-            foodCardTitles[1].textContent =
+            foodCards[1].querySelector("span").textContent =
+                "日本料理";
+
+            foodCards[1].querySelector("h3").textContent =
                 "新鲜寿司";
 
-            foodCardTitles[2].textContent =
-                "手工意大利面";
+            foodCards[2].querySelector("span").textContent =
+                "日本料理";
+
+            foodCards[2].querySelector("h3").textContent =
+                "抹茶";
 
 
             howLabel.textContent =
-                "运作方式";
+                "使用方式";
 
             howTitle.innerHTML =
-                "你的下一道最爱美食<br>比你想象中更近。";
+                "你的下一道最爱美食<br>比你想象的更近。";
 
 
             demoLabel.textContent =
@@ -506,34 +477,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 "让 AI 帮助你<br>找到美味的选择。";
 
             demoButton.textContent =
-                "立即体验 ↗";
+                "试用演示 ↗";
 
 
             modalLabel.textContent =
                 "MING AI 美食";
 
             modalTitle.innerHTML =
-                "今天<br>想吃什么？";
+                "今天想吃<br>什么？";
 
             modalDescription.textContent =
-                "告诉 Ming AI 你现在想吃什么。没有错误答案。";
+                "告诉 Ming AI 你现在想吃什么。没有错误的答案。";
 
 
             suggestionButtons[0].textContent =
                 "🍜 温暖的食物";
 
             suggestionButtons[1].textContent =
-                "🌶️ 辣一点的食物";
+                "🌶️ 辣的食物";
 
             suggestionButtons[2].textContent =
-                "🍔 放纵一下";
+                "🍔 丰盛的食物";
 
             suggestionButtons[3].textContent =
-                "🥗 健康一点";
+                "🥗 健康的食物";
 
 
             foodInput.placeholder =
-                "例如：我今天很累，外面正在下雨，我想吃一些温暖又有安慰感的食物...";
+                "例如：我今天很累，外面正在下雨，我想吃一些温暖又舒服的食物...";
 
 
             findFoodButton.textContent =
@@ -548,19 +519,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "MING AI 推荐";
 
 
-            resultTitle.textContent =
-                "辣味豚骨拉面";
-
-
-            resultDescription.textContent =
-                "一碗浓郁温暖、带有辣味的豚骨拉面。当你想吃一些温暖、满足又充满风味的食物时，这是一个很好的选择。";
-
-
             nearbyButton.textContent =
                 "📍 查找附近的美食";
 
 
-            footerDescription.textContent =
+            footerText.textContent =
                 "发现美味的食物。";
 
         }
@@ -571,6 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ========================= */
 
         if (language === "ms") {
+
 
             navLinks[0].textContent =
                 "Terokai";
@@ -599,30 +563,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 "SEDANG TRENDING";
 
             trendingTitle.textContent =
-                "Apa yang orang sedang mengidam";
+                "Apa yang orang sedang teringin";
 
-            seeAll.textContent =
+            trendingLink.textContent =
                 "Lihat semua →";
 
 
-            foodCardCategories[0].textContent =
+            foodCards[0].querySelector("span").textContent =
                 "Jepun";
 
-            foodCardCategories[1].textContent =
+            foodCards[0].querySelector("h3").textContent =
+                "Ramen Tonkotsu Kaya";
+
+            foodCards[1].querySelector("span").textContent =
                 "Jepun";
 
-            foodCardCategories[2].textContent =
-                "Itali";
-
-
-            foodCardTitles[0].textContent =
-                "Ramen Tonkotsu Berperisa";
-
-            foodCardTitles[1].textContent =
+            foodCards[1].querySelector("h3").textContent =
                 "Sushi Segar";
 
-            foodCardTitles[2].textContent =
-                "Pasta Buatan Tangan";
+            foodCards[2].querySelector("span").textContent =
+                "Jepun";
+
+            foodCards[2].querySelector("h3").textContent =
+                "Matcha";
 
 
             howLabel.textContent =
@@ -649,7 +612,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Apa yang anda<br>teringin hari ini?";
 
             modalDescription.textContent =
-                "Beritahu Ming AI apa yang anda inginkan. Tiada jawapan yang salah.";
+                "Beritahu Ming AI apa yang anda ingin makan. Tiada jawapan yang salah.";
 
 
             suggestionButtons[0].textContent =
@@ -666,7 +629,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             foodInput.placeholder =
-                "Contoh: Saya penat, hari sedang hujan dan saya mahukan sesuatu yang panas dan menenangkan...";
+                "Contoh: Saya penat, hujan sedang turun dan saya mahu sesuatu yang panas dan menenangkan...";
 
 
             findFoodButton.textContent =
@@ -681,19 +644,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "MING AI MENCADANGKAN";
 
 
-            resultTitle.textContent =
-                "Ramen Tonkotsu Pedas";
-
-
-            resultDescription.textContent =
-                "Semangkuk ramen tonkotsu yang kaya dan menghangatkan dengan rasa pedas. Sesuai apabila anda mahukan sesuatu yang menenangkan, mengenyangkan dan penuh dengan rasa.";
-
-
             nearbyButton.textContent =
-                "📍 Cari berdekatan saya";
+                "📍 Cari makanan ini berdekatan";
 
 
-            footerDescription.textContent =
+            footerText.textContent =
                 "Temui sesuatu yang lazat.";
 
         }
@@ -702,7 +657,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================
-       AI FOOD DEMO POPUP
+       AI FOOD DEMO MODAL
     ========================= */
 
     const openFoodDemo =
@@ -720,38 +675,11 @@ document.addEventListener("DOMContentLoaded", function () {
             "foodModal"
         );
 
-    const foodInput =
-        document.getElementById(
-            "foodInput"
-        );
 
-    const findFoodButton =
-        document.getElementById(
-            "findFoodButton"
-        );
-
-    const foodLoading =
-        document.getElementById(
-            "foodLoading"
-        );
-
-    const foodResult =
-        document.getElementById(
-            "foodResult"
-        );
-
-    const resultTitle =
-        document.getElementById(
-            "resultTitle"
-        );
-
-    const resultDescription =
-        document.getElementById(
-            "resultDescription"
-        );
-
-
-    if (openFoodDemo && foodModal) {
+    if (
+        openFoodDemo &&
+        foodModal
+    ) {
 
         openFoodDemo.addEventListener(
             "click",
@@ -767,7 +695,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    if (closeFoodDemo && foodModal) {
+    if (
+        closeFoodDemo &&
+        foodModal
+    ) {
 
         closeFoodDemo.addEventListener(
             "click",
@@ -789,7 +720,10 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-    if (modalOverlay && foodModal) {
+    if (
+        modalOverlay &&
+        foodModal
+    ) {
 
         modalOverlay.addEventListener(
             "click",
@@ -808,6 +742,12 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================
        SUGGESTION BUTTONS
     ========================= */
+
+    const foodInput =
+        document.getElementById(
+            "foodInput"
+        );
+
 
     const suggestionButtons =
         document.querySelectorAll(
@@ -851,18 +791,43 @@ document.addEventListener("DOMContentLoaded", function () {
        FAKE AI RESPONSE
     ========================= */
 
+    const findFoodButton =
+        document.getElementById(
+            "findFoodButton"
+        );
+
+    const foodLoading =
+        document.getElementById(
+            "foodLoading"
+        );
+
+    const foodResult =
+        document.getElementById(
+            "foodResult"
+        );
+
+    const resultTitle =
+        document.getElementById(
+            "resultTitle"
+        );
+
+    const resultDescription =
+        document.getElementById(
+            "resultDescription"
+        );
+
+
     if (
         findFoodButton &&
         foodInput &&
         foodLoading &&
-        foodResult &&
-        resultTitle &&
-        resultDescription
+        foodResult
     ) {
 
         findFoodButton.addEventListener(
             "click",
             function () {
+
 
                 const userInput =
                     foodInput.value.trim();
@@ -871,9 +836,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!userInput) {
 
                     foodInput.focus();
-
-                    foodInput.placeholder =
-                        "Tell Ming AI what you feel like eating first...";
 
                     return;
 
@@ -900,6 +862,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 setTimeout(
                     function () {
+
 
                         foodLoading.classList.remove(
                             "active"
@@ -934,5 +897,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
     }
+
 
 });
