@@ -1,31 +1,55 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Ming AI Food</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="style.css">
+    <title>Ming AI Food</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-```
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
 </head>
 
+
 <body>
 
-```
-<!-- NAVIGATION -->
+
+<!-- =========================
+     NAVIGATION
+========================= -->
 
 <header class="navbar">
 
-    <a href="#" class="brand">
+
+    <a
+        href="#"
+        class="brand"
+    >
 
         <div class="brand-icon">
             M
@@ -40,26 +64,41 @@
 
     <nav class="nav-links">
 
-        <a href="#discover" data-i18n="navDiscover">
+
+        <a
+            href="#discover"
+            data-i18n="navDiscover"
+        >
             Discover
         </a>
 
-        <a href="#trending" data-i18n="navTrending">
+
+        <a
+            href="#trending"
+            data-i18n="navTrending"
+        >
             Trending
         </a>
 
-        <a href="#how-it-works" data-i18n="navHow">
+
+        <a
+            href="#how-it-works"
+            data-i18n="navHow"
+        >
             How it works
         </a>
+
 
     </nav>
 
 
     <div class="nav-right">
 
+
         <!-- LANGUAGE SELECTOR -->
 
         <div class="language-selector">
+
 
             <button
                 class="language-button"
@@ -68,29 +107,41 @@
                 EN ▾
             </button>
 
+
             <div
                 class="language-menu"
                 id="languageMenu"
             >
 
-                <button data-language="en">
+
+                <button
+                    data-language="en"
+                >
                     🇬🇧 English
                 </button>
 
-                <button data-language="zh">
+
+                <button
+                    data-language="zh"
+                >
                     🇨🇳 中文
                 </button>
 
-                <button data-language="ms">
+
+                <button
+                    data-language="ms"
+                >
                     🇲🇾 Bahasa Melayu
                 </button>
 
+
             </div>
+
 
         </div>
 
 
-        <!-- DARK MODE TOGGLE -->
+        <!-- DARK MODE -->
 
         <button
             class="theme-button"
@@ -110,21 +161,30 @@
             Try the demo ↗
         </a>
 
+
     </div>
+
 
 </header>
 
 
-<!-- MAIN CONTENT -->
+<!-- =========================
+     MAIN
+========================= -->
 
 <main>
 
 
     <!-- HERO -->
 
-    <section class="hero" id="discover">
+    <section
+        class="hero"
+        id="discover"
+    >
+
 
         <div class="hero-content">
+
 
             <p
                 class="eyebrow"
@@ -134,7 +194,9 @@
             </p>
 
 
-            <h1 data-i18n="heroTitle">
+            <h1
+                data-i18n="heroTitle"
+            >
 
                 Discover food
                 <br>
@@ -165,17 +227,21 @@
                 Start discovering ↗
             </a>
 
+
         </div>
 
 
         <div class="hero-image">
+
 
             <img
                 src="featured-ramen.jpg"
                 alt="Featured food"
             >
 
+
         </div>
+
 
     </section>
 
@@ -187,9 +253,12 @@
         id="trending"
     >
 
+
         <div class="section-header">
 
+
             <div>
+
 
                 <p
                     class="section-label"
@@ -199,9 +268,12 @@
                 </p>
 
 
-                <h2 data-i18n="trendingTitle">
+                <h2
+                    data-i18n="trendingTitle"
+                >
                     What people are craving
                 </h2>
+
 
             </div>
 
@@ -213,87 +285,111 @@
                 See all →
             </a>
 
+
         </div>
 
 
         <div class="food-grid">
 
 
-            <!-- RAMEN -->
-
             <article class="food-card">
+
 
                 <img
                     src="featured-ramen.jpg"
                     alt="Ramen"
                 >
 
+
                 <div class="food-card-content">
 
-                    <span data-i18n="japanese">
+
+                    <span
+                        data-i18n="japanese"
+                    >
                         Japanese
                     </span>
 
 
-                    <h3 data-i18n="ramenTitle">
+                    <h3
+                        data-i18n="ramenTitle"
+                    >
                         Rich Tonkotsu Ramen
                     </h3>
 
+
                 </div>
+
 
             </article>
 
 
-            <!-- SUSHI -->
-
             <article class="food-card">
+
 
                 <img
                     src="featured-sushi.jpg"
                     alt="Sushi"
                 >
 
+
                 <div class="food-card-content">
 
-                    <span data-i18n="japanese">
+
+                    <span
+                        data-i18n="japanese"
+                    >
                         Japanese
                     </span>
 
 
-                    <h3 data-i18n="sushiTitle">
+                    <h3
+                        data-i18n="sushiTitle"
+                    >
                         Fresh Sushi
                     </h3>
 
+
                 </div>
+
 
             </article>
 
 
-            <!-- MATCHA -->
-
             <article class="food-card">
+
 
                 <img
                     src="featured-matcha.jpg"
                     alt="Matcha"
                 >
 
+
                 <div class="food-card-content">
 
-                    <span data-i18n="japanese">
+
+                    <span
+                        data-i18n="japanese"
+                    >
                         Japanese
                     </span>
 
 
-                    <h3 data-i18n="matchaTitle">
+                    <h3
+                        data-i18n="matchaTitle"
+                    >
                         Premium Matcha
                     </h3>
 
+
                 </div>
+
 
             </article>
 
+
         </div>
+
 
     </section>
 
@@ -305,6 +401,7 @@
         id="how-it-works"
     >
 
+
         <p
             class="section-label"
             data-i18n="howLabel"
@@ -313,13 +410,16 @@
         </p>
 
 
-        <h2 data-i18n="howTitle">
+        <h2
+            data-i18n="howTitle"
+        >
 
             Your next favourite meal
             <br>
             is closer than you think.
 
         </h2>
+
 
     </section>
 
@@ -331,7 +431,11 @@
         id="demo"
     >
 
-        <div class="demo-content">
+
+        <div
+            class="demo-content"
+        >
+
 
             <p
                 class="section-label"
@@ -341,13 +445,16 @@
             </p>
 
 
-            <h2 data-i18n="demoTitle">
+            <h2
+                data-i18n="demoTitle"
+            >
 
                 Let AI help you
                 <br>
                 find something delicious.
 
             </h2>
+
 
         </div>
 
@@ -360,20 +467,28 @@
             Try the demo ↗
         </button>
 
+
     </section>
 
 
-    <!-- AI FOOD FINDER MODAL -->
+    <!-- =========================
+         FOOD MODAL
+    ========================= -->
 
     <div
         class="food-modal"
         id="foodModal"
     >
 
-        <div class="food-modal-overlay"></div>
+
+        <div
+            class="food-modal-overlay"
+        ></div>
 
 
-        <div class="food-modal-card">
+        <div
+            class="food-modal-card"
+        >
 
 
             <button
@@ -384,175 +499,330 @@
             </button>
 
 
-            <div class="food-modal-header">
-
-                <p
-                    class="section-label"
-                    data-i18n="modalBrand"
-                >
-                    MING AI FOOD
-                </p>
-
-
-                <h2 data-i18n="modalTitle">
-
-                    What are you
-                    <br>
-                    craving today?
-
-                </h2>
-
-
-                <p data-i18n="modalDescription">
-
-                    Tell Ming AI what you're in the mood for.
-                    There are no wrong answers.
-
-                </p>
-
-            </div>
-
-
-            <!-- SUGGESTIONS -->
-
-            <div class="food-suggestions">
-
-
-                <button
-                    class="suggestion-button"
-                    data-i18n="warm"
-                >
-                    🍜 Something warm
-                </button>
-
-
-                <button
-                    class="suggestion-button"
-                    data-i18n="spicy"
-                >
-                    🌶️ Something spicy
-                </button>
-
-
-                <button
-                    class="suggestion-button"
-                    data-i18n="indulgent"
-                >
-                    🍔 Something indulgent
-                </button>
-
-
-                <button
-                    class="suggestion-button"
-                    data-i18n="healthy"
-                >
-                    🥗 Something healthy
-                </button>
-
-            </div>
-
-
-            <textarea
-                id="foodInput"
-                data-i18n-placeholder="foodPlaceholder"
-                placeholder="Example: I'm tired, it's raining and I want something warm and comforting..."
-            ></textarea>
-
-
-            <button
-                class="find-food-button"
-                id="findFoodButton"
-                data-i18n="askMingAI"
-            >
-                Ask Ming AI ✨
-            </button>
-
-
-            <!-- LOADING -->
+            <!-- FOOD FINDER -->
 
             <div
-                class="food-loading"
-                id="foodLoading"
+                id="foodFinderContent"
             >
 
-                <div class="loading-dots">
 
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div
+                    class="food-modal-header"
+                >
+
+
+                    <p
+                        class="section-label"
+                        data-i18n="modalBrand"
+                    >
+                        MING AI FOOD
+                    </p>
+
+
+                    <h2
+                        data-i18n="modalTitle"
+                    >
+
+                        What are you
+                        <br>
+                        craving today?
+
+                    </h2>
+
+
+                    <p
+                        data-i18n="modalDescription"
+                    >
+
+                        Tell Ming AI what you're in the mood for.
+                        There are no wrong answers.
+
+                    </p>
+
 
                 </div>
 
 
-                <p data-i18n="loadingText">
-                    Ming AI is thinking about food...
-                </p>
+                <!-- SUGGESTIONS -->
+
+                <div
+                    class="food-suggestions"
+                >
+
+
+                    <button
+                        class="suggestion-button"
+                        data-i18n="warm"
+                    >
+                        🍜 Something warm
+                    </button>
+
+
+                    <button
+                        class="suggestion-button"
+                        data-i18n="spicy"
+                    >
+                        🌶️ Something spicy
+                    </button>
+
+
+                    <button
+                        class="suggestion-button"
+                        data-i18n="indulgent"
+                    >
+                        🍔 Something indulgent
+                    </button>
+
+
+                    <button
+                        class="suggestion-button"
+                        data-i18n="healthy"
+                    >
+                        🥗 Something healthy
+                    </button>
+
+
+                </div>
+
+
+                <textarea
+                    id="foodInput"
+                    data-i18n-placeholder="foodPlaceholder"
+                    placeholder="Example: I'm tired, it's raining and I want something warm and comforting..."
+                ></textarea>
+
+
+                <button
+                    class="find-food-button"
+                    id="findFoodButton"
+                    data-i18n="askMingAI"
+                >
+                    Ask Ming AI ✨
+                </button>
+
+
+                <!-- LOADING -->
+
+                <div
+                    class="food-loading"
+                    id="foodLoading"
+                >
+
+
+                    <div
+                        class="loading-dots"
+                    >
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <p
+                        data-i18n="loadingText"
+                    >
+                        Ming AI is thinking about food...
+                    </p>
+
+
+                </div>
+
+
+                <!-- RESULT -->
+
+                <div
+                    class="food-result"
+                    id="foodResult"
+                >
+
+
+                    <div
+                        class="result-icon"
+                    >
+                        🍜
+                    </div>
+
+
+                    <p
+                        class="result-label"
+                        data-i18n="recommendationLabel"
+                    >
+                        MING AI RECOMMENDS
+                    </p>
+
+
+                    <h3
+                        id="resultTitle"
+                    >
+                        Spicy Tonkotsu Ramen
+                    </h3>
+
+
+                    <p
+                        id="resultDescription"
+                        data-i18n="resultDescription"
+                    >
+                        A rich, warming bowl of ramen with a spicy kick.
+                    </p>
+
+
+                    <div
+                        class="result-reasons"
+                    >
+
+
+                        <span
+                            data-i18n="warmReason"
+                        >
+                            ✓ Warm
+                        </span>
+
+
+                        <span
+                            data-i18n="comfortingReason"
+                        >
+                            ✓ Comforting
+                        </span>
+
+
+                        <span
+                            data-i18n="flavourReason"
+                        >
+                            ✓ Full of flavour
+                        </span>
+
+
+                    </div>
+
+
+                    <!-- REAL LOCATION BUTTON -->
+
+                    <button
+                        class="nearby-food-button"
+                        id="nearbyFoodButton"
+                        data-i18n="nearbyButton"
+                    >
+                        📍 Find this near me
+                    </button>
+
+
+                </div>
+
 
             </div>
 
 
-            <!-- RESULT -->
+            <!-- =========================
+                 LOCATION VIEW
+            ========================= -->
 
             <div
-                class="food-result"
-                id="foodResult"
+                id="locationContent"
+                style="display: none;"
             >
 
-                <div class="result-icon">
-                    🍜
+
+                <div
+                    class="food-modal-header"
+                >
+
+
+                    <p
+                        class="section-label"
+                    >
+                        MING AI FOOD
+                    </p>
+
+
+                    <h2>
+                        Find food near you.
+                    </h2>
+
+
+                    <p>
+                        Search for restaurants near your current location.
+                    </p>
+
+
                 </div>
 
 
-                <p
-                    class="result-label"
-                    data-i18n="recommendationLabel"
+                <input
+                    type="text"
+                    id="locationSearch"
+                    placeholder="Search for a location..."
+                    style="
+                        width: 100%;
+                        padding: 15px;
+                        margin-top: 20px;
+                        border-radius: 12px;
+                        border: 1px solid var(--border);
+                        background: var(--background);
+                        color: var(--text);
+                        font-family: inherit;
+                    "
                 >
-                    MING AI RECOMMENDS
-                </p>
-
-
-                <h3 id="resultTitle">
-                    Spicy Tonkotsu Ramen
-                </h3>
-
-
-                <p
-                    id="resultDescription"
-                    data-i18n="resultDescription"
-                >
-                    A rich, warming bowl of ramen with a spicy kick.
-                </p>
-
-
-                <div class="result-reasons">
-
-                    <span data-i18n="warmReason">
-                        ✓ Warm
-                    </span>
-
-                    <span data-i18n="comfortingReason">
-                        ✓ Comforting
-                    </span>
-
-                    <span data-i18n="flavourReason">
-                        ✓ Full of flavour
-                    </span>
-
-                </div>
 
 
                 <button
+                    id="searchLocationButton"
+                    class="find-food-button"
+                >
+                    🔎 Search nearby food
+                </button>
+
+
+                <button
+                    id="useLocationButton"
                     class="nearby-food-button"
-                    data-i18n="nearbyButton"
+                    style="margin-top: 12px;"
                 >
-                    📍 Find this near me
+                    📍 Use my current location
                 </button>
 
+
+                <div
+                    id="locationResults"
+                    style="margin-top: 25px;"
+                >
+
+
+                    <p
+                        style="
+                            color: var(--secondary-text);
+                            font-size: 13px;
+                            line-height: 1.6;
+                        "
+                    >
+
+                        Your nearby food search will open in Google Maps.
+                        This version does not require a Google Maps API key.
+
+                    </p>
+
+
+                </div>
+
+
+                <button
+                    id="backToFoodButton"
+                    class="suggestion-button"
+                    style="margin-top: 20px;"
+                >
+                    ← Back to recommendation
+                </button>
+
+
             </div>
+
 
         </div>
 
+
     </div>
+
 
 </main>
 
@@ -561,9 +831,15 @@
 
 <footer>
 
-    <div class="brand">
 
-        <div class="brand-icon">
+    <div
+        class="brand"
+    >
+
+
+        <div
+            class="brand-icon"
+        >
             M
         </div>
 
@@ -572,10 +848,13 @@
             Ming AI Food
         </span>
 
+
     </div>
 
 
-    <p data-i18n="footerDescription">
+    <p
+        data-i18n="footerDescription"
+    >
         Discover something delicious.
     </p>
 
@@ -584,13 +863,16 @@
         © 2026 Ming AI Automations
     </span>
 
+
 </footer>
 
 
 <!-- JAVASCRIPT -->
 
-<script src="script.js"></script>
-```
+<script
+    src="script.js"
+></script>
+
 
 </body>
 
