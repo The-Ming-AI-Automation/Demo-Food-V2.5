@@ -7,47 +7,66 @@ document.addEventListener("DOMContentLoaded", function () {
        DARK MODE
     ========================= */
 
-    const themeToggle = document.getElementById("themeToggle");
+    const themeToggle =
+        document.getElementById("themeToggle");
+
 
     if (themeToggle) {
 
-        const savedTheme = localStorage.getItem("theme");
+        const savedTheme =
+            localStorage.getItem("theme");
+
 
         if (savedTheme === "dark") {
+
             document.body.classList.add("dark-mode");
+
             themeToggle.textContent = "☾";
+
         } else {
+
             themeToggle.textContent = "☼";
+
         }
 
-        themeToggle.addEventListener("click", function () {
 
-            document.body.classList.toggle("dark-mode");
+        themeToggle.addEventListener(
+            "click",
+            function () {
 
-            const isDarkMode =
-                document.body.classList.contains("dark-mode");
-
-            if (isDarkMode) {
-
-                themeToggle.textContent = "☾";
-
-                localStorage.setItem(
-                    "theme",
-                    "dark"
+                document.body.classList.toggle(
+                    "dark-mode"
                 );
 
-            } else {
 
-                themeToggle.textContent = "☼";
+                const isDarkMode =
+                    document.body.classList.contains(
+                        "dark-mode"
+                    );
 
-                localStorage.setItem(
-                    "theme",
-                    "light"
-                );
+
+                if (isDarkMode) {
+
+                    themeToggle.textContent = "☾";
+
+                    localStorage.setItem(
+                        "theme",
+                        "dark"
+                    );
+
+                } else {
+
+                    themeToggle.textContent = "☼";
+
+                    localStorage.setItem(
+                        "theme",
+                        "light"
+                    );
+
+                }
 
             }
-
-        });
+        );
 
     }
 
@@ -57,13 +76,22 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================= */
 
     const languageButton =
-        document.getElementById("languageButton");
+        document.getElementById(
+            "languageButton"
+        );
+
 
     const languageMenu =
-        document.getElementById("languageMenu");
+        document.getElementById(
+            "languageMenu"
+        );
 
 
-    if (languageButton && languageMenu) {
+    if (
+        languageButton &&
+        languageMenu
+    ) {
+
 
         languageButton.addEventListener(
             "click",
@@ -71,7 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 event.stopPropagation();
 
-                languageMenu.classList.toggle("active");
+                languageMenu.classList.toggle(
+                    "active"
+                );
 
             }
         );
@@ -83,35 +113,41 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        languageOptions.forEach(function (option) {
+        languageOptions.forEach(
+            function (option) {
 
-            option.addEventListener(
-                "click",
-                function (event) {
+                option.addEventListener(
+                    "click",
+                    function (event) {
 
-                    event.stopPropagation();
+                        event.stopPropagation();
 
-                    const language =
-                        option.getAttribute(
-                            "data-language"
+
+                        const language =
+                            option.getAttribute(
+                                "data-language"
+                            );
+
+
+                        languageButton.textContent =
+                            language.toUpperCase() +
+                            " ▾";
+
+
+                        languageMenu.classList.remove(
+                            "active"
                         );
 
 
-                    languageButton.textContent =
-                        language.toUpperCase() + " ▾";
+                        changeLanguage(
+                            language
+                        );
 
+                    }
+                );
 
-                    languageMenu.classList.remove(
-                        "active"
-                    );
-
-
-                    changeLanguage(language);
-
-                }
-            );
-
-        });
+            }
+        );
 
 
         document.addEventListener(
@@ -135,30 +171,29 @@ document.addEventListener("DOMContentLoaded", function () {
     function changeLanguage(language) {
 
 
-        /* NAVIGATION */
-
         const navLinks =
             document.querySelectorAll(
                 ".nav-links a"
             );
 
 
-        /* HERO */
-
         const heroEyebrow =
             document.querySelector(
                 ".hero .eyebrow"
             );
+
 
         const heroTitle =
             document.querySelector(
                 ".hero h1"
             );
 
+
         const heroDescription =
             document.querySelector(
                 ".hero-description"
             );
+
 
         const heroButton =
             document.querySelector(
@@ -166,17 +201,17 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /* TRENDING */
-
         const trendingLabel =
             document.querySelector(
                 "#trending .section-label"
             );
 
+
         const trendingTitle =
             document.querySelector(
                 "#trending h2"
             );
+
 
         const trendingLink =
             document.querySelector(
@@ -184,20 +219,17 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /* FOOD CARDS */
-
         const foodCards =
             document.querySelectorAll(
                 ".food-card"
             );
 
 
-        /* HOW IT WORKS */
-
         const howLabel =
             document.querySelector(
                 "#how-it-works .section-label"
             );
+
 
         const howTitle =
             document.querySelector(
@@ -205,17 +237,17 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /* DEMO SECTION */
-
         const demoLabel =
             document.querySelector(
                 "#demo .section-label"
             );
 
+
         const demoTitle =
             document.querySelector(
                 "#demo h2"
             );
+
 
         const demoButton =
             document.querySelector(
@@ -223,55 +255,59 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /* MODAL */
-
         const modalLabel =
             document.querySelector(
                 ".food-modal-header .section-label"
             );
+
 
         const modalTitle =
             document.querySelector(
                 ".food-modal-header h2"
             );
 
+
         const modalDescription =
             document.querySelector(
                 ".food-modal-header > p:last-child"
             );
+
 
         const suggestionButtons =
             document.querySelectorAll(
                 ".suggestion-button"
             );
 
+
         const foodInput =
             document.getElementById(
                 "foodInput"
             );
+
 
         const findFoodButton =
             document.getElementById(
                 "findFoodButton"
             );
 
+
         const loadingText =
             document.querySelector(
                 ".food-loading p"
             );
+
 
         const resultLabel =
             document.querySelector(
                 ".result-label"
             );
 
+
         const nearbyButton =
             document.querySelector(
                 ".nearby-food-button"
             );
 
-
-        /* FOOTER */
 
         const footerText =
             document.querySelector(
@@ -283,14 +319,18 @@ document.addEventListener("DOMContentLoaded", function () {
            ENGLISH
         ========================= */
 
-        if (language === "en") {
+        if (
+            language === "en"
+        ) {
 
 
             navLinks[0].textContent =
                 "Discover";
 
+
             navLinks[1].textContent =
                 "Trending";
+
 
             navLinks[2].textContent =
                 "How it works";
@@ -299,11 +339,14 @@ document.addEventListener("DOMContentLoaded", function () {
             heroEyebrow.textContent =
                 "AI-POWERED FOOD DISCOVERY";
 
+
             heroTitle.innerHTML =
                 "Discover food<br><span>you'll love.</span>";
 
+
             heroDescription.textContent =
                 "Find your next favourite meal with a little help from AI.";
+
 
             heroButton.textContent =
                 "Start discovering ↗";
@@ -312,34 +355,54 @@ document.addEventListener("DOMContentLoaded", function () {
             trendingLabel.textContent =
                 "TRENDING NOW";
 
+
             trendingTitle.textContent =
                 "What people are craving";
+
 
             trendingLink.textContent =
                 "See all →";
 
 
-            foodCards[0].querySelector("span").textContent =
+            foodCards[0].querySelector(
+                "span"
+            ).textContent =
                 "Japanese";
 
-            foodCards[0].querySelector("h3").textContent =
+
+            foodCards[0].querySelector(
+                "h3"
+            ).textContent =
                 "Rich Tonkotsu Ramen";
 
-            foodCards[1].querySelector("span").textContent =
+
+            foodCards[1].querySelector(
+                "span"
+            ).textContent =
                 "Japanese";
 
-            foodCards[1].querySelector("h3").textContent =
+
+            foodCards[1].querySelector(
+                "h3"
+            ).textContent =
                 "Fresh Sushi";
 
-            foodCards[2].querySelector("span").textContent =
+
+            foodCards[2].querySelector(
+                "span"
+            ).textContent =
                 "Japanese";
 
-            foodCards[2].querySelector("h3").textContent =
+
+            foodCards[2].querySelector(
+                "h3"
+            ).textContent =
                 "Matcha";
 
 
             howLabel.textContent =
                 "HOW IT WORKS";
+
 
             howTitle.innerHTML =
                 "Your next favourite meal<br>is closer than you think.";
@@ -348,8 +411,10 @@ document.addEventListener("DOMContentLoaded", function () {
             demoLabel.textContent =
                 "READY TO EXPLORE?";
 
+
             demoTitle.innerHTML =
                 "Let AI help you<br>find something delicious.";
+
 
             demoButton.textContent =
                 "Try the demo ↗";
@@ -358,8 +423,10 @@ document.addEventListener("DOMContentLoaded", function () {
             modalLabel.textContent =
                 "MING AI FOOD";
 
+
             modalTitle.innerHTML =
                 "What are you<br>craving today?";
+
 
             modalDescription.textContent =
                 "Tell Ming AI what you're in the mood for. There are no wrong answers.";
@@ -368,11 +435,14 @@ document.addEventListener("DOMContentLoaded", function () {
             suggestionButtons[0].textContent =
                 "🍜 Something warm";
 
+
             suggestionButtons[1].textContent =
                 "🌶️ Something spicy";
 
+
             suggestionButtons[2].textContent =
                 "🍔 Something indulgent";
+
 
             suggestionButtons[3].textContent =
                 "🥗 Something healthy";
@@ -408,14 +478,18 @@ document.addEventListener("DOMContentLoaded", function () {
            CHINESE
         ========================= */
 
-        if (language === "zh") {
+        if (
+            language === "zh"
+        ) {
 
 
             navLinks[0].textContent =
                 "探索";
 
+
             navLinks[1].textContent =
                 "热门美食";
+
 
             navLinks[2].textContent =
                 "使用方式";
@@ -424,11 +498,14 @@ document.addEventListener("DOMContentLoaded", function () {
             heroEyebrow.textContent =
                 "AI 驱动的美食探索";
 
+
             heroTitle.innerHTML =
                 "发现美食<br><span>找到你的最爱。</span>";
 
+
             heroDescription.textContent =
                 "让 AI 帮助你找到下一道最喜欢的美食。";
+
 
             heroButton.textContent =
                 "开始探索 ↗";
@@ -437,34 +514,54 @@ document.addEventListener("DOMContentLoaded", function () {
             trendingLabel.textContent =
                 "现在热门";
 
+
             trendingTitle.textContent =
                 "大家最近想吃什么";
+
 
             trendingLink.textContent =
                 "查看全部 →";
 
 
-            foodCards[0].querySelector("span").textContent =
+            foodCards[0].querySelector(
+                "span"
+            ).textContent =
                 "日本料理";
 
-            foodCards[0].querySelector("h3").textContent =
+
+            foodCards[0].querySelector(
+                "h3"
+            ).textContent =
                 "浓郁豚骨拉面";
 
-            foodCards[1].querySelector("span").textContent =
+
+            foodCards[1].querySelector(
+                "span"
+            ).textContent =
                 "日本料理";
 
-            foodCards[1].querySelector("h3").textContent =
+
+            foodCards[1].querySelector(
+                "h3"
+            ).textContent =
                 "新鲜寿司";
 
-            foodCards[2].querySelector("span").textContent =
+
+            foodCards[2].querySelector(
+                "span"
+            ).textContent =
                 "日本料理";
 
-            foodCards[2].querySelector("h3").textContent =
+
+            foodCards[2].querySelector(
+                "h3"
+            ).textContent =
                 "抹茶";
 
 
             howLabel.textContent =
                 "使用方式";
+
 
             howTitle.innerHTML =
                 "你的下一道最爱美食<br>比你想象的更近。";
@@ -473,8 +570,10 @@ document.addEventListener("DOMContentLoaded", function () {
             demoLabel.textContent =
                 "准备好探索了吗？";
 
+
             demoTitle.innerHTML =
                 "让 AI 帮助你<br>找到美味的选择。";
+
 
             demoButton.textContent =
                 "试用演示 ↗";
@@ -483,8 +582,10 @@ document.addEventListener("DOMContentLoaded", function () {
             modalLabel.textContent =
                 "MING AI 美食";
 
+
             modalTitle.innerHTML =
                 "今天想吃<br>什么？";
+
 
             modalDescription.textContent =
                 "告诉 Ming AI 你现在想吃什么。没有错误的答案。";
@@ -493,11 +594,14 @@ document.addEventListener("DOMContentLoaded", function () {
             suggestionButtons[0].textContent =
                 "🍜 温暖的食物";
 
+
             suggestionButtons[1].textContent =
                 "🌶️ 辣的食物";
 
+
             suggestionButtons[2].textContent =
                 "🍔 丰盛的食物";
+
 
             suggestionButtons[3].textContent =
                 "🥗 健康的食物";
@@ -533,14 +637,18 @@ document.addEventListener("DOMContentLoaded", function () {
            MALAY
         ========================= */
 
-        if (language === "ms") {
+        if (
+            language === "ms"
+        ) {
 
 
             navLinks[0].textContent =
                 "Terokai";
 
+
             navLinks[1].textContent =
                 "Trending";
+
 
             navLinks[2].textContent =
                 "Cara ia berfungsi";
@@ -549,11 +657,14 @@ document.addEventListener("DOMContentLoaded", function () {
             heroEyebrow.textContent =
                 "PENEMUAN MAKANAN BERKUASA AI";
 
+
             heroTitle.innerHTML =
                 "Temui makanan<br><span>yang anda akan suka.</span>";
 
+
             heroDescription.textContent =
                 "Cari hidangan kegemaran anda yang seterusnya dengan bantuan AI.";
+
 
             heroButton.textContent =
                 "Mula meneroka ↗";
@@ -562,34 +673,54 @@ document.addEventListener("DOMContentLoaded", function () {
             trendingLabel.textContent =
                 "SEDANG TRENDING";
 
+
             trendingTitle.textContent =
                 "Apa yang orang sedang teringin";
+
 
             trendingLink.textContent =
                 "Lihat semua →";
 
 
-            foodCards[0].querySelector("span").textContent =
+            foodCards[0].querySelector(
+                "span"
+            ).textContent =
                 "Jepun";
 
-            foodCards[0].querySelector("h3").textContent =
+
+            foodCards[0].querySelector(
+                "h3"
+            ).textContent =
                 "Ramen Tonkotsu Kaya";
 
-            foodCards[1].querySelector("span").textContent =
+
+            foodCards[1].querySelector(
+                "span"
+            ).textContent =
                 "Jepun";
 
-            foodCards[1].querySelector("h3").textContent =
+
+            foodCards[1].querySelector(
+                "h3"
+            ).textContent =
                 "Sushi Segar";
 
-            foodCards[2].querySelector("span").textContent =
+
+            foodCards[2].querySelector(
+                "span"
+            ).textContent =
                 "Jepun";
 
-            foodCards[2].querySelector("h3").textContent =
+
+            foodCards[2].querySelector(
+                "h3"
+            ).textContent =
                 "Matcha";
 
 
             howLabel.textContent =
                 "CARA IA BERFUNGSI";
+
 
             howTitle.innerHTML =
                 "Hidangan kegemaran anda yang seterusnya<br>lebih dekat daripada yang anda sangka.";
@@ -598,8 +729,10 @@ document.addEventListener("DOMContentLoaded", function () {
             demoLabel.textContent =
                 "SEDIA UNTUK MENEROKA?";
 
+
             demoTitle.innerHTML =
                 "Biarkan AI membantu anda<br>mencari sesuatu yang lazat.";
+
 
             demoButton.textContent =
                 "Cuba demo ↗";
@@ -608,8 +741,10 @@ document.addEventListener("DOMContentLoaded", function () {
             modalLabel.textContent =
                 "MING AI FOOD";
 
+
             modalTitle.innerHTML =
                 "Apa yang anda<br>teringin hari ini?";
+
 
             modalDescription.textContent =
                 "Beritahu Ming AI apa yang anda ingin makan. Tiada jawapan yang salah.";
@@ -618,11 +753,14 @@ document.addEventListener("DOMContentLoaded", function () {
             suggestionButtons[0].textContent =
                 "🍜 Sesuatu yang panas";
 
+
             suggestionButtons[1].textContent =
                 "🌶️ Sesuatu yang pedas";
 
+
             suggestionButtons[2].textContent =
                 "🍔 Sesuatu yang mengenyangkan";
+
 
             suggestionButtons[3].textContent =
                 "🥗 Sesuatu yang sihat";
@@ -665,10 +803,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "openFoodDemo"
         );
 
+
     const closeFoodDemo =
         document.getElementById(
             "closeFoodDemo"
         );
+
 
     const foodModal =
         document.getElementById(
@@ -680,6 +820,7 @@ document.addEventListener("DOMContentLoaded", function () {
         openFoodDemo &&
         foodModal
     ) {
+
 
         openFoodDemo.addEventListener(
             "click",
@@ -699,6 +840,7 @@ document.addEventListener("DOMContentLoaded", function () {
         closeFoodDemo &&
         foodModal
     ) {
+
 
         closeFoodDemo.addEventListener(
             "click",
@@ -724,6 +866,7 @@ document.addEventListener("DOMContentLoaded", function () {
         modalOverlay &&
         foodModal
     ) {
+
 
         modalOverlay.addEventListener(
             "click",
@@ -758,12 +901,16 @@ document.addEventListener("DOMContentLoaded", function () {
     suggestionButtons.forEach(
         function (button) {
 
+
             button.addEventListener(
                 "click",
                 function () {
 
+
                     if (!foodInput) {
+
                         return;
+
                     }
 
 
@@ -796,20 +943,24 @@ document.addEventListener("DOMContentLoaded", function () {
             "findFoodButton"
         );
 
+
     const foodLoading =
         document.getElementById(
             "foodLoading"
         );
+
 
     const foodResult =
         document.getElementById(
             "foodResult"
         );
 
+
     const resultTitle =
         document.getElementById(
             "resultTitle"
         );
+
 
     const resultDescription =
         document.getElementById(
@@ -823,6 +974,7 @@ document.addEventListener("DOMContentLoaded", function () {
         foodLoading &&
         foodResult
     ) {
+
 
         findFoodButton.addEventListener(
             "click",
@@ -891,6 +1043,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     },
                     1800
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       GOOGLE MAPS V2.5
+    ========================= */
+
+
+    const nearbyFoodButton =
+        document.querySelector(
+            ".nearby-food-button"
+        );
+
+
+    const mapModal =
+        document.getElementById(
+            "mapModal"
+        );
+
+
+    const closeMap =
+        document.getElementById(
+            "closeMap"
+        );
+
+
+    if (
+        nearbyFoodButton &&
+        mapModal
+    ) {
+
+
+        nearbyFoodButton.addEventListener(
+            "click",
+            function () {
+
+                mapModal.classList.add(
+                    "active"
+                );
+
+
+                /*
+                Google Maps will be
+                initialized here.
+                */
+
+                if (
+                    typeof initMap ===
+                    "function"
+                ) {
+
+                    initMap();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (
+        closeMap &&
+        mapModal
+    ) {
+
+
+        closeMap.addEventListener(
+            "click",
+            function () {
+
+                mapModal.classList.remove(
+                    "active"
                 );
 
             }
