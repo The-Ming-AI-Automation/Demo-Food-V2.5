@@ -1,1256 +1,1351 @@
 /* =========================================================
-   MING AI FOOD
-   SUPABASE + SMART SEARCH + RESTAURANT MAP
+MING AI FOOD
+REAL SUPABASE DATABASE CONNECTION
 ========================================================= */
 
-
-/* =========================================================
-   SUPABASE CONFIGURATION
-========================================================= */
+/* =========================
+SUPABASE CONFIGURATION
+========================= */
 
 const SUPABASE_URL =
-    "https://njbfenzwvocqgnseivje.supabase.co";
+"https://njbfenzwvocqgnseivje.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_1wisnEH7RnLI7iMwIke45g_9l7LoUSM";
+"sb_publishable_1wisnEH7RnLI7iMwIke45g_9l7LoUSM";
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-
-/* =========================================================
-   MING FOOD APP
-========================================================= */
+/* =========================
+MING FOOD APP
+========================= */
 
 const MingFoodApp = {
 
-    currentLanguage: "zh",
+```
+currentLanguage: "zh",
 
-    currentTheme: "light",
+currentTheme: "light",
 
-    restaurants: [],
+restaurants: [],
 
-    allRestaurants: [],
+lastSearch: "",
 
-    lastSearch: "",
 
-    map: null,
+/* =========================
+TRANSLATIONS
+========================= */
 
-    mapMarkers: [],
+translations: {
 
+    zh: {
 
-    /* =====================================================
-       TRANSLATIONS
-    ===================================================== */
+        navDiscover: "发现美食",
 
-    translations: {
+        navHow: "如何运作",
 
-        zh: {
+        navTrust: "真实评价",
 
-            navDiscover: "发现美食",
+        eyebrow: "马来西亚本地美食智能",
 
-            navHow: "如何运作",
+        heroLineOne: "Discover",
 
-            navTrust: "真实评价",
+        heroLineTwo: "food you love.",
 
-            eyebrow: "马来西亚本地美食智能",
+        heroDescription:
+            "不只是评分。Ming 帮你了解一家餐厅真正值不值得去。",
 
-            heroLineOne: "Discover",
+        heroButton: "开始探索",
 
-            heroLineTwo: "food you love.",
+        heroSecondary: "了解 Ming",
 
-            heroDescription:
-                "不只是评分。Ming 帮你了解一家餐厅真正值不值得去。",
+        heroCardText:
+            "不只是好吃。真正值得去。",
 
-            heroButton: "开始探索",
+        featuredTag:
+            "MING'S PICK",
 
-            heroSecondary: "了解 Ming",
+        featuredTitle:
+            "今天，吃点好的。",
 
-            heroCardText:
-                "不只是好吃。真正值得去。",
+        featuredDescription:
+            "根据真实评价、你的喜好和当地情况。",
 
-            featuredTag:
-                "MING'S PICK",
+        assistantEyebrow:
+            "ASK MING",
 
-            featuredTitle:
-                "今天，吃点好的。",
+        assistantTitle:
+            "今天想吃什么？",
 
-            featuredDescription:
-                "根据真实评价、你的喜好和当地情况。",
+        assistantDescription:
+            "告诉 Ming 你真正想要的。我们不只是给你一个评分。",
 
-            assistantEyebrow:
-                "ASK MING",
+        inputHint:
+            "Ming 会分析你的情况",
 
-            assistantTitle:
-                "今天想吃什么？",
+        askMing:
+            "问 Ming",
 
-            assistantDescription:
-                "告诉 Ming 你真正想要的。我们不只是给你一个评分。",
+        quickLabel:
+            "或者告诉 Ming：",
 
-            inputHint:
-                "Ming 会分析你的情况",
+        chipSpicy:
+            "辣一点",
 
-            askMing:
-                "问 Ming",
+        chipComfort:
+            "热乎乎的",
 
-            quickLabel:
-                "或者告诉 Ming：",
+        chipBudget:
+            "便宜一点",
 
-            chipSpicy:
-                "辣一点",
+        chipFamily:
+            "适合一家人",
 
-            chipComfort:
-                "热乎乎的",
+        chipParking:
+            "停车方便",
 
-            chipBudget:
-                "便宜一点",
+        emptyResultsTitle:
+            "Your next meal starts here.",
 
-            chipFamily:
-                "适合一家人",
+        emptyResultsText:
+            "告诉 Ming 你想吃什么，我们从那里开始调查。",
 
-            chipParking:
-                "停车方便",
+        resultsEyebrow:
+            "MING'S RECOMMENDATION",
 
-            emptyResultsTitle:
-                "Your next meal starts here.",
+        resultsTitle:
+            "我觉得你应该看看这些。",
 
-            emptyResultsText:
-                "告诉 Ming 你想吃什么，我们从那里开始调查。",
+        resultSummary:
+            "不是简单按照评分排序，而是根据你的情况。",
 
-            resultsEyebrow:
-                "MING'S RECOMMENDATION",
+        resetButton:
+            "重新开始",
 
-            resultsTitle:
-                "我觉得你应该看看这些。",
+        trustEyebrow:
+            "BEYOND THE RATING",
 
-            resultSummary:
-                "不是简单按照评分排序，而是根据你的情况。",
+        trustTitle:
+            "不只是看评分。",
 
-            resetButton:
-                "重新开始",
+        trustDescription:
+            "Ming 帮你了解一家餐厅真正的样子。",
 
-            trustEyebrow:
-                "BEYOND THE RATING",
+        trustCardOneTitle:
+            "Review Consensus",
 
-            trustTitle:
-                "不只是看评分。",
+        trustCardOneText:
+            "AI 阅读多个评价，找出大家真正反复提到的优点和问题。",
 
-            trustDescription:
-                "Ming 帮你了解一家餐厅真正的样子。",
+        trustCardTwoTitle:
+            "Creator Coverage",
 
-            trustCardOneTitle:
-                "Review Consensus",
+        trustCardTwoText:
+            "看看哪些创作者去过，以及是否公开了付费或赠送餐食。",
 
-            trustCardOneText:
-                "AI 阅读多个评价，找出大家真正反复提到的优点和问题。",
+        trustCardThreeTitle:
+            "Local Intelligence",
 
-            trustCardTwoTitle:
-                "Creator Coverage",
+        trustCardThreeText:
+            "停车、拥挤时间、最后点餐时间，以及真正实用的本地建议。",
 
-            trustCardTwoText:
-                "看看哪些创作者去过，以及是否公开了付费或赠送餐食。",
+        howEyebrow:
+            "HOW MING THINKS",
 
-            trustCardThreeTitle:
-                "Local Intelligence",
+        howTitle:
+            "From craving to confidence.",
 
-            trustCardThreeText:
-                "停车、拥挤时间、最后点餐时间，以及真正实用的本地建议。",
+        stepOneTitle:
+            "Tell Ming",
 
-            howEyebrow:
-                "HOW MING THINKS",
+        stepOneText:
+            "告诉 Ming 你的心情、预算、地点和你真正想吃的东西。",
 
-            howTitle:
-                "From craving to confidence.",
+        stepTwoTitle:
+            "Ming investigates",
 
-            stepOneTitle:
-                "Tell Ming",
+        stepTwoText:
+            "分析评价、常见优缺点、创作者内容和本地实用信息。",
 
-            stepOneText:
-                "告诉 Ming 你的心情、预算、地点和你真正想吃的东西。",
+        stepThreeTitle:
+            "You decide",
 
-            stepTwoTitle:
-                "Ming investigates",
+        stepThreeText:
+            "不再盲目跟风。你知道为什么值得去，或者为什么应该避开。",
 
-            stepTwoText:
-                "分析评价、常见优缺点、创作者内容和本地实用信息。",
+        footerText:
+            "Don't just read the rating. Ask Ming.",
 
-            stepThreeTitle:
-                "You decide",
-
-            stepThreeText:
-                "不再盲目跟风。你知道为什么值得去，或者为什么应该避开。",
-
-            footerText:
-                "Don't just read the rating. Ask Ming.",
-
-            footerDisclaimer:
-                "Built for better food decisions in Malaysia."
-
-        },
-
-
-        en: {
-
-            navDiscover:
-                "Discover",
-
-            navHow:
-                "How it works",
-
-            navTrust:
-                "Real opinions",
-
-            eyebrow:
-                "LOCAL FOOD INTELLIGENCE FOR MALAYSIA",
-
-            heroLineOne:
-                "Discover",
-
-            heroLineTwo:
-                "food you love.",
-
-            heroDescription:
-                "Not just ratings. Ming helps you understand whether a restaurant is actually worth going to.",
-
-            heroButton:
-                "Start exploring",
-
-            heroSecondary:
-                "How Ming works",
-
-            heroCardText:
-                "Not just good food. Actually worth going.",
-
-            featuredTag:
-                "MING'S PICK",
-
-            featuredTitle:
-                "Eat something good today.",
-
-            featuredDescription:
-                "Based on real opinions, your preferences and local context.",
-
-            assistantEyebrow:
-                "ASK MING",
-
-            assistantTitle:
-                "What do you feel like eating?",
-
-            assistantDescription:
-                "Tell Ming what you actually want. We do more than show you a rating.",
-
-            inputHint:
-                "Ming will understand your situation",
-
-            askMing:
-                "Ask Ming",
-
-            quickLabel:
-                "Or tell Ming:",
-
-            chipSpicy:
-                "Something spicy",
-
-            chipComfort:
-                "Something comforting",
-
-            chipBudget:
-                "Keep it affordable",
-
-            chipFamily:
-                "Family-friendly",
-
-            chipParking:
-                "Easy parking",
-
-            emptyResultsTitle:
-                "Your next meal starts here.",
-
-            emptyResultsText:
-                "Tell Ming what you feel like eating and we'll investigate from there.",
-
-            resultsEyebrow:
-                "MING'S RECOMMENDATION",
-
-            resultsTitle:
-                "I think you should look at these.",
-
-            resultSummary:
-                "Not simply ranked by rating — matched to your situation.",
-
-            resetButton:
-                "Start over",
-
-            trustEyebrow:
-                "BEYOND THE RATING",
-
-            trustTitle:
-                "More than a rating.",
-
-            trustDescription:
-                "Ming helps you understand what a restaurant is actually like.",
-
-            trustCardOneTitle:
-                "Review Consensus",
-
-            trustCardOneText:
-                "Ming analyses repeated patterns across reviews to find what people consistently love and complain about.",
-
-            trustCardTwoTitle:
-                "Creator Coverage",
-
-            trustCardTwoText:
-                "See which creators have visited and whether paid or complimentary visits were disclosed.",
-
-            trustCardThreeTitle:
-                "Local Intelligence",
-
-            trustCardThreeText:
-                "Parking, peak times, last order times and practical local advice.",
-
-            howEyebrow:
-                "HOW MING THINKS",
-
-            howTitle:
-                "From craving to confidence.",
-
-            stepOneTitle:
-                "Tell Ming",
-
-            stepOneText:
-                "Tell Ming your mood, budget, location and what you actually feel like eating.",
-
-            stepTwoTitle:
-                "Ming investigates",
-
-            stepTwoText:
-                "Ming analyses reviews, repeated pros and cons, creator coverage and local information.",
-
-            stepThreeTitle:
-                "You decide",
-
-            stepThreeText:
-                "Stop blindly following hype. Understand why a place is worth visiting — or why you should skip it.",
-
-            footerText:
-                "Don't just read the rating. Ask Ming.",
-
-            footerDisclaimer:
-                "Built for better food decisions in Malaysia."
-
-        },
-
-
-        bm: {
-
-            navDiscover:
-                "Terokai",
-
-            navHow:
-                "Cara ia berfungsi",
-
-            navTrust:
-                "Pendapat sebenar",
-
-            eyebrow:
-                "KECERDASAN MAKANAN TEMPATAN MALAYSIA",
-
-            heroLineOne:
-                "Discover",
-
-            heroLineTwo:
-                "food you love.",
-
-            heroDescription:
-                "Bukan sekadar rating. Ming membantu anda memahami sama ada restoran itu benar-benar berbaloi untuk dikunjungi.",
-
-            heroButton:
-                "Mula meneroka",
-
-            heroSecondary:
-                "Cara Ming berfungsi",
-
-            heroCardText:
-                "Bukan sekadar sedap. Betul-betul berbaloi.",
-
-            featuredTag:
-                "MING'S PICK",
-
-            featuredTitle:
-                "Makan sesuatu yang sedap hari ini.",
-
-            featuredDescription:
-                "Berdasarkan pendapat sebenar, pilihan anda dan konteks tempatan.",
-
-            assistantEyebrow:
-                "ASK MING",
-
-            assistantTitle:
-                "Anda rasa nak makan apa?",
-
-            assistantDescription:
-                "Beritahu Ming apa yang anda mahukan. Kami buat lebih daripada sekadar menunjukkan rating.",
-
-            inputHint:
-                "Ming akan memahami situasi anda",
-
-            askMing:
-                "Tanya Ming",
-
-            quickLabel:
-                "Atau beritahu Ming:",
-
-            chipSpicy:
-                "Nak pedas",
-
-            chipComfort:
-                "Makanan panas",
-
-            chipBudget:
-                "Bajet",
-
-            chipFamily:
-                "Sesuai untuk keluarga",
-
-            chipParking:
-                "Parking mudah",
-
-            emptyResultsTitle:
-                "Your next meal starts here.",
-
-            emptyResultsText:
-                "Beritahu Ming apa yang anda mahu makan dan kami akan menyiasat dari situ.",
-
-            resultsEyebrow:
-                "CADANGAN MING",
-
-            resultsTitle:
-                "Saya rasa anda patut tengok yang ini.",
-
-            resultSummary:
-                "Bukan sekadar berdasarkan rating — disesuaikan dengan situasi anda.",
-
-            resetButton:
-                "Mula semula",
-
-            trustEyebrow:
-                "LEBIH DARIPADA RATING",
-
-            trustTitle:
-                "Bukan sekadar rating.",
-
-            trustDescription:
-                "Ming membantu anda memahami keadaan sebenar sesebuah restoran.",
-
-            trustCardOneTitle:
-                "Review Consensus",
-
-            trustCardOneText:
-                "Ming menganalisis corak berulang dalam review untuk mengetahui perkara yang selalu dipuji dan dikritik.",
-
-            trustCardTwoTitle:
-                "Creator Coverage",
-
-            trustCardTwoText:
-                "Lihat pencipta kandungan yang pernah datang dan sama ada lawatan berbayar atau makanan percuma didedahkan.",
-
-            trustCardThreeTitle:
-                "Local Intelligence",
-
-            trustCardThreeText:
-                "Parking, waktu sibuk, waktu pesanan terakhir dan nasihat tempatan yang praktikal.",
-
-            howEyebrow:
-                "CARA MING BERFIKIR",
-
-            howTitle:
-                "From craving to confidence.",
-
-            stepOneTitle:
-                "Tell Ming",
-
-            stepOneText:
-                "Beritahu Ming mood, bajet, lokasi dan apa yang anda sebenarnya mahu makan.",
-
-            stepTwoTitle:
-                "Ming investigates",
-
-            stepTwoText:
-                "Ming menganalisis review, kelebihan dan masalah berulang, kandungan pencipta serta maklumat tempatan.",
-
-            stepThreeTitle:
-                "You decide",
-
-            stepThreeText:
-                "Jangan ikut hype secara membuta tuli. Fahami kenapa sesuatu tempat berbaloi — atau patut dielakkan.",
-
-            footerText:
-                "Don't just read the rating. Ask Ming.",
-
-            footerDisclaimer:
-                "Built for better food decisions in Malaysia."
-
-        }
+        footerDisclaimer:
+            "Built for better food decisions in Malaysia."
 
     },
 
 
-    /* =====================================================
-       INITIALIZATION
-    ===================================================== */
+    en: {
 
-    async init() {
+        navDiscover:
+            "Discover",
 
-        this.bindEvents();
+        navHow:
+            "How it works",
 
-        this.loadTheme();
+        navTrust:
+            "Real opinions",
 
-        this.applyLanguage();
+        eyebrow:
+            "LOCAL FOOD INTELLIGENCE FOR MALAYSIA",
 
-        this.initializeMap();
+        heroLineOne:
+            "Discover",
 
-        console.log(
-            "Ming AI Food loaded."
-        );
+        heroLineTwo:
+            "food you love.",
 
-        await this.testDatabaseConnection();
+        heroDescription:
+            "Not just ratings. Ming helps you understand whether a restaurant is actually worth going to.",
+
+        heroButton:
+            "Start exploring",
+
+        heroSecondary:
+            "How Ming works",
+
+        heroCardText:
+            "Not just good food. Actually worth going.",
+
+        featuredTag:
+            "MING'S PICK",
+
+        featuredTitle:
+            "Eat something good today.",
+
+        featuredDescription:
+            "Based on real opinions, your preferences and local context.",
+
+        assistantEyebrow:
+            "ASK MING",
+
+        assistantTitle:
+            "What do you feel like eating?",
+
+        assistantDescription:
+            "Tell Ming what you actually want. We do more than show you a rating.",
+
+        inputHint:
+            "Ming will understand your situation",
+
+        askMing:
+            "Ask Ming",
+
+        quickLabel:
+            "Or tell Ming:",
+
+        chipSpicy:
+            "Something spicy",
+
+        chipComfort:
+            "Something comforting",
+
+        chipBudget:
+            "Keep it affordable",
+
+        chipFamily:
+            "Family-friendly",
+
+        chipParking:
+            "Easy parking",
+
+        emptyResultsTitle:
+            "Your next meal starts here.",
+
+        emptyResultsText:
+            "Tell Ming what you feel like eating and we'll investigate from there.",
+
+        resultsEyebrow:
+            "MING'S RECOMMENDATION",
+
+        resultsTitle:
+            "I think you should look at these.",
+
+        resultSummary:
+            "Not simply ranked by rating — matched to your situation.",
+
+        resetButton:
+            "Start over",
+
+        trustEyebrow:
+            "BEYOND THE RATING",
+
+        trustTitle:
+            "More than a rating.",
+
+        trustDescription:
+            "Ming helps you understand what a restaurant is actually like.",
+
+        trustCardOneTitle:
+            "Review Consensus",
+
+        trustCardOneText:
+            "Ming analyses repeated patterns across reviews to find what people consistently love and complain about.",
+
+        trustCardTwoTitle:
+            "Creator Coverage",
+
+        trustCardTwoText:
+            "See which creators have visited and whether paid or complimentary visits were disclosed.",
+
+        trustCardThreeTitle:
+            "Local Intelligence",
+
+        trustCardThreeText:
+            "Parking, peak times, last order times and practical local advice.",
+
+        howEyebrow:
+            "HOW MING THINKS",
+
+        howTitle:
+            "From craving to confidence.",
+
+        stepOneTitle:
+            "Tell Ming",
+
+        stepOneText:
+            "Tell Ming your mood, budget, location and what you actually feel like eating.",
+
+        stepTwoTitle:
+            "Ming investigates",
+
+        stepTwoText:
+            "Ming analyses reviews, repeated pros and cons, creator coverage and local information.",
+
+        stepThreeTitle:
+            "You decide",
+
+        stepThreeText:
+            "Stop blindly following hype. Understand why a place is worth visiting — or why you should skip it.",
+
+        footerText:
+            "Don't just read the rating. Ask Ming.",
+
+        footerDisclaimer:
+            "Built for better food decisions in Malaysia."
 
     },
 
 
-    /* =====================================================
-       DATABASE TEST
-    ===================================================== */
+    bm: {
 
-    async testDatabaseConnection() {
+        navDiscover:
+            "Terokai",
 
-        try {
+        navHow:
+            "Cara ia berfungsi",
 
-            const {
+        navTrust:
+            "Pendapat sebenar",
 
-                data,
+        eyebrow:
+            "KECERDASAN MAKANAN TEMPATAN MALAYSIA",
 
-                error
+        heroLineOne:
+            "Discover",
 
-            } =
-                await supabaseClient
-                    .from("restaurants")
-                    .select("*")
-                    .eq(
-                        "status",
-                        "approved"
-                    )
-                    .limit(100);
+        heroLineTwo:
+            "food you love.",
+
+        heroDescription:
+            "Bukan sekadar rating. Ming membantu anda memahami sama ada restoran itu benar-benar berbaloi untuk dikunjungi.",
+
+        heroButton:
+            "Mula meneroka",
+
+        heroSecondary:
+            "Cara Ming berfungsi",
+
+        heroCardText:
+            "Bukan sekadar sedap. Betul-betul berbaloi.",
+
+        featuredTag:
+            "MING'S PICK",
+
+        featuredTitle:
+            "Makan sesuatu yang sedap hari ini.",
+
+        featuredDescription:
+            "Berdasarkan pendapat sebenar, pilihan anda dan konteks tempatan.",
+
+        assistantEyebrow:
+            "ASK MING",
+
+        assistantTitle:
+            "Anda rasa nak makan apa?",
+
+        assistantDescription:
+            "Beritahu Ming apa yang anda mahukan. Kami buat lebih daripada sekadar menunjukkan rating.",
+
+        inputHint:
+            "Ming akan memahami situasi anda",
+
+        askMing:
+            "Tanya Ming",
+
+        quickLabel:
+            "Atau beritahu Ming:",
+
+        chipSpicy:
+            "Nak pedas",
+
+        chipComfort:
+            "Makanan panas",
+
+        chipBudget:
+            "Bajet",
+
+        chipFamily:
+            "Sesuai untuk keluarga",
+
+        chipParking:
+            "Parking mudah",
+
+        emptyResultsTitle:
+            "Your next meal starts here.",
+
+        emptyResultsText:
+            "Beritahu Ming apa yang anda mahu makan dan kami akan menyiasat dari situ.",
+
+        resultsEyebrow:
+            "CADANGAN MING",
+
+        resultsTitle:
+            "Saya rasa anda patut tengok yang ini.",
+
+        resultSummary:
+            "Bukan sekadar berdasarkan rating — disesuaikan dengan situasi anda.",
+
+        resetButton:
+            "Mula semula",
+
+        trustEyebrow:
+            "LEBIH DARIPADA RATING",
+
+        trustTitle:
+            "Bukan sekadar rating.",
+
+        trustDescription:
+            "Ming membantu anda memahami keadaan sebenar sesebuah restoran.",
+
+        trustCardOneTitle:
+            "Review Consensus",
+
+        trustCardOneText:
+            "Ming menganalisis corak berulang dalam review untuk mengetahui perkara yang selalu dipuji dan dikritik.",
+
+        trustCardTwoTitle:
+            "Creator Coverage",
+
+        trustCardTwoText:
+            "Lihat pencipta kandungan yang pernah datang dan sama ada lawatan berbayar atau makanan percuma didedahkan.",
+
+        trustCardThreeTitle:
+            "Local Intelligence",
+
+        trustCardThreeText:
+            "Parking, waktu sibuk, waktu pesanan terakhir dan nasihat tempatan yang praktikal.",
+
+        howEyebrow:
+            "CARA MING BERFIKIR",
+
+        howTitle:
+            "From craving to confidence.",
+
+        stepOneTitle:
+            "Tell Ming",
+
+        stepOneText:
+            "Beritahu Ming mood, bajet, lokasi dan apa yang anda sebenarnya mahu makan.",
+
+        stepTwoTitle:
+            "Ming investigates",
+
+        stepTwoText:
+            "Ming menganalisis review, kelebihan dan masalah berulang, kandungan pencipta serta maklumat tempatan.",
+
+        stepThreeTitle:
+            "You decide",
+
+        stepThreeText:
+            "Jangan ikut hype secara membuta tuli. Fahami kenapa sesuatu tempat berbaloi — atau patut dielakkan.",
+
+        footerText:
+            "Don't just read the rating. Ask Ming.",
+
+        footerDisclaimer:
+            "Built for better food decisions in Malaysia."
+
+    }
+
+},
 
 
-            if (error) {
+/* =========================
+INITIALIZATION
+========================= */
 
-                console.error(
-                    "Supabase connection error:",
-                    error
-                );
+async init() {
 
-                return;
+    this.bindEvents();
 
-            }
+    this.loadTheme();
 
+    this.applyLanguage();
 
-            this.allRestaurants =
-                data
-                ||
-                [];
+    console.log(
+        "Ming AI Food loaded."
+    );
 
+    await this.testDatabaseConnection();
 
-            console.log(
-                "Supabase connected successfully.",
-                this.allRestaurants
-            );
+},
 
 
-            this.updateMapMarkers(
-                this.allRestaurants
-            );
+/* =========================
+DATABASE TEST
+========================= */
 
-        }
+async testDatabaseConnection() {
 
-        catch (error) {
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("restaurants")
+                .select("*")
+                .limit(1);
+
+
+        if (error) {
 
             console.error(
-                "Unexpected Supabase error:",
+                "Supabase connection error:",
                 error
             );
 
-        }
-
-    },
-
-
-    /* =====================================================
-       MAP INITIALIZATION
-    ===================================================== */
-
-    initializeMap() {
-
-        const mapElement =
-            document.getElementById(
-                "map"
-            );
-
-
-        if (
-            !mapElement
-        ) {
-
-            console.log(
-                "Map element not found."
-            );
-
             return;
 
         }
-
-
-        if (
-            typeof L ===
-            "undefined"
-        ) {
-
-            console.warn(
-                "Leaflet is not loaded."
-            );
-
-            return;
-
-        }
-
-
-        this.map =
-            L.map(
-                "map"
-            ).setView(
-                [
-                    3.1390,
-                    101.6869
-                ],
-                11
-            );
-
-
-        L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-
-                attribution:
-                    "&copy; OpenStreetMap contributors"
-
-            }
-        ).addTo(
-            this.map
-        );
 
 
         console.log(
-            "Ming map initialized."
+            "Supabase connected successfully.",
+            data
         );
 
-    },
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unexpected Supabase error:",
+            error
+        );
+
+    }
+
+},
 
 
-    /* =====================================================
-       MAP MARKERS
-    ===================================================== */
+/* =========================
+EVENT BINDINGS
+========================= */
 
-    updateMapMarkers(
-        restaurants
-    ) {
+bindEvents() {
 
-        if (
-            !this.map
-        ) {
-
-            return;
-
-        }
+    const themeToggle =
+        document.getElementById(
+            "themeToggle"
+        );
 
 
-        this.mapMarkers.forEach(
-            marker => {
+    if (themeToggle) {
 
-                this.map.removeLayer(
-                    marker
-                );
+        themeToggle.addEventListener(
+            "click",
+            () => this.toggleTheme()
+        );
+
+    }
+
+
+    const languageToggle =
+        document.getElementById(
+            "languageToggle"
+        );
+
+
+    if (languageToggle) {
+
+        languageToggle.addEventListener(
+            "click",
+            () => this.cycleLanguage()
+        );
+
+    }
+
+
+    const askMingButton =
+        document.getElementById(
+            "askMingButton"
+        );
+
+
+    if (askMingButton) {
+
+        askMingButton.addEventListener(
+            "click",
+            () => this.askMing()
+        );
+
+    }
+
+
+    const resetButton =
+        document.getElementById(
+            "resetButton"
+        );
+
+
+    if (resetButton) {
+
+        resetButton.addEventListener(
+            "click",
+            () => this.reset()
+        );
+
+    }
+
+
+    const modalClose =
+        document.getElementById(
+            "modalClose"
+        );
+
+
+    if (modalClose) {
+
+        modalClose.addEventListener(
+            "click",
+            () => this.closeModal()
+        );
+
+    }
+
+
+    const restaurantModal =
+        document.getElementById(
+            "restaurantModal"
+        );
+
+
+    if (restaurantModal) {
+
+        restaurantModal.addEventListener(
+            "click",
+            (event) => {
+
+                if (
+                    event.target.id ===
+                    "restaurantModal"
+                ) {
+
+                    this.closeModal();
+
+                }
 
             }
         );
 
+    }
 
-        this.mapMarkers =
-            [];
 
+    document
+        .querySelectorAll(
+            ".preference-chip"
+        )
+        .forEach(
+            (chip) => {
 
-        const validRestaurants =
-            restaurants.filter(
-                restaurant => {
+                chip.addEventListener(
+                    "click",
+                    () => {
 
-                    return (
+                        chip.classList.toggle(
+                            "active"
+                        );
 
-                        restaurant.latitude !== null
 
-                        &&
+                        const preference =
+                            chip.dataset.preference;
 
-                        restaurant.longitude !== null
 
-                        &&
+                        const messages = {
 
-                        restaurant.latitude !== ""
+                            spicy:
+                                "我想吃辣一点。",
 
-                        &&
+                            comfort:
+                                "我想吃热乎乎、舒服一点的东西。",
 
-                        restaurant.longitude !== ""
+                            budget:
+                                "预算不要太高。",
 
-                        &&
+                            family:
+                                "最好适合一家人一起吃。",
 
-                        !isNaN(
-                            Number(
-                                restaurant.latitude
-                            )
-                        )
+                            parking:
+                                "停车方便一点很重要。"
 
-                        &&
+                        };
 
-                        !isNaN(
-                            Number(
-                                restaurant.longitude
-                            )
-                        )
 
-                    );
-
-                }
-            );
-
-
-        if (
-            validRestaurants.length ===
-            0
-        ) {
-
-            console.log(
-                "No restaurant coordinates found yet."
-            );
-
-            return;
-
-        }
-
-
-        const bounds =
-            [];
-
-
-        validRestaurants.forEach(
-            restaurant => {
-
-                const latitude =
-                    Number(
-                        restaurant.latitude
-                    );
-
-
-                const longitude =
-                    Number(
-                        restaurant.longitude
-                    );
-
-
-                const marker =
-                    L.marker(
-                        [
-                            latitude,
-                            longitude
-                        ]
-                    ).addTo(
-                        this.map
-                    );
-
-
-                marker.bindPopup(
-
-                    `
-
-                        <strong>
-
-                            ${restaurant.name}
-
-                        </strong>
-
-                        <br>
-
-                        ${restaurant.address}
-
-                        <br><br>
-
-                        <strong>
-
-                            Ming Score:
-
-                        </strong>
-
-                        ${restaurant.overall_score || "N/A"}
-
-                    `
-
-                );
-
-
-                this.mapMarkers.push(
-                    marker
-                );
-
-
-                bounds.push(
-                    [
-                        latitude,
-                        longitude
-                    ]
-                );
-
-            }
-        );
-
-
-        if (
-            bounds.length >
-            0
-        ) {
-
-            this.map.fitBounds(
-                bounds,
-                {
-
-                    padding:
-                        [
-                            40,
-                            40
-                        ]
-
-                }
-            );
-
-        }
-
-    },
-
-
-    /* =====================================================
-       EVENT BINDINGS
-    ===================================================== */
-
-    bindEvents() {
-
-        const themeToggle =
-            document.getElementById(
-                "themeToggle"
-            );
-
-
-        if (
-            themeToggle
-        ) {
-
-            themeToggle.addEventListener(
-                "click",
-                () =>
-                    this.toggleTheme()
-            );
-
-        }
-
-
-        const languageToggle =
-            document.getElementById(
-                "languageToggle"
-            );
-
-
-        if (
-            languageToggle
-        ) {
-
-            languageToggle.addEventListener(
-                "click",
-                () =>
-                    this.cycleLanguage()
-            );
-
-        }
-
-
-        const askMingButton =
-            document.getElementById(
-                "askMingButton"
-            );
-
-
-        if (
-            askMingButton
-        ) {
-
-            askMingButton.addEventListener(
-                "click",
-                () =>
-                    this.askMing()
-            );
-
-        }
-
-
-        const resetButton =
-            document.getElementById(
-                "resetButton"
-            );
-
-
-        if (
-            resetButton
-        ) {
-
-            resetButton.addEventListener(
-                "click",
-                () =>
-                    this.reset()
-            );
-
-        }
-
-
-        const modalClose =
-            document.getElementById(
-                "modalClose"
-            );
-
-
-        if (
-            modalClose
-        ) {
-
-            modalClose.addEventListener(
-                "click",
-                () =>
-                    this.closeModal()
-            );
-
-        }
-
-
-        const restaurantModal =
-            document.getElementById(
-                "restaurantModal"
-            );
-
-
-        if (
-            restaurantModal
-        ) {
-
-            restaurantModal.addEventListener(
-                "click",
-                event => {
-
-                    if (
-                        event.target.id ===
-                        "restaurantModal"
-                    ) {
-
-                        this.closeModal();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        document
-            .querySelectorAll(
-                ".preference-chip"
-            )
-            .forEach(
-                chip => {
-
-                    chip.addEventListener(
-                        "click",
-                        () => {
-
-                            chip.classList.toggle(
-                                "active"
+                        const input =
+                            document.getElementById(
+                                "foodInput"
                             );
 
 
-                            const preference =
-                                chip.dataset.preference;
+                        if (!input) {
 
-
-                            const messages = {
-
-                                spicy:
-                                    "我想吃辣一点。",
-
-                                comfort:
-                                    "我想吃热乎乎、舒服一点的东西。",
-
-                                budget:
-                                    "预算不要太高。",
-
-                                family:
-                                    "最好适合一家人一起吃。",
-
-                                parking:
-                                    "停车方便一点很重要。"
-
-                            };
-
-
-                            const input =
-                                document.getElementById(
-                                    "foodInput"
-                                );
-
-
-                            if (
-                                !input
-                            ) {
-
-                                return;
-
-                            }
-
-
-                            const current =
-                                input.value.trim();
-
-
-                            input.value =
-                                current
-
-                                    ?
-
-                                    `${current} ${messages[preference]}`
-
-                                    :
-
-                                    messages[preference];
+                            return;
 
                         }
+
+
+                        const current =
+                            input.value.trim();
+
+
+                        input.value =
+                            current
+                                ? `${current} ${messages[preference]}`
+                                : messages[preference];
+
+                    }
+                );
+
+            }
+        );
+
+
+    const foodInput =
+        document.getElementById(
+            "foodInput"
+        );
+
+
+    if (foodInput) {
+
+        foodInput.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    (
+                        event.metaKey ||
+                        event.ctrlKey
+                    )
+                    &&
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    this.askMing();
+
+                }
+
+            }
+        );
+
+    }
+
+},
+
+
+/* =========================
+ASK MING
+========================= */
+
+async askMing() {
+
+    const inputElement =
+        document.getElementById(
+            "foodInput"
+        );
+
+
+    if (!inputElement) {
+
+        console.error(
+            "foodInput element not found."
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        inputElement.value.trim();
+
+
+    if (!input) {
+
+        this.showInputMessage();
+
+        return;
+
+    }
+
+
+    this.lastSearch =
+        input;
+
+
+    const resultsSection =
+        document.getElementById(
+            "resultsSection"
+        );
+
+
+    const resultSummary =
+        document.getElementById(
+            "resultSummary"
+        );
+
+
+    if (resultSummary) {
+
+        resultSummary.textContent =
+            this.getResultSummary(
+                input
+            );
+
+    }
+
+
+    this.showLoading();
+
+
+    const restaurants =
+        await this.searchRestaurants(
+            input
+        );
+
+
+    this.restaurants =
+        restaurants;
+
+
+    this.renderRestaurants();
+
+
+    if (resultsSection) {
+
+        resultsSection.classList.add(
+            "has-results"
+        );
+
+
+        setTimeout(
+            () => {
+
+                resultsSection.scrollIntoView(
+                    {
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    }
+                );
+
+            },
+            100
+        );
+
+    }
+
+},
+
+
+/* =========================
+SEARCH SUPABASE
+========================= */
+
+async searchRestaurants(
+    input
+) {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("restaurants")
+                .select("*")
+                .eq(
+                    "status",
+                    "approved"
+                )
+                .limit(100);
+
+
+        if (error) {
+
+            console.error(
+                "Restaurant query failed:",
+                error
+            );
+
+            return [];
+
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            return [];
+
+        }
+
+
+        const uniqueRestaurants =
+            [];
+
+
+        const seenRestaurants =
+            new Set();
+
+
+        data.forEach(
+            restaurant => {
+
+                const uniqueKey =
+                    `${restaurant.name}-${restaurant.address}`
+                        .toLowerCase();
+
+
+                if (
+                    !seenRestaurants.has(
+                        uniqueKey
+                    )
+                ) {
+
+                    seenRestaurants.add(
+                        uniqueKey
+                    );
+
+
+                    uniqueRestaurants.push(
+                        restaurant
                     );
 
                 }
-            );
+
+            }
+        );
 
 
-        const foodInput =
-            document.getElementById(
-                "foodInput"
-            );
+        const searchText =
+            input
+                .toLowerCase()
+                .trim();
+
+
+        let cuisineFilter =
+            null;
 
 
         if (
-            foodInput
+            searchText.includes(
+                "chinese"
+            )
+            ||
+            searchText.includes(
+                "中餐"
+            )
+            ||
+            searchText.includes(
+                "华人"
+            )
+            ||
+            searchText.includes(
+                "华人料理"
+            )
+            ||
+            searchText.includes(
+                "cantonese"
+            )
+            ||
+            searchText.includes(
+                "粤菜"
+            )
         ) {
 
-            foodInput.addEventListener(
-                "keydown",
-                event => {
+            cuisineFilter =
+                "chinese";
 
-                    if (
+        }
 
-                        (
 
-                            event.metaKey
+        else if (
+            searchText.includes(
+                "indian"
+            )
+            ||
+            searchText.includes(
+                "印度"
+            )
+            ||
+            searchText.includes(
+                "印度菜"
+            )
+        ) {
+
+            cuisineFilter =
+                "indian";
+
+        }
+
+
+        else if (
+            searchText.includes(
+                "malaysian"
+            )
+            ||
+            searchText.includes(
+                "malay"
+            )
+            ||
+            searchText.includes(
+                "马来"
+            )
+            ||
+            searchText.includes(
+                "马来西亚"
+            )
+            ||
+            searchText.includes(
+                "melayu"
+            )
+        ) {
+
+            cuisineFilter =
+                "malaysian";
+
+        }
+
+
+        let filteredRestaurants =
+            uniqueRestaurants;
+
+
+        if (
+            cuisineFilter ===
+            "chinese"
+        ) {
+
+            filteredRestaurants =
+                uniqueRestaurants.filter(
+                    restaurant => {
+
+                        const cuisine =
+                            (
+                                restaurant.cuisine
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        const cuisineZh =
+                            (
+                                restaurant.cuisine_zh
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        return (
+
+                            cuisine.includes(
+                                "chinese"
+                            )
 
                             ||
 
-                            event.ctrlKey
+                            cuisine.includes(
+                                "cantonese"
+                            )
 
-                        )
+                            ||
 
-                        &&
+                            cuisineZh.includes(
+                                "中餐"
+                            )
 
-                        event.key ===
-                        "Enter"
+                            ||
 
-                    ) {
+                            cuisineZh.includes(
+                                "粤菜"
+                            )
 
-                        this.askMing();
+                            ||
+
+                            cuisineZh.includes(
+                                "华人"
+                            )
+
+                        );
 
                     }
-
-                }
-            );
-
-        }
-
-    },
-
-
-    /* =====================================================
-       ASK MING
-    ===================================================== */
-
-    async askMing() {
-
-        const inputElement =
-            document.getElementById(
-                "foodInput"
-            );
-
-
-        if (
-            !inputElement
-        ) {
-
-            console.error(
-                "foodInput element not found."
-            );
-
-            return;
-
-        }
-
-
-        const input =
-            inputElement.value.trim();
-
-
-        if (
-            !input
-        ) {
-
-            this.showInputMessage();
-
-            return;
-
-        }
-
-
-        this.lastSearch =
-            input;
-
-
-        const resultSummary =
-            document.getElementById(
-                "resultSummary"
-            );
-
-
-        if (
-            resultSummary
-        ) {
-
-            resultSummary.textContent =
-                this.getResultSummary(
-                    input
                 );
 
         }
 
 
-        this.showLoading();
-
-
-        const restaurants =
-            await this.searchRestaurants(
-                input
-            );
-
-
-        this.restaurants =
-            restaurants;
-
-
-        this.renderRestaurants();
-
-
-        this.updateMapMarkers(
-            restaurants
-                .map(
-                    restaurant =>
-                        this.findOriginalRestaurant(
-                            restaurant.id
-                        )
-                )
-                .filter(
-                    Boolean
-                )
-        );
-
-
-        const resultsSection =
-            document.getElementById(
-                "resultsSection"
-            );
-
-
-        if (
-            resultsSection
+        else if (
+            cuisineFilter ===
+            "indian"
         ) {
 
-            resultsSection.classList.add(
-                "has-results"
-            );
+            filteredRestaurants =
+                uniqueRestaurants.filter(
+                    restaurant => {
+
+                        const cuisine =
+                            (
+                                restaurant.cuisine
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
 
 
-            setTimeout(
-                () => {
+                        const cuisineZh =
+                            (
+                                restaurant.cuisine_zh
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
 
-                    resultsSection.scrollIntoView(
-                        {
 
-                            behavior:
-                                "smooth",
+                        return (
 
-                            block:
-                                "start"
+                            cuisine.includes(
+                                "indian"
+                            )
 
-                        }
-                    );
+                            ||
 
-                },
-                100
-            );
+                            cuisineZh.includes(
+                                "印度"
+                            )
+
+                        );
+
+                    }
+                );
 
         }
 
-    },
+
+        else if (
+            cuisineFilter ===
+            "malaysian"
+        ) {
+
+            filteredRestaurants =
+                uniqueRestaurants.filter(
+                    restaurant => {
+
+                        const cuisine =
+                            (
+                                restaurant.cuisine
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
 
 
-    async searchRestaurants(input) {
+                        const cuisineZh =
+                            (
+                                restaurant.cuisine_zh
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
 
-```
-try {
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("restaurants")
-            .select("*")
-            .eq(
-                "status",
-                "approved"
+                        return (
+
+                            cuisine.includes(
+                                "malaysian"
+                            )
+
+                            ||
+
+                            cuisine.includes(
+                                "malay"
+                            )
+
+                            ||
+
+                            cuisineZh.includes(
+                                "马来"
+                            )
+
+                            ||
+
+                            cuisineZh.includes(
+                                "马来西亚"
+                            )
+
+                        );
+
+                    }
+                );
+
+        }
+
+
+        const scoredRestaurants =
+            filteredRestaurants
+                .map(
+                    restaurant => {
+
+                        let score =
+                            0;
+
+
+                        const searchableText =
+                            Object
+                                .values(
+                                    restaurant
+                                )
+                                .filter(
+                                    value =>
+                                        typeof value ===
+                                        "string"
+                                )
+                                .join(
+                                    " "
+                                )
+                                .toLowerCase();
+
+
+                        const words =
+                            searchText
+                                .split(
+                                    /\s+/
+                                )
+                                .filter(
+                                    word =>
+                                        word.length >
+                                        1
+                                );
+
+
+                        words.forEach(
+                            word => {
+
+                                if (
+                                    searchableText.includes(
+                                        word
+                                    )
+                                ) {
+
+                                    score +=
+                                        10;
+
+                                }
+
+                            }
+                        );
+
+
+                        score +=
+                            this.calculatePreferenceScore(
+                                restaurant,
+                                input
+                            );
+
+
+                        score +=
+                            (
+                                Number(
+                                    restaurant.overall_score
+                                )
+                                ||
+                                0
+                            )
+                            *
+                            2;
+
+
+                        return {
+
+                            restaurant,
+
+                            score
+
+                        };
+
+                    }
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        b.score -
+                        a.score
+                );
+
+
+        return scoredRestaurants
+            .slice(
+                0,
+                6
             )
-            .limit(100);
+            .map(
+                item =>
+                    this.normalizeRestaurant(
+                        item.restaurant
+                    )
+            );
 
+    }
 
-    if (error) {
+    catch (error) {
 
         console.error(
-            "Restaurant query failed:",
+            "Search error:",
             error
         );
 
@@ -1258,2492 +1353,645 @@ try {
 
     }
 
+},
+
+
+/* =========================
+PREFERENCE INTELLIGENCE
+========================= */
+
+calculatePreferenceScore(
+    restaurant,
+    input
+) {
+
+    const text =
+        input.toLowerCase();
+
+
+    let score =
+        0;
+
+
+    const parkingDifficulty =
+        (
+            restaurant.parking_difficulty
+            ||
+            ""
+        ).toLowerCase();
+
+
+    const parkingNotes =
+        (
+            restaurant.parking_notes
+            ||
+            ""
+        ).toLowerCase();
+
+
+    const cuisine =
+        (
+            restaurant.cuisine
+            ||
+            ""
+        ).toLowerCase();
+
+
+    const searchableText =
+        Object
+            .values(
+                restaurant
+            )
+            .filter(
+                value =>
+                    typeof value ===
+                    "string"
+            )
+            .join(
+                " "
+            )
+            .toLowerCase();
+
 
     if (
-        !data ||
-        data.length === 0
+        text.includes("辣")
+        ||
+        text.includes("spicy")
+        ||
+        text.includes("pedas")
     ) {
 
-        return [];
+        if (
+            searchableText.includes("spicy")
+            ||
+            searchableText.includes("辣")
+            ||
+            searchableText.includes("pedas")
+        ) {
+
+            score +=
+                20;
+
+        }
 
     }
 
 
-    /*
-    ==========================================
-    REMOVE DUPLICATE RESTAURANTS
-    ==========================================
-    */
+    if (
+        text.includes("便宜")
+        ||
+        text.includes("budget")
+        ||
+        text.includes("cheap")
+        ||
+        text.includes("affordable")
+        ||
+        text.includes("bajet")
+    ) {
 
-    const uniqueRestaurants =
-        [];
-
-    const seenRestaurants =
-        new Set();
-
-
-    data.forEach(
-        restaurant => {
-
-            const uniqueKey =
-                `${restaurant.name}-${restaurant.address}`
-                    .toLowerCase();
-
-
-            if (
-                !seenRestaurants.has(
-                    uniqueKey
-                )
-            ) {
-
-                seenRestaurants.add(
-                    uniqueKey
-                );
+        const priceMax =
+            Number(
+                restaurant.price_max
+            )
+            ||
+            999;
 
 
-                uniqueRestaurants.push(
-                    restaurant
-                );
+        if (
+            priceMax <= 50
+        ) {
 
-            }
+            score +=
+                30;
 
         }
-    );
+
+    }
 
 
-    /*
-    ==========================================
-    NORMALISE USER SEARCH
-    ==========================================
-    */
-
-    const searchText =
-        input
-            .toLowerCase()
-            .trim();
-
-
-    /*
-    ==========================================
-    DETECT USER INTENT
-    ==========================================
-    */
-
-    const wantsChinese =
-        searchText.includes("chinese")
+    if (
+        text.includes("停车")
         ||
-        searchText.includes("中餐")
+        text.includes("parking")
         ||
-        searchText.includes("华人")
+        text.includes("parking mudah")
+    ) {
+
+        if (
+            parkingDifficulty.includes("easy")
+            ||
+            parkingNotes.includes("easy")
+            ||
+            parkingNotes.includes("structured")
+        ) {
+
+            score +=
+                30;
+
+        }
+
+
+        if (
+            parkingDifficulty.includes("difficult")
+        ) {
+
+            score -=
+                20;
+
+        }
+
+    }
+
+
+    if (
+        text.includes("家庭")
         ||
-        searchText.includes("华人料理")
+        text.includes("家人")
         ||
-        searchText.includes("cantonese")
+        text.includes("family")
         ||
-        searchText.includes("粤菜");
+        text.includes("keluarga")
+    ) {
+
+        if (
+            searchableText.includes("family")
+            ||
+            searchableText.includes("group")
+            ||
+            searchableText.includes("家庭")
+            ||
+            searchableText.includes("keluarga")
+        ) {
+
+            score +=
+                20;
+
+        }
+
+    }
 
 
-    const wantsIndian =
-        searchText.includes("indian")
+    if (
+        text.includes("chinese")
         ||
-        searchText.includes("印度")
+        text.includes("中餐")
         ||
-        searchText.includes("印度菜");
-
-
-    const wantsMalaysian =
-        searchText.includes("malaysian")
+        text.includes("华人")
         ||
-        searchText.includes("malay")
+        text.includes("cantonese")
         ||
-        searchText.includes("马来")
+        text.includes("粤菜")
+    ) {
+
+        if (
+            cuisine.includes("chinese")
+            ||
+            cuisine.includes("cantonese")
+        ) {
+
+            score +=
+                30;
+
+        }
+
+    }
+
+
+    if (
+        text.includes("indian")
         ||
-        searchText.includes("马来西亚")
+        text.includes("印度")
+    ) {
+
+        if (
+            cuisine.includes("indian")
+        ) {
+
+            score +=
+                30;
+
+        }
+
+    }
+
+
+    if (
+        text.includes("malay")
         ||
-        searchText.includes("melayu");
-
-
-    const wantsBudget =
-        searchText.includes("cheap")
+        text.includes("马来")
         ||
-        searchText.includes("affordable")
-        ||
-        searchText.includes("budget")
-        ||
-        searchText.includes("bajet")
-        ||
-        searchText.includes("便宜")
-        ||
-        searchText.includes("预算");
+        text.includes("melayu")
+    ) {
 
+        if (
+            cuisine.includes("malaysian")
+            ||
+            cuisine.includes("malay")
+        ) {
 
-    const wantsParking =
-        searchText.includes("parking")
-        ||
-        searchText.includes("停车")
-        ||
-        searchText.includes("parking mudah");
+            score +=
+                30;
 
+        }
 
-    /*
-    ==========================================
-    SCORE RESTAURANTS
-    ==========================================
-    */
+    }
 
-    const scoredRestaurants =
-        uniqueRestaurants
-            .map(
-                restaurant => {
 
-                    const cuisine =
-                        (
-                            restaurant.cuisine
-                            ||
-                            ""
-                        )
-                        .toLowerCase();
-
-
-                    const cuisineZh =
-                        (
-                            restaurant.cuisine_zh
-                            ||
-                            ""
-                        )
-                        .toLowerCase();
-
-
-                    const searchableText =
-                        Object
-                            .values(
-                                restaurant
-                            )
-                            .filter(
-                                value =>
-                                    typeof value ===
-                                    "string"
-                            )
-                            .join(
-                                " "
-                            )
-                            .toLowerCase();
-
-
-                    let score =
-                        0;
-
-
-                    /*
-                    ==================================
-                    HARD CUISINE MATCHING
-                    ==================================
-                    */
-
-                    if (
-                        wantsChinese
-                    ) {
-
-                        if (
-                            cuisine.includes(
-                                "chinese"
-                            )
-                            ||
-                            cuisine.includes(
-                                "cantonese"
-                            )
-                            ||
-                            cuisineZh.includes(
-                                "中餐"
-                            )
-                            ||
-                            cuisineZh.includes(
-                                "粤菜"
-                            )
-                            ||
-                            cuisineZh.includes(
-                                "华人"
-                            )
-                        ) {
-
-                            score +=
-                                100;
-
-                        }
-
-                        else {
-
-                            score -=
-                                1000;
-
-                        }
-
-                    }
-
-
-                    if (
-                        wantsIndian
-                    ) {
-
-                        if (
-                            cuisine.includes(
-                                "indian"
-                            )
-                            ||
-                            cuisineZh.includes(
-                                "印度"
-                            )
-                        ) {
-
-                            score +=
-                                100;
-
-                        }
-
-                        else {
-
-                            score -=
-                                1000;
-
-                        }
-
-                    }
-
-
-                    if (
-                        wantsMalaysian
-                    ) {
-
-                        if (
-                            cuisine.includes(
-                                "malaysian"
-                            )
-                            ||
-                            cuisine.includes(
-                                "malay"
-                            )
-                            ||
-                            cuisineZh.includes(
-                                "马来"
-                            )
-                            ||
-                            cuisineZh.includes(
-                                "马来西亚"
-                            )
-                        ) {
-
-                            score +=
-                                100;
-
-                        }
-
-                        else {
-
-                            score -=
-                                1000;
-
-                        }
-
-                    }
-
-
-                    /*
-                    ==================================
-                    BUDGET MATCHING
-                    ==================================
-                    */
-
-                    if (
-                        wantsBudget
-                    ) {
-
-                        const priceMax =
-                            Number(
-                                restaurant.price_max
-                            )
-                            ||
-                            999;
-
-
-                        if (
-                            priceMax <=
-                            50
-                        ) {
-
-                            score +=
-                                50;
-
-                        }
-
-                        else {
-
-                            score -=
-                                20;
-
-                        }
-
-                    }
-
-
-                    /*
-                    ==================================
-                    PARKING MATCHING
-                    ==================================
-                    */
-
-                    if (
-                        wantsParking
-                    ) {
-
-                        const parkingDifficulty =
-                            (
-                                restaurant.parking_difficulty
-                                ||
-                                ""
-                            )
-                            .toLowerCase();
-
-
-                        if (
-                            parkingDifficulty ===
-                            "easy"
-                        ) {
-
-                            score +=
-                                50;
-
-                        }
-
-
-                        if (
-                            parkingDifficulty ===
-                            "difficult"
-                        ) {
-
-                            score -=
-                                50;
-
-                        }
-
-                    }
-
-
-                    /*
-                    ==================================
-                    GENERAL WORD MATCHING
-                    ==================================
-                    */
-
-                    const words =
-                        searchText
-                            .split(
-                                /\s+/
-                            )
-                            .filter(
-                                word =>
-                                    word.length >
-                                    1
-                            );
-
-
-                    words.forEach(
-                        word => {
-
-                            if (
-                                searchableText.includes(
-                                    word
-                                )
-                            ) {
-
-                                score +=
-                                    10;
-
-                            }
-
-                        }
-                    );
-
-
-                    /*
-                    ==================================
-                    OVERALL MING SCORE
-                    ==================================
-                    */
-
-                    score +=
-                        (
-                            Number(
-                                restaurant.overall_score
-                            )
-                            ||
-                            0
-                        )
-                        *
-                        2;
-
-
-                    return {
-
-                        restaurant,
-
-                        score
-
-                    };
-
-                }
-            )
-            .filter(
-                item =>
-                    item.score >
-                    -500
-            )
-            .sort(
-                (
-                    a,
-                    b
-                ) =>
-                    b.score -
-                    a.score
-            );
-
-
-    /*
-    ==========================================
-    RETURN TOP RESULTS
-    ==========================================
-    */
-
-    return scoredRestaurants
-        .slice(
-            0,
-            6
-        )
-        .map(
-            item =>
-                this.normalizeRestaurant(
-                    item.restaurant
-                )
-        );
-
-}
-
-catch (error) {
-
-    console.error(
-        "Search error:",
-        error
-    );
-
-    return [];
-
-}
-
+    return score;
 
 },
 
 
+/* =========================
+NORMALIZE DATABASE DATA
+========================= */
 
-    /* =====================================================
-       CUISINE MATCHING
-    ===================================================== */
+normalizeRestaurant(
+    restaurant
+) {
 
-    calculateCuisineScore(
-        restaurant,
-        input
+    const nameZh =
+        restaurant.name_zh
+        ||
+        restaurant.name;
+
+
+    const nameEn =
+        restaurant.name
+        ||
+        restaurant.name_zh;
+
+
+    const nameBm =
+        restaurant.name
+        ||
+        restaurant.name_zh;
+
+
+    const city =
+        restaurant.city
+        ||
+        "Malaysia";
+
+
+    const cuisine =
+        restaurant.cuisine
+        ||
+        "Local Food";
+
+
+    const score =
+        Number(
+            restaurant.overall_score
+        )
+        ||
+        0;
+
+
+    let openingHours =
+        restaurant.opening_hours;
+
+
+    if (
+        typeof openingHours ===
+        "string"
     ) {
 
-        const text =
-            input.toLowerCase();
+        try {
+
+            openingHours =
+                JSON.parse(
+                    openingHours
+                );
+
+        }
+
+        catch {
+
+            openingHours =
+                {};
+
+        }
+
+    }
 
 
-        const cuisine =
-            (
+    const pros =
+        this.convertToArray(
+            restaurant.pros
+        );
 
-                restaurant.cuisine
 
+    const cons =
+        this.convertToArray(
+            restaurant.cons
+        );
+
+
+    const summaryZh =
+        restaurant.ai_summary_zh
+        ||
+        restaurant.description_zh
+        ||
+        restaurant.ai_summary
+        ||
+        restaurant.description
+        ||
+        "Ming 正在分析这家餐厅。";
+
+
+    const summaryEn =
+        restaurant.ai_summary
+        ||
+        restaurant.description
+        ||
+        "Ming is analysing what this restaurant is actually like.";
+
+
+    const summaryBm =
+        restaurant.ai_summary
+        ||
+        restaurant.description
+        ||
+        "Ming sedang menganalisis keadaan sebenar restoran ini.";
+
+
+    const parkingDifficulty =
+        restaurant.parking_difficulty
+        ||
+        "unknown";
+
+
+    const parkingNotes =
+        restaurant.parking_notes
+        ||
+        "Information being collected";
+
+
+    return {
+
+        id:
+            restaurant.id,
+
+
+        name: {
+
+            zh:
+                nameZh,
+
+            en:
+                nameEn,
+
+            bm:
+                nameBm
+
+        },
+
+
+        location: {
+
+            zh:
+                `${city} · ${
+                    restaurant.cuisine_zh
+                    ||
+                    cuisine
+                }`,
+
+            en:
+                `${city} · ${cuisine}`,
+
+            bm:
+                `${city} · ${cuisine}`
+
+        },
+
+
+        image:
+            restaurant.image_url
+            ||
+            "images/featured-ramen.jpg",
+
+
+        tag: {
+
+            zh:
+                "MING 推荐",
+
+            en:
+                "MING RECOMMENDED",
+
+            bm:
+                "CADANGAN MING"
+
+        },
+
+
+        score:
+            score.toFixed(
+                1
+            ),
+
+
+        verdict: {
+
+            zh:
+                summaryZh,
+
+            en:
+                summaryEn,
+
+            bm:
+                summaryBm
+
+        },
+
+
+        positives: {
+
+            zh:
+                pros,
+
+            en:
+                pros,
+
+            bm:
+                pros
+
+        },
+
+
+        negatives: {
+
+            zh:
+                cons,
+
+            en:
+                cons,
+
+            bm:
+                cons
+
+        },
+
+
+        practical: {
+
+            hours:
+                openingHours,
+
+            lastOrder:
+                restaurant.last_order_time
                 ||
-
-                ""
-
-            )
-                .toLowerCase();
+                "Not yet verified",
 
 
-        const cuisineZh =
-            (
+            parking: {
 
-                restaurant.cuisine_zh
+                zh:
+                    `${parkingDifficulty} · ${parkingNotes}`,
 
-                ||
+                en:
+                    `${parkingDifficulty} · ${parkingNotes}`,
 
-                ""
+                bm:
+                    `${parkingDifficulty} · ${parkingNotes}`
 
-            )
-                .toLowerCase();
-
-
-        let score =
-            0;
+            },
 
 
-        const matches = {
+            bestTime: {
 
-            chinese: [
+                zh:
+                    "Ming 正在收集更多资料",
 
-                "chinese",
+                en:
+                    "Ming is collecting more information",
 
-                "中餐",
+                bm:
+                    "Ming sedang mengumpul lebih banyak maklumat"
 
-                "华人",
+            }
 
-                "华人料理",
-
-                "cantonese",
-
-                "粤菜"
-
-            ],
-
-            indian: [
-
-                "indian",
-
-                "印度",
-
-                "印度菜"
-
-            ],
-
-            malaysian: [
-
-                "malaysian",
-
-                "malay",
-
-                "马来",
-
-                "马来西亚",
-
-                "melayu"
-
-            ]
-
-        };
+        },
 
 
-        Object
-            .entries(
-                matches
-            )
-            .forEach(
-                (
-                    [
-                        category,
-                        keywords
-                    ]
-                ) => {
+        creatorStatus: {
 
-                    const userMentioned =
-                        keywords.some(
-                            keyword =>
-                                text.includes(
-                                    keyword
-                                )
-                        );
+            zh:
+                "创作者资料正在收集",
+
+            en:
+                "Creator coverage is being collected",
+
+            bm:
+                "Maklumat pencipta kandungan sedang dikumpulkan"
+
+        }
+
+    };
+
+},
 
 
-                    if (
-                        userMentioned
-                    ) {
+/* =========================
+ARRAY HELPER
+========================= */
 
-                        if (
+convertToArray(
+    value
+) {
 
-                            cuisine.includes(
-                                category
-                            )
-
-                            ||
-
-                            cuisineZh.includes(
-                                category
-                            )
-
-                        ) {
-
-                            score +=
-                                40;
-
-                        }
-
-                    }
-
-                }
-            );
-
-
-        return score;
-
-    },
-
-
-    /* =====================================================
-       PREFERENCE INTELLIGENCE
-    ===================================================== */
-
-    calculatePreferenceScore(
-        restaurant,
-        input
+    if (
+        Array.isArray(
+            value
+        )
     ) {
 
-        const text =
-            input.toLowerCase();
+        return value;
+
+    }
 
 
-        let score =
-            0;
+    if (
+        typeof value ===
+        "string"
+    ) {
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    value
+                );
 
 
-        const parkingDifficulty =
-            (
+            if (
+                Array.isArray(
+                    parsed
+                )
+            ) {
 
-                restaurant.parking_difficulty
+                return parsed;
 
-                ||
+            }
 
-                ""
+        }
 
-            )
-                .toLowerCase();
+        catch {
 
-
-        const parkingNotes =
-            (
-
-                restaurant.parking_notes
-
-                ||
-
-                ""
-
-            )
-                .toLowerCase();
-
-
-        const searchableText =
-            Object
-                .values(
-                    restaurant
+            return value
+                .split(
+                    ","
+                )
+                .map(
+                    item =>
+                        item.trim()
                 )
                 .filter(
-                    value =>
-                        typeof value ===
-                        "string"
-                )
-                .join(
-                    " "
-                )
-                .toLowerCase();
-
-
-        /* BUDGET */
-
-        if (
-
-            text.includes(
-                "便宜"
-            )
-
-            ||
-
-            text.includes(
-                "budget"
-            )
-
-            ||
-
-            text.includes(
-                "cheap"
-            )
-
-            ||
-
-            text.includes(
-                "affordable"
-            )
-
-            ||
-
-            text.includes(
-                "bajet"
-            )
-
-        ) {
-
-            const priceMax =
-                Number(
-                    restaurant.price_max
-                )
-                ||
-                999;
-
-
-            if (
-                priceMax <=
-                50
-            ) {
-
-                score +=
-                    35;
-
-            }
-
-            else if (
-                priceMax <=
-                100
-            ) {
-
-                score +=
-                    10;
-
-            }
-
-        }
-
-
-        /* PARKING */
-
-        if (
-
-            text.includes(
-                "停车"
-            )
-
-            ||
-
-            text.includes(
-                "parking"
-            )
-
-            ||
-
-            text.includes(
-                "parking mudah"
-            )
-
-            ||
-
-            text.includes(
-                "parking senang"
-            )
-
-        ) {
-
-            if (
-
-                parkingDifficulty.includes(
-                    "easy"
-                )
-
-                ||
-
-                parkingNotes.includes(
-                    "easy"
-                )
-
-                ||
-
-                parkingNotes.includes(
-                    "structured"
-                )
-
-            ) {
-
-                score +=
-                    35;
-
-            }
-
-
-            if (
-
-                parkingDifficulty.includes(
-                    "difficult"
-                )
-
-            ) {
-
-                score -=
-                    25;
-
-            }
-
-        }
-
-
-        /* FAMILY */
-
-        if (
-
-            text.includes(
-                "家庭"
-            )
-
-            ||
-
-            text.includes(
-                "家人"
-            )
-
-            ||
-
-            text.includes(
-                "family"
-            )
-
-            ||
-
-            text.includes(
-                "keluarga"
-            )
-
-        ) {
-
-            if (
-
-                searchableText.includes(
-                    "family"
-                )
-
-                ||
-
-                searchableText.includes(
-                    "group"
-                )
-
-                ||
-
-                searchableText.includes(
-                    "家庭"
-                )
-
-                ||
-
-                searchableText.includes(
-                    "keluarga"
-                )
-
-            ) {
-
-                score +=
-                    25;
-
-            }
-
-        }
-
-
-        /* HALAL */
-
-        if (
-
-            text.includes(
-                "halal"
-            )
-
-            ||
-
-            text.includes(
-                "清真"
-            )
-
-            ||
-
-            text.includes(
-                "穆斯林"
-            )
-
-            ||
-
-            text.includes(
-                "muslim"
-            )
-
-        ) {
-
-            const halal =
-                (
-
-                    restaurant.halal_status
-
-                    ||
-
-                    ""
-
-                )
-                    .toLowerCase();
-
-
-            if (
-                halal ===
-                "halal"
-            ) {
-
-                score +=
-                    50;
-
-            }
-
-
-            if (
-                halal ===
-                "not_halal"
-            ) {
-
-                score -=
-                    50;
-
-            }
-
-        }
-
-
-        /* SPICY */
-
-        if (
-
-            text.includes(
-                "辣"
-            )
-
-            ||
-
-            text.includes(
-                "spicy"
-            )
-
-            ||
-
-            text.includes(
-                "pedas"
-            )
-
-        ) {
-
-            if (
-
-                searchableText.includes(
-                    "spicy"
-                )
-
-                ||
-
-                searchableText.includes(
-                    "辣"
-                )
-
-                ||
-
-                searchableText.includes(
-                    "pedas"
-                )
-
-            ) {
-
-                score +=
-                    20;
-
-            }
-
-        }
-
-
-        return score;
-
-    },
-
-
-    /* =====================================================
-       FIND ORIGINAL DATABASE RECORD
-    ===================================================== */
-
-    findOriginalRestaurant(
-        id
-    ) {
-
-        return this.allRestaurants.find(
-            restaurant =>
-                String(
-                    restaurant.id
-                ) ===
-                String(
-                    id
-                )
-        );
-
-    },
-
-
-    /* =====================================================
-       NORMALIZE DATABASE DATA
-    ===================================================== */
-
-    normalizeRestaurant(
-        restaurant
-    ) {
-
-        const nameZh =
-            restaurant.name_zh
-            ||
-            restaurant.name;
-
-
-        const nameEn =
-            restaurant.name
-            ||
-            restaurant.name_zh;
-
-
-        const nameBm =
-            restaurant.name
-            ||
-            restaurant.name_zh;
-
-
-        const city =
-            restaurant.city
-            ||
-            "Malaysia";
-
-
-        const cuisine =
-            restaurant.cuisine
-            ||
-            "Local Food";
-
-
-        const score =
-            Number(
-                restaurant.overall_score
-            )
-            ||
-            0;
-
-
-        let openingHours =
-            restaurant.opening_hours;
-
-
-        if (
-            typeof openingHours ===
-            "string"
-        ) {
-
-            try {
-
-                openingHours =
-                    JSON.parse(
-                        openingHours
-                    );
-
-            }
-
-            catch {
-
-                openingHours =
-                    {};
-
-            }
-
-        }
-
-
-        const pros =
-            this.convertToArray(
-                restaurant.pros
-            );
-
-
-        const cons =
-            this.convertToArray(
-                restaurant.cons
-            );
-
-
-        const summaryZh =
-            restaurant.ai_summary_zh
-            ||
-            restaurant.description_zh
-            ||
-            restaurant.ai_summary
-            ||
-            restaurant.description
-            ||
-            "Ming 正在分析这家餐厅。";
-
-
-        const summaryEn =
-            restaurant.ai_summary
-            ||
-            restaurant.description
-            ||
-            "Ming is analysing what this restaurant is actually like.";
-
-
-        const summaryBm =
-            restaurant.ai_summary
-            ||
-            restaurant.description
-            ||
-            "Ming sedang menganalisis keadaan sebenar restoran ini.";
-
-
-        const parkingDifficulty =
-            restaurant.parking_difficulty
-            ||
-            "unknown";
-
-
-        const parkingNotes =
-            restaurant.parking_notes
-            ||
-            "Information being collected";
-
-
-        return {
-
-            id:
-                restaurant.id,
-
-
-            name: {
-
-                zh:
-                    nameZh,
-
-                en:
-                    nameEn,
-
-                bm:
-                    nameBm
-
-            },
-
-
-            location: {
-
-                zh:
-                    `${city} · ${
-                        restaurant.cuisine_zh
-                        ||
-                        cuisine
-                    }`,
-
-                en:
-                    `${city} · ${cuisine}`,
-
-                bm:
-                    `${city} · ${cuisine}`
-
-            },
-
-
-            image:
-                restaurant.image_url
-                ||
-                "images/featured-ramen.jpg",
-
-
-            tag: {
-
-                zh:
-                    "MING 推荐",
-
-                en:
-                    "MING RECOMMENDED",
-
-                bm:
-                    "CADANGAN MING"
-
-            },
-
-
-            score:
-                score.toFixed(
-                    1
-                ),
-
-
-            verdict: {
-
-                zh:
-                    summaryZh,
-
-                en:
-                    summaryEn,
-
-                bm:
-                    summaryBm
-
-            },
-
-
-            positives: {
-
-                zh:
-                    pros,
-
-                en:
-                    pros,
-
-                bm:
-                    pros
-
-            },
-
-
-            negatives: {
-
-                zh:
-                    cons,
-
-                en:
-                    cons,
-
-                bm:
-                    cons
-
-            },
-
-
-            practical: {
-
-                hours:
-                    openingHours,
-
-
-                lastOrder:
-                    restaurant.last_order_time
-                    ||
-                    "Not yet verified",
-
-
-                parking: {
-
-                    zh:
-                        `${parkingDifficulty} · ${parkingNotes}`,
-
-                    en:
-                        `${parkingDifficulty} · ${parkingNotes}`,
-
-                    bm:
-                        `${parkingDifficulty} · ${parkingNotes}`
-
-                },
-
-
-                bestTime: {
-
-                    zh:
-                        "Ming 正在收集更多资料",
-
-                    en:
-                        "Ming is collecting more information",
-
-                    bm:
-                        "Ming sedang mengumpul更多资料"
-
-                }
-
-            },
-
-
-            creatorStatus: {
-
-                zh:
-                    "创作者资料正在收集",
-
-                en:
-                    "Creator coverage is being collected",
-
-                bm:
-                    "Maklumat pencipta kandungan sedang dikumpulkan"
-
-            }
-
-        };
-
-    },
-
-
-    /* =====================================================
-       ARRAY HELPER
-    ===================================================== */
-
-    convertToArray(
-        value
-    ) {
-
-        if (
-            Array.isArray(
-                value
-            )
-        ) {
-
-            return value;
-
-        }
-
-
-        if (
-
-            typeof value ===
-            "string"
-
-        ) {
-
-            try {
-
-                const parsed =
-                    JSON.parse(
-                        value
-                    );
-
-
-                if (
-                    Array.isArray(
-                        parsed
-                    )
-                ) {
-
-                    return parsed;
-
-                }
-
-            }
-
-            catch {
-
-                return value
-
-                    .split(
-                        ","
-                    )
-
-                    .map(
-                        item =>
-                            item.trim()
-                    )
-
-                    .filter(
-                        Boolean
-                    );
-
-            }
-
-        }
-
-
-        return [
-
-            "More information is being collected."
-
-        ];
-
-    },
-
-
-    /* =====================================================
-       RENDER RESTAURANTS
-    ===================================================== */
-
-    renderRestaurants() {
-
-        const grid =
-            document.getElementById(
-                "restaurantGrid"
-            );
-
-
-        if (
-            !grid
-        ) {
-
-            return;
-
-        }
-
-
-        const language =
-            this.currentLanguage;
-
-
-        if (
-
-            !this.restaurants
-
-            ||
-
-            this.restaurants.length ===
-            0
-
-        ) {
-
-            grid.innerHTML = `
-
-                <div
-                    style="
-                        grid-column: 1 / -1;
-                        text-align: center;
-                        padding: 60px 20px;
-                    "
-                >
-
-                    <h3>
-
-                        ${
-                            language ===
-                            "zh"
-
-                                ?
-
-                            "暂时找不到完全符合的餐厅"
-
-                                :
-
-                            language ===
-                            "bm"
-
-                                ?
-
-                            "Tiada restoran yang sepadan buat masa ini"
-
-                                :
-
-                            "No matching restaurants found yet"
-
-                        }
-
-                    </h3>
-
-
-                    <p>
-
-                        ${
-                            language ===
-                            "zh"
-
-                                ?
-
-                            "我们正在不断增加马来西亚的餐厅资料。"
-
-                                :
-
-                            language ===
-                            "bm"
-
-                                ?
-
-                            "Kami sedang menambah lebih banyak restoran di Malaysia."
-
-                                :
-
-                            "We are continuously adding more restaurants across Malaysia."
-
-                        }
-
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        grid.innerHTML =
-
-            this.restaurants
-
-                .map(
-                    restaurant => {
-
-                        return `
-
-                            <article
-                                class="restaurant-card"
-                            >
-
-                                <div
-                                    class="restaurant-card-image"
-                                >
-
-                                    <img
-                                        src="${restaurant.image}"
-                                        alt="${restaurant.name[language]}"
-                                        loading="lazy"
-                                        onerror="this.src='images/featured-ramen.jpg'"
-                                    >
-
-                                </div>
-
-
-                                <div
-                                    class="restaurant-card-content"
-                                >
-
-                                    <span
-                                        class="restaurant-tag"
-                                    >
-
-                                        ${restaurant.tag[language]}
-
-                                    </span>
-
-
-                                    <h3>
-
-                                        ${restaurant.name[language]}
-
-                                    </h3>
-
-
-                                    <div
-                                        class="restaurant-location"
-                                    >
-
-                                        ${restaurant.location[language]}
-
-                                    </div>
-
-
-                                    <div
-                                        class="restaurant-score-row"
-                                    >
-
-                                        <div>
-
-                                            <div
-                                                class="score-number"
-                                            >
-
-                                                ${restaurant.score}
-
-                                            </div>
-
-
-                                            <div
-                                                class="score-label"
-                                            >
-
-                                                MING SCORE
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <div>
-
-                                            <span
-                                                class="status-dot"
-                                            ></span>
-
-
-                                            <span
-                                                class="score-label"
-                                            >
-
-                                                ${
-                                                    language ===
-                                                    "zh"
-
-                                                        ?
-
-                                                    "综合判断"
-
-                                                        :
-
-                                                    language ===
-                                                    "bm"
-
-                                                        ?
-
-                                                    "Analisis keseluruhan"
-
-                                                        :
-
-                                                    "Overall analysis"
-
-                                                }
-
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <p
-                                        class="restaurant-insight"
-                                    >
-
-                                        ${restaurant.verdict[language]}
-
-                                    </p>
-
-
-                                    <button
-                                        class="restaurant-card-button"
-                                        onclick="MingFoodApp.openRestaurant('${restaurant.id}')"
-                                    >
-
-                                        ${
-                                            language ===
-                                            "zh"
-
-                                                ?
-
-                                            "查看 Ming 分析 →"
-
-                                                :
-
-                                            language ===
-                                            "bm"
-
-                                                ?
-
-                                            "Lihat analisis Ming →"
-
-                                                :
-
-                                            "View Ming's analysis →"
-
-                                        }
-
-                                    </button>
-
-                                </div>
-
-                            </article>
-
-                        `;
-
-                    }
-                )
-
-                .join(
-                    ""
+                    Boolean
                 );
 
-    },
-
-
-    /* =====================================================
-       OPEN RESTAURANT MODAL
-    ===================================================== */
-
-    openRestaurant(
-        id
-    ) {
-
-        const restaurant =
-            this.restaurants.find(
-                item =>
-                    String(
-                        item.id
-                    ) ===
-                    String(
-                        id
-                    )
-            );
-
-
-        if (
-            !restaurant
-        ) {
-
-            return;
-
         }
 
+    }
 
-        const language =
-            this.currentLanguage;
 
+    return [
 
-        const positives =
-            restaurant
-                .positives[language]
-                .map(
-                    item =>
-                        `<li>${item}</li>`
-                )
-                .join(
-                    ""
-                );
+        "More information is being collected."
 
+    ];
 
-        const negatives =
-            restaurant
-                .negatives[language]
-                .map(
-                    item =>
-                        `<li>${item}</li>`
-                )
-                .join(
-                    ""
-                );
+},
 
 
-        const content =
-            document.getElementById(
-                "modalContent"
-            );
+/* =========================
+RENDER RESTAURANTS
+========================= */
 
+renderRestaurants() {
 
-        if (
-            !content
-        ) {
-
-            return;
-
-        }
-
-
-        content.innerHTML = `
-
-            <h2
-                class="modal-title"
-            >
-
-                ${restaurant.name[language]}
-
-            </h2>
-
-
-            <div
-                class="modal-location"
-            >
-
-                ${restaurant.location[language]}
-
-            </div>
-
-
-            <div
-                class="modal-verdict"
-            >
-
-                <div
-                    class="modal-verdict-label"
-                >
-
-                    MING'S HONEST TAKE
-
-                </div>
-
-
-                <h3>
-
-                    ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "值得考虑"
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "Berbaloi dipertimbangkan"
-
-                            :
-
-                        "Worth considering"
-
-                    }
-
-                </h3>
-
-
-                <p>
-
-                    ${restaurant.verdict[language]}
-
-                </p>
-
-            </div>
-
-
-            <div
-                class="modal-section"
-            >
-
-                <h4>
-
-                    ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "👍 大家常常喜欢"
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "👍 Perkara yang sering dipuji"
-
-                            :
-
-                        "👍 What people consistently like"
-
-                    }
-
-                </h4>
-
-
-                <ul
-                    class="modal-list"
-                >
-
-                    ${positives}
-
-                </ul>
-
-            </div>
-
-
-            <div
-                class="modal-section"
-            >
-
-                <h4>
-
-                    ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "👎 常见问题"
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "👎 Aduan biasa"
-
-                            :
-
-                        "👎 Common complaints"
-
-                    }
-
-                </h4>
-
-
-                <ul
-                    class="modal-list"
-                >
-
-                    ${negatives}
-
-                </ul>
-
-            </div>
-
-
-            <div
-                class="modal-section"
-            >
-
-                <h4>
-
-                    📍
-
-                    ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "本地实用信息"
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "Maklumat tempatan"
-
-                            :
-
-                        "Local intelligence"
-
-                    }
-
-                </h4>
-
-
-                <div
-                    class="info-grid"
-                >
-
-                    <div
-                        class="info-item"
-                    >
-
-                        <span>
-
-                            ${
-                                language ===
-                                "zh"
-
-                                    ?
-
-                                "营业时间"
-
-                                    :
-
-                                language ===
-                                "bm"
-
-                                    ?
-
-                                "Waktu operasi"
-
-                                    :
-
-                                "Opening hours"
-
-                            }
-
-                        </span>
-
-
-                        <strong>
-
-                            ${this.formatOpeningHours(
-                                restaurant.practical.hours
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div
-                        class="info-item"
-                    >
-
-                        <span>
-
-                            ${
-                                language ===
-                                "zh"
-
-                                    ?
-
-                                "最后点餐"
-
-                                    :
-
-                                language ===
-                                "bm"
-
-                                    ?
-
-                                "Pesanan terakhir"
-
-                                    :
-
-                                "Last order"
-
-                            }
-
-                        </span>
-
-
-                        <strong>
-
-                            ${restaurant.practical.lastOrder}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div
-                        class="info-item"
-                    >
-
-                        <span>
-
-                            ${
-                                language ===
-                                "zh"
-
-                                    ?
-
-                                "停车难度"
-
-                                    :
-
-                                language ===
-                                "bm"
-
-                                    ?
-
-                                "Kesukaran parking"
-
-                                    :
-
-                                "Parking difficulty"
-
-                            }
-
-                        </span>
-
-
-                        <strong>
-
-                            ${restaurant.practical.parking[language]}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div
-                        class="info-item"
-                    >
-
-                        <span>
-
-                            ${
-                                language ===
-                                "zh"
-
-                                    ?
-
-                                "建议时间"
-
-                                    :
-
-                                language ===
-                                "bm"
-
-                                    ?
-
-                                "Masa terbaik"
-
-                                    :
-
-                                "Best time to visit"
-
-                            }
-
-                        </span>
-
-
-                        <strong>
-
-                            ${restaurant.practical.bestTime[language]}
-
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="modal-section"
-            >
-
-                <h4>
-
-                    🎥
-
-                    ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "创作者覆盖"
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "Liputan pencipta"
-
-                            :
-
-                        "Creator coverage"
-
-                    }
-
-                </h4>
-
-
-                <p>
-
-                    ${restaurant.creatorStatus[language]}
-
-                </p>
-
-            </div>
-
-        `;
-
-
-        const modal =
-            document.getElementById(
-                "restaurantModal"
-            );
-
-
-        if (
-            modal
-        ) {
-
-            modal.classList.add(
-                "visible"
-            );
-
-
-            document.body.style.overflow =
-                "hidden";
-
-        }
-
-    },
-
-
-    /* =====================================================
-       FORMAT OPENING HOURS
-    ===================================================== */
-
-    formatOpeningHours(
-        hours
-    ) {
-
-        if (
-
-            typeof hours ===
-            "string"
-
-        ) {
-
-            return hours;
-
-        }
-
-
-        if (
-
-            !hours
-
-            ||
-
-            typeof hours !==
-            "object"
-
-        ) {
-
-            return "Not yet verified";
-
-        }
-
-
-        const language =
-            this.currentLanguage;
-
-
-        const dayNames = {
-
-            zh: {
-
-                monday: "星期一",
-
-                tuesday: "星期二",
-
-                wednesday: "星期三",
-
-                thursday: "星期四",
-
-                friday: "星期五",
-
-                saturday: "星期六",
-
-                sunday: "星期日"
-
-            },
-
-
-            en: {
-
-                monday: "Monday",
-
-                tuesday: "Tuesday",
-
-                wednesday: "Wednesday",
-
-                thursday: "Thursday",
-
-                friday: "Friday",
-
-                saturday: "Saturday",
-
-                sunday: "Sunday"
-
-            },
-
-
-            bm: {
-
-                monday: "Isnin",
-
-                tuesday: "Selasa",
-
-                wednesday: "Rabu",
-
-                thursday: "Khamis",
-
-                friday: "Jumaat",
-
-                saturday: "Sabtu",
-
-                sunday: "Ahad"
-
-            }
-
-        };
-
-
-        return Object
-            .entries(
-                hours
-            )
-            .map(
-                (
-                    [
-                        day,
-                        time
-                    ]
-                ) => {
-
-                    return `
-
-                        <div>
-
-                            <strong>
-
-                                ${
-                                    dayNames[language][day]
-                                    ||
-                                    day
-                                }
-
-                            </strong>
-
-
-                            <span>
-
-                                ${time}
-
-                            </span>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join(
-                ""
-            );
-
-    },
-
-
-    /* =====================================================
-       CLOSE MODAL
-    ===================================================== */
-
-    closeModal() {
-
-        const modal =
-            document.getElementById(
-                "restaurantModal"
-            );
-
-
-        if (
-            modal
-        ) {
-
-            modal.classList.remove(
-                "visible"
-            );
-
-        }
-
-
-        document.body.style.overflow =
-            "";
-
-    },
-
-
-    /* =====================================================
-       RESET
-    ===================================================== */
-
-    reset() {
-
-        const foodInput =
-            document.getElementById(
-                "foodInput"
-            );
-
-
-        if (
-            foodInput
-        ) {
-
-            foodInput.value =
-                "";
-
-        }
-
-
-        const resultsSection =
-            document.getElementById(
-                "resultsSection"
-            );
-
-
-        if (
-            resultsSection
-        ) {
-
-            resultsSection.classList.remove(
-                "has-results"
-            );
-
-        }
-
-
-        this.restaurants =
-            [];
-
-
-        const grid =
-            document.getElementById(
-                "restaurantGrid"
-            );
-
-
-        if (
-            grid
-        ) {
-
-            grid.innerHTML =
-                "";
-
-        }
-
-
-        document
-            .querySelectorAll(
-                ".preference-chip"
-            )
-            .forEach(
-                chip =>
-                    chip.classList.remove(
-                        "active"
-                    )
-            );
-
-
-        this.updateMapMarkers(
-            this.allRestaurants
+    const grid =
+        document.getElementById(
+            "restaurantGrid"
         );
 
 
-        const assistant =
-            document.getElementById(
-                "food-assistant"
-            );
+    if (!grid) {
+
+        return;
+
+    }
 
 
-        if (
-            assistant
-        ) {
-
-            assistant.scrollIntoView(
-                {
-
-                    behavior:
-                        "smooth"
-
-                }
-            );
-
-        }
-
-    },
+    const language =
+        this.currentLanguage;
 
 
-    /* =====================================================
-       LOADING STATE
-    ===================================================== */
-
-    showLoading() {
-
-        const grid =
-            document.getElementById(
-                "restaurantGrid"
-            );
-
-
-        if (
-            !grid
-        ) {
-
-            return;
-
-        }
-
-
-        const language =
-            this.currentLanguage;
-
+    if (
+        !this.restaurants ||
+        this.restaurants.length === 0
+    ) {
 
         grid.innerHTML = `
 
@@ -3758,26 +2006,11 @@ catch (error) {
                 <h3>
 
                     ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "Ming 正在调查餐厅资料..."
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "Ming sedang menyiasat restoran..."
-
-                            :
-
-                        "Ming is investigating restaurants..."
-
+                        language === "zh"
+                            ? "暂时找不到完全符合的餐厅"
+                            : language === "bm"
+                                ? "Tiada restoran yang sepadan buat masa ini"
+                                : "No matching restaurants found yet"
                     }
 
                 </h3>
@@ -3786,26 +2019,11 @@ catch (error) {
                 <p>
 
                     ${
-                        language ===
-                        "zh"
-
-                            ?
-
-                        "正在分析你的需求。"
-
-                            :
-
-                        language ===
-                        "bm"
-
-                            ?
-
-                        "Ming sedang menganalisis keperluan anda."
-
-                            :
-
-                        "Ming is analysing what you are looking for."
-
+                        language === "zh"
+                            ? "我们正在不断增加马来西亚的餐厅资料。"
+                            : language === "bm"
+                                ? "Kami sedang menambah lebih banyak restoran di Malaysia."
+                                : "We are continuously adding more restaurants across Malaysia."
                     }
 
                 </p>
@@ -3814,27 +2032,1016 @@ catch (error) {
 
         `;
 
-    },
+        return;
+
+    }
 
 
-    /* =====================================================
-       RESULT SUMMARY
-    ===================================================== */
+    grid.innerHTML =
+        this.restaurants
+            .map(
+                restaurant => {
 
-    getResultSummary(
-        input
+                    return `
+
+                        <article
+                            class="restaurant-card"
+                        >
+
+                            <div
+                                class="restaurant-card-image"
+                            >
+
+                                <img
+                                    src="${restaurant.image}"
+                                    alt="${restaurant.name[language]}"
+                                    loading="lazy"
+                                >
+
+                            </div>
+
+
+                            <div
+                                class="restaurant-card-content"
+                            >
+
+                                <span
+                                    class="restaurant-tag"
+                                >
+
+                                    ${restaurant.tag[language]}
+
+                                </span>
+
+
+                                <h3>
+
+                                    ${restaurant.name[language]}
+
+                                </h3>
+
+
+                                <div
+                                    class="restaurant-location"
+                                >
+
+                                    ${restaurant.location[language]}
+
+                                </div>
+
+
+                                <div
+                                    class="restaurant-score-row"
+                                >
+
+                                    <div>
+
+                                        <div
+                                            class="score-number"
+                                        >
+
+                                            ${restaurant.score}
+
+                                        </div>
+
+
+                                        <div
+                                            class="score-label"
+                                        >
+
+                                            MING SCORE
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span
+                                            class="status-dot"
+                                        ></span>
+
+
+                                        <span
+                                            class="score-label"
+                                        >
+
+                                            ${
+                                                language === "zh"
+                                                    ? "综合判断"
+                                                    : language === "bm"
+                                                        ? "Analisis keseluruhan"
+                                                        : "Overall analysis"
+                                            }
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <p
+                                    class="restaurant-insight"
+                                >
+
+                                    ${restaurant.verdict[language]}
+
+                                </p>
+
+
+                                <button
+                                    class="restaurant-card-button"
+                                    onclick="MingFoodApp.openRestaurant('${restaurant.id}')"
+                                >
+
+                                    ${
+                                        language === "zh"
+                                            ? "查看 Ming 分析 →"
+                                            : language === "bm"
+                                                ? "Lihat analisis Ming →"
+                                                : "View Ming's analysis →"
+                                    }
+
+                                </button>
+
+                            </div>
+
+                        </article>
+
+                    `;
+
+                }
+            )
+            .join(
+                ""
+            );
+
+},
+
+
+/* =========================
+OPEN RESTAURANT MODAL
+========================= */
+
+openRestaurant(
+    id
+) {
+
+    const restaurant =
+        this.restaurants.find(
+            item =>
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
+        );
+
+
+    if (
+        !restaurant
     ) {
 
-        const language =
-            this.currentLanguage;
+        return;
 
+    }
+
+
+    const language =
+        this.currentLanguage;
+
+
+    const positives =
+        restaurant
+            .positives[language]
+            .map(
+                item =>
+                    `<li>${item}</li>`
+            )
+            .join(
+                ""
+            );
+
+
+    const negatives =
+        restaurant
+            .negatives[language]
+            .map(
+                item =>
+                    `<li>${item}</li>`
+            )
+            .join(
+                ""
+            );
+
+
+    const content =
+        document.getElementById(
+            "modalContent"
+        );
+
+
+    if (!content) {
+
+        return;
+
+    }
+
+
+    content.innerHTML = `
+
+        <h2
+            class="modal-title"
+        >
+
+            ${restaurant.name[language]}
+
+        </h2>
+
+
+        <div
+            class="modal-location"
+        >
+
+            ${restaurant.location[language]}
+
+        </div>
+
+
+        <div
+            class="modal-verdict"
+        >
+
+            <div
+                class="modal-verdict-label"
+            >
+
+                MING'S HONEST TAKE
+
+            </div>
+
+
+            <h3>
+
+                ${
+                    language === "zh"
+                        ? "值得考虑"
+                        : language === "bm"
+                            ? "Berbaloi dipertimbangkan"
+                            : "Worth considering"
+                }
+
+            </h3>
+
+
+            <p>
+
+                ${restaurant.verdict[language]}
+
+            </p>
+
+        </div>
+
+
+        <div
+            class="modal-section"
+        >
+
+            <h4>
+
+                ${
+                    language === "zh"
+                        ? "👍 大家常常喜欢"
+                        : language === "bm"
+                            ? "👍 Perkara yang sering dipuji"
+                            : "👍 What people consistently like"
+                }
+
+            </h4>
+
+
+            <ul
+                class="modal-list"
+            >
+
+                ${positives}
+
+            </ul>
+
+        </div>
+
+
+        <div
+            class="modal-section"
+        >
+
+            <h4>
+
+                ${
+                    language === "zh"
+                        ? "👎 常见问题"
+                        : language === "bm"
+                            ? "👎 Aduan biasa"
+                            : "👎 Common complaints"
+                }
+
+            </h4>
+
+
+            <ul
+                class="modal-list"
+            >
+
+                ${negatives}
+
+            </ul>
+
+        </div>
+
+
+        <div
+            class="modal-section"
+        >
+
+            <h4>
+
+                ${
+                    language === "zh"
+                        ? "📍 本地实用信息"
+                        : language === "bm"
+                            ? "📍 Maklumat tempatan"
+                            : "📍 Local intelligence"
+                }
+
+            </h4>
+
+
+            <div
+                class="info-grid"
+            >
+
+                <div
+                    class="info-item"
+                >
+
+                    <span>
+
+                        ${
+                            language === "zh"
+                                ? "营业时间"
+                                : language === "bm"
+                                    ? "Waktu operasi"
+                                    : "Opening hours"
+                        }
+
+                    </span>
+
+
+                    <strong>
+
+                        ${this.formatOpeningHours(
+                            restaurant.practical.hours
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="info-item"
+                >
+
+                    <span>
+
+                        ${
+                            language === "zh"
+                                ? "最后点餐"
+                                : language === "bm"
+                                    ? "Pesanan terakhir"
+                                    : "Last order"
+                        }
+
+                    </span>
+
+
+                    <strong>
+
+                        ${restaurant.practical.lastOrder}
+
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="info-item"
+                >
+
+                    <span>
+
+                        ${
+                            language === "zh"
+                                ? "停车难度"
+                                : language === "bm"
+                                    ? "Kesukaran parking"
+                                    : "Parking difficulty"
+                        }
+
+                    </span>
+
+
+                    <strong>
+
+                        ${restaurant.practical.parking[language]}
+
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="info-item"
+                >
+
+                    <span>
+
+                        ${
+                            language === "zh"
+                                ? "建议时间"
+                                : language === "bm"
+                                    ? "Masa terbaik"
+                                    : "Best time to visit"
+                        }
+
+                    </span>
+
+
+                    <strong>
+
+                        ${restaurant.practical.bestTime[language]}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="modal-section"
+        >
+
+            <h4>
+
+                🎥
+
+                ${
+                    language === "zh"
+                        ? "创作者覆盖"
+                        : language === "bm"
+                            ? "Liputan pencipta"
+                            : "Creator coverage"
+                }
+
+            </h4>
+
+
+            <p>
+
+                ${restaurant.creatorStatus[language]}
+
+            </p>
+
+        </div>
+
+    `;
+
+
+    const modal =
+        document.getElementById(
+            "restaurantModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.add(
+            "visible"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+},
+
+
+/* =========================
+FORMAT OPENING HOURS
+========================= */
+
+formatOpeningHours(
+    hours
+) {
+
+    if (
+        typeof hours ===
+        "string"
+    ) {
+
+        return hours;
+
+    }
+
+
+    if (
+        !hours ||
+        typeof hours !==
+        "object"
+    ) {
+
+        return "Not yet verified";
+
+    }
+
+
+    const language =
+        this.currentLanguage;
+
+
+    const dayNames = {
+
+        zh: {
+
+            monday: "星期一",
+            tuesday: "星期二",
+            wednesday: "星期三",
+            thursday: "星期四",
+            friday: "星期五",
+            saturday: "星期六",
+            sunday: "星期日"
+
+        },
+
+
+        en: {
+
+            monday: "Monday",
+            tuesday: "Tuesday",
+            wednesday: "Wednesday",
+            thursday: "Thursday",
+            friday: "Friday",
+            saturday: "Saturday",
+            sunday: "Sunday"
+
+        },
+
+
+        bm: {
+
+            monday: "Isnin",
+            tuesday: "Selasa",
+            wednesday: "Rabu",
+            thursday: "Khamis",
+            friday: "Jumaat",
+            saturday: "Sabtu",
+            sunday: "Ahad"
+
+        }
+
+    };
+
+
+    return Object
+        .entries(
+            hours
+        )
+        .map(
+            (
+                [
+                    day,
+                    time
+                ]
+            ) => {
+
+                return `
+
+                    <div>
+
+                        <strong>
+
+                            ${
+                                dayNames[language][day]
+                                ||
+                                day
+                            }
+
+                        </strong>
+
+
+                        <span>
+
+                            ${time}
+
+                        </span>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join(
+            ""
+        );
+
+},
+
+
+/* =========================
+CLOSE MODAL
+========================= */
+
+closeModal() {
+
+    const modal =
+        document.getElementById(
+            "restaurantModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    document.body.style.overflow =
+        "";
+
+},
+
+
+/* =========================
+RESET
+========================= */
+
+reset() {
+
+    const foodInput =
+        document.getElementById(
+            "foodInput"
+        );
+
+
+    if (foodInput) {
+
+        foodInput.value =
+            "";
+
+    }
+
+
+    const resultsSection =
+        document.getElementById(
+            "resultsSection"
+        );
+
+
+    if (resultsSection) {
+
+        resultsSection.classList.remove(
+            "has-results"
+        );
+
+    }
+
+
+    this.restaurants =
+        [];
+
+
+    const grid =
+        document.getElementById(
+            "restaurantGrid"
+        );
+
+
+    if (grid) {
+
+        grid.innerHTML =
+            "";
+
+    }
+
+
+    document
+        .querySelectorAll(
+            ".preference-chip"
+        )
+        .forEach(
+            chip =>
+                chip.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const assistant =
+        document.getElementById(
+            "food-assistant"
+        );
+
+
+    if (assistant) {
+
+        assistant.scrollIntoView(
+            {
+
+                behavior:
+                    "smooth"
+
+            }
+        );
+
+    }
+
+},
+
+
+/* =========================
+LOADING STATE
+========================= */
+
+showLoading() {
+
+    const grid =
+        document.getElementById(
+            "restaurantGrid"
+        );
+
+
+    if (!grid) {
+
+        return;
+
+    }
+
+
+    const language =
+        this.currentLanguage;
+
+
+    grid.innerHTML = `
+
+        <div
+            style="
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 60px 20px;
+            "
+        >
+
+            <h3>
+
+                ${
+                    language === "zh"
+                        ? "Ming 正在调查餐厅资料..."
+                        : language === "bm"
+                            ? "Ming sedang menyiasat restoran..."
+                            : "Ming is investigating restaurants..."
+                }
+
+            </h3>
+
+
+            <p>
+
+                ${
+                    language === "zh"
+                        ? "正在分析你的需求。"
+                        : language === "bm"
+                            ? "Ming sedang menganalisis keperluan anda."
+                            : "Ming is analysing what you are looking for."
+                }
+
+            </p>
+
+        </div>
+
+    `;
+
+},
+
+
+/* =========================
+RESULT SUMMARY
+========================= */
+
+getResultSummary(
+    input
+) {
+
+    const language =
+        this.currentLanguage;
+
+
+    if (
+        language === "zh"
+    ) {
+
+        return `我根据你的情况分析了这次需求：「${input}」`;
+
+    }
+
+
+    if (
+        language === "bm"
+    ) {
+
+        return `Saya menganalisis keperluan anda: “${input}”`;
+
+    }
+
+
+    return `I analysed what you are looking for: “${input}”`;
+
+},
+
+
+/* =========================
+INPUT MESSAGE
+========================= */
+
+showInputMessage() {
+
+    const input =
+        document.getElementById(
+            "foodInput"
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    input.focus();
+
+
+    input.style.boxShadow =
+        "0 0 0 2px var(--accent)";
+
+
+    setTimeout(
+        () => {
+
+            input.style.boxShadow =
+                "";
+
+        },
+        1000
+    );
+
+},
+
+
+/* =========================
+LANGUAGE
+========================= */
+
+cycleLanguage() {
+
+    const languages =
+        [
+
+            "zh",
+
+            "en",
+
+            "bm"
+
+        ];
+
+
+    const currentIndex =
+        languages.indexOf(
+            this.currentLanguage
+        );
+
+
+    const nextIndex =
+        (
+            currentIndex +
+            1
+        )
+        %
+        languages.length;
+
+
+    this.currentLanguage =
+        languages[
+            nextIndex
+        ];
+
+
+    this.applyLanguage();
+
+
+    const resultsSection =
+        document.getElementById(
+            "resultsSection"
+        );
+
+
+    if (
+        resultsSection &&
+        resultsSection.classList.contains(
+            "has-results"
+        )
+    ) {
+
+        this.renderRestaurants();
+
+    }
+
+},
+
+
+applyLanguage() {
+
+    const language =
+        this.currentLanguage;
+
+
+    const dictionary =
+        this.translations[
+            language
+        ];
+
+
+    document
+        .querySelectorAll(
+            "[data-i18n]"
+        )
+        .forEach(
+            element => {
+
+                const key =
+                    element.dataset.i18n;
+
+
+                if (
+                    dictionary[key]
+                ) {
+
+                    element.textContent =
+                        dictionary[key];
+
+                }
+
+            }
+        );
+
+
+    const input =
+        document.getElementById(
+            "foodInput"
+        );
+
+
+    if (input) {
 
         if (
             language ===
             "zh"
         ) {
 
-            return `我根据你的情况分析了这次需求：「${input}」`;
+            input.placeholder =
+                input.dataset.placeholderZh;
+
+        }
+
+
+        if (
+            language ===
+            "en"
+        ) {
+
+            input.placeholder =
+                input.dataset.placeholderEn;
 
         }
 
@@ -3844,217 +3051,22 @@ catch (error) {
             "bm"
         ) {
 
-            return `Saya menganalisis keperluan anda: “${input}”`;
+            input.placeholder =
+                input.dataset.placeholderBm;
 
         }
 
-
-        return `I analysed what you are looking for: “${input}”`;
-
-    },
+    }
 
 
-    /* =====================================================
-       INPUT MESSAGE
-    ===================================================== */
-
-    showInputMessage() {
-
-        const input =
-            document.getElementById(
-                "foodInput"
-            );
-
-
-        if (
-            !input
-        ) {
-
-            return;
-
-        }
-
-
-        input.focus();
-
-
-        input.style.boxShadow =
-            "0 0 0 2px var(--accent)";
-
-
-        setTimeout(
-            () => {
-
-                input.style.boxShadow =
-                    "";
-
-            },
-            1000
+    const languageToggle =
+        document.getElementById(
+            "languageToggle"
         );
 
-    },
 
-
-    /* =====================================================
-       LANGUAGE
-    ===================================================== */
-
-    cycleLanguage() {
-
-        const languages =
-            [
-
-                "zh",
-
-                "en",
-
-                "bm"
-
-            ];
-
-
-        const currentIndex =
-            languages.indexOf(
-                this.currentLanguage
-            );
-
-
-        const nextIndex =
-            (
-
-                currentIndex +
-
-                1
-
-            )
-
-            %
-
-            languages.length;
-
-
-        this.currentLanguage =
-            languages[
-                nextIndex
-            ];
-
-
-        this.applyLanguage();
-
-
-        const resultsSection =
-            document.getElementById(
-                "resultsSection"
-            );
-
-
-        if (
-
-            resultsSection
-
-            &&
-
-            resultsSection.classList.contains(
-                "has-results"
-            )
-
-        ) {
-
-            this.renderRestaurants();
-
-        }
-
-    },
-
-
-    applyLanguage() {
-
-        const language =
-            this.currentLanguage;
-
-
-        const dictionary =
-            this.translations[
-                language
-            ];
-
-
-        document
-            .querySelectorAll(
-                "[data-i18n]"
-            )
-            .forEach(
-                element => {
-
-                    const key =
-                        element.dataset.i18n;
-
-
-                    if (
-                        dictionary[key]
-                    ) {
-
-                        element.textContent =
-                            dictionary[key];
-
-                    }
-
-                }
-            );
-
-
-        const input =
-            document.getElementById(
-                "foodInput"
-            );
-
-
-        if (
-            input
-        ) {
-
-            if (
-                language ===
-                "zh"
-            ) {
-
-                input.placeholder =
-                    input.dataset.placeholderZh;
-
-            }
-
-
-            if (
-                language ===
-                "en"
-            ) {
-
-                input.placeholder =
-                    input.dataset.placeholderEn;
-
-            }
-
-
-            if (
-                language ===
-                "bm"
-            ) {
-
-                input.placeholder =
-                    input.dataset.placeholderBm;
-
-            }
-
-        }
-
-
-        const languageToggle =
-            document.getElementById(
-                "languageToggle"
-            );
-
-
-        const labels = {
+    const labels =
+        {
 
             zh:
                 "中文",
@@ -4068,160 +3080,150 @@ catch (error) {
         };
 
 
-        if (
-            languageToggle
-        ) {
+    if (
+        languageToggle
+    ) {
 
-            const activeLabel =
-                languageToggle.querySelector(
-                    ".language-active"
-                );
+        const activeLabel =
+            languageToggle.querySelector(
+                ".language-active"
+            );
 
 
-            if (
-                activeLabel
-            ) {
+        if (activeLabel) {
 
-                activeLabel.textContent =
-                    labels[
-                        language
-                    ];
-
-            }
+            activeLabel.textContent =
+                labels[language];
 
         }
 
-    },
+    }
+
+},
 
 
-    /* =====================================================
-       DARK MODE
-    ===================================================== */
+/* =========================
+DARK MODE
+========================= */
 
-    toggleTheme() {
+toggleTheme() {
 
-        document.body.classList.toggle(
+    document.body.classList.toggle(
+        "dark-mode"
+    );
+
+
+    const isDark =
+        document.body.classList.contains(
             "dark-mode"
         );
 
 
-        const isDark =
-            document.body.classList.contains(
-                "dark-mode"
-            );
+    this.currentTheme =
+        isDark
+            ? "dark"
+            : "light";
 
 
-        this.currentTheme =
-            isDark
-                ?
-                "dark"
-                :
-                "light";
+    localStorage.setItem(
+        "mingTheme",
+        this.currentTheme
+    );
 
 
-        localStorage.setItem(
-            "mingTheme",
-            this.currentTheme
+    const themeIcon =
+        document.querySelector(
+            ".theme-icon"
         );
 
 
-        const themeIcon =
-            document.querySelector(
-                ".theme-icon"
-            );
+    if (themeIcon) {
+
+        themeIcon.textContent =
+            isDark
+                ? "☀"
+                : "☾";
+
+    }
+
+},
 
 
-        if (
-            themeIcon
-        ) {
+loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "mingTheme"
+        );
+
+
+    const themeIcon =
+        document.querySelector(
+            ".theme-icon"
+        );
+
+
+    if (
+        savedTheme ===
+        "dark"
+    ) {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
+
+
+        this.currentTheme =
+            "dark";
+
+
+        if (themeIcon) {
 
             themeIcon.textContent =
-                isDark
-                    ?
-                    "☀"
-                    :
-                    "☾";
-
-        }
-
-    },
-
-
-    loadTheme() {
-
-        const savedTheme =
-            localStorage.getItem(
-                "mingTheme"
-            );
-
-
-        const themeIcon =
-            document.querySelector(
-                ".theme-icon"
-            );
-
-
-        if (
-            savedTheme ===
-            "dark"
-        ) {
-
-            document.body.classList.add(
-                "dark-mode"
-            );
-
-
-            this.currentTheme =
-                "dark";
-
-
-            if (
-                themeIcon
-            ) {
-
-                themeIcon.textContent =
-                    "☀";
-
-            }
-
-        }
-
-        else {
-
-            document.body.classList.remove(
-                "dark-mode"
-            );
-
-
-            this.currentTheme =
-                "light";
-
-
-            if (
-                themeIcon
-            ) {
-
-                themeIcon.textContent =
-                    "☾";
-
-            }
+                "☀";
 
         }
 
     }
+
+
+    else {
+
+        document.body.classList.remove(
+            "dark-mode"
+        );
+
+
+        this.currentTheme =
+            "light";
+
+
+        if (themeIcon) {
+
+            themeIcon.textContent =
+                "☾";
+
+        }
+
+    }
+
+}
+```
 
 };
 
-
-/* =========================================================
-   START APPLICATION
-========================================================= */
+/* =========================
+START APPLICATION
+========================= */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+"DOMContentLoaded",
+() => {
 
-        MingFoodApp.init();
+```
+    MingFoodApp.init();
 
-    }
+}
+```
+
 );
