@@ -1,28 +1,29 @@
 /* =========================================================
-MING AI FOOD
-REAL SUPABASE DATABASE CONNECTION
+   MING AI FOOD
+   SUPABASE + SMART SEARCH + RESTAURANT MAP
 ========================================================= */
 
-/* =========================
-SUPABASE CONFIGURATION
-========================= */
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
 
 const SUPABASE_URL =
-"https://njbfenzwvocqgnseivje.supabase.co";
+    "https://njbfenzwvocqgnseivje.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_1wisnEH7RnLI7iMwIke45g_9l7LoUSM";
+    "sb_publishable_1wisnEH7RnLI7iMwIke45g_9l7LoUSM";
 
 const supabaseClient =
-window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-/* =========================
-MING FOOD APP
-========================= */
+/* =========================================================
+   MING FOOD APP
+========================================================= */
 
 const MingFoodApp = {
 
@@ -32,12 +33,18 @@ const MingFoodApp = {
 
     restaurants: [],
 
+    allRestaurants: [],
+
     lastSearch: "",
 
+    map: null,
 
-    /* =========================
-    TRANSLATIONS
-    ========================= */
+    mapMarkers: [],
+
+
+    /* =====================================================
+       TRANSLATIONS
+    ===================================================== */
 
     translations: {
 
@@ -491,9 +498,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    INITIALIZATION
-    ========================= */
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
 
     async init() {
 
@@ -502,6 +509,8 @@ const MingFoodApp = {
         this.loadTheme();
 
         this.applyLanguage();
+
+        this.initializeMap();
 
         console.log(
             "Ming AI Food loaded."
@@ -512,22 +521,29 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    DATABASE TEST
-    ========================= */
+    /* =====================================================
+       DATABASE TEST
+    ===================================================== */
 
     async testDatabaseConnection() {
 
         try {
 
             const {
+
                 data,
+
                 error
+
             } =
                 await supabaseClient
                     .from("restaurants")
                     .select("*")
-                    .limit(1);
+                    .eq(
+                        "status",
+                        "approved"
+                    )
+                    .limit(100);
 
 
             if (error) {
@@ -542,9 +558,20 @@ const MingFoodApp = {
             }
 
 
+            this.allRestaurants =
+                data
+                ||
+                [];
+
+
             console.log(
                 "Supabase connected successfully.",
-                data
+                this.allRestaurants
+            );
+
+
+            this.updateMapMarkers(
+                this.allRestaurants
             );
 
         }
@@ -561,9 +588,266 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    EVENT BINDINGS
-    ========================= */
+    /* =====================================================
+       MAP INITIALIZATION
+    ===================================================== */
+
+    initializeMap() {
+
+        const mapElement =
+            document.getElementById(
+                "map"
+            );
+
+
+        if (
+            !mapElement
+        ) {
+
+            console.log(
+                "Map element not found."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            typeof L ===
+            "undefined"
+        ) {
+
+            console.warn(
+                "Leaflet is not loaded."
+            );
+
+            return;
+
+        }
+
+
+        this.map =
+            L.map(
+                "map"
+            ).setView(
+                [
+                    3.1390,
+                    101.6869
+                ],
+                11
+            );
+
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+
+                attribution:
+                    "&copy; OpenStreetMap contributors"
+
+            }
+        ).addTo(
+            this.map
+        );
+
+
+        console.log(
+            "Ming map initialized."
+        );
+
+    },
+
+
+    /* =====================================================
+       MAP MARKERS
+    ===================================================== */
+
+    updateMapMarkers(
+        restaurants
+    ) {
+
+        if (
+            !this.map
+        ) {
+
+            return;
+
+        }
+
+
+        this.mapMarkers.forEach(
+            marker => {
+
+                this.map.removeLayer(
+                    marker
+                );
+
+            }
+        );
+
+
+        this.mapMarkers =
+            [];
+
+
+        const validRestaurants =
+            restaurants.filter(
+                restaurant => {
+
+                    return (
+
+                        restaurant.latitude !== null
+
+                        &&
+
+                        restaurant.longitude !== null
+
+                        &&
+
+                        restaurant.latitude !== ""
+
+                        &&
+
+                        restaurant.longitude !== ""
+
+                        &&
+
+                        !isNaN(
+                            Number(
+                                restaurant.latitude
+                            )
+                        )
+
+                        &&
+
+                        !isNaN(
+                            Number(
+                                restaurant.longitude
+                            )
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (
+            validRestaurants.length ===
+            0
+        ) {
+
+            console.log(
+                "No restaurant coordinates found yet."
+            );
+
+            return;
+
+        }
+
+
+        const bounds =
+            [];
+
+
+        validRestaurants.forEach(
+            restaurant => {
+
+                const latitude =
+                    Number(
+                        restaurant.latitude
+                    );
+
+
+                const longitude =
+                    Number(
+                        restaurant.longitude
+                    );
+
+
+                const marker =
+                    L.marker(
+                        [
+                            latitude,
+                            longitude
+                        ]
+                    ).addTo(
+                        this.map
+                    );
+
+
+                marker.bindPopup(
+
+                    `
+
+                        <strong>
+
+                            ${restaurant.name}
+
+                        </strong>
+
+                        <br>
+
+                        ${restaurant.address}
+
+                        <br><br>
+
+                        <strong>
+
+                            Ming Score:
+
+                        </strong>
+
+                        ${restaurant.overall_score || "N/A"}
+
+                    `
+
+                );
+
+
+                this.mapMarkers.push(
+                    marker
+                );
+
+
+                bounds.push(
+                    [
+                        latitude,
+                        longitude
+                    ]
+                );
+
+            }
+        );
+
+
+        if (
+            bounds.length >
+            0
+        ) {
+
+            this.map.fitBounds(
+                bounds,
+                {
+
+                    padding:
+                        [
+                            40,
+                            40
+                        ]
+
+                }
+            );
+
+        }
+
+    },
+
+
+    /* =====================================================
+       EVENT BINDINGS
+    ===================================================== */
 
     bindEvents() {
 
@@ -573,11 +857,14 @@ const MingFoodApp = {
             );
 
 
-        if (themeToggle) {
+        if (
+            themeToggle
+        ) {
 
             themeToggle.addEventListener(
                 "click",
-                () => this.toggleTheme()
+                () =>
+                    this.toggleTheme()
             );
 
         }
@@ -589,11 +876,14 @@ const MingFoodApp = {
             );
 
 
-        if (languageToggle) {
+        if (
+            languageToggle
+        ) {
 
             languageToggle.addEventListener(
                 "click",
-                () => this.cycleLanguage()
+                () =>
+                    this.cycleLanguage()
             );
 
         }
@@ -605,11 +895,14 @@ const MingFoodApp = {
             );
 
 
-        if (askMingButton) {
+        if (
+            askMingButton
+        ) {
 
             askMingButton.addEventListener(
                 "click",
-                () => this.askMing()
+                () =>
+                    this.askMing()
             );
 
         }
@@ -621,11 +914,14 @@ const MingFoodApp = {
             );
 
 
-        if (resetButton) {
+        if (
+            resetButton
+        ) {
 
             resetButton.addEventListener(
                 "click",
-                () => this.reset()
+                () =>
+                    this.reset()
             );
 
         }
@@ -637,11 +933,14 @@ const MingFoodApp = {
             );
 
 
-        if (modalClose) {
+        if (
+            modalClose
+        ) {
 
             modalClose.addEventListener(
                 "click",
-                () => this.closeModal()
+                () =>
+                    this.closeModal()
             );
 
         }
@@ -653,11 +952,13 @@ const MingFoodApp = {
             );
 
 
-        if (restaurantModal) {
+        if (
+            restaurantModal
+        ) {
 
             restaurantModal.addEventListener(
                 "click",
-                (event) => {
+                event => {
 
                     if (
                         event.target.id ===
@@ -679,7 +980,7 @@ const MingFoodApp = {
                 ".preference-chip"
             )
             .forEach(
-                (chip) => {
+                chip => {
 
                     chip.addEventListener(
                         "click",
@@ -720,7 +1021,9 @@ const MingFoodApp = {
                                 );
 
 
-                            if (!input) {
+                            if (
+                                !input
+                            ) {
 
                                 return;
 
@@ -733,8 +1036,14 @@ const MingFoodApp = {
 
                             input.value =
                                 current
-                                    ? `${current} ${messages[preference]}`
-                                    : messages[preference];
+
+                                    ?
+
+                                    `${current} ${messages[preference]}`
+
+                                    :
+
+                                    messages[preference];
 
                         }
                     );
@@ -749,20 +1058,31 @@ const MingFoodApp = {
             );
 
 
-        if (foodInput) {
+        if (
+            foodInput
+        ) {
 
             foodInput.addEventListener(
                 "keydown",
-                (event) => {
+                event => {
 
                     if (
+
                         (
-                            event.metaKey ||
+
+                            event.metaKey
+
+                            ||
+
                             event.ctrlKey
+
                         )
+
                         &&
+
                         event.key ===
                         "Enter"
+
                     ) {
 
                         this.askMing();
@@ -777,9 +1097,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    ASK MING
-    ========================= */
+    /* =====================================================
+       ASK MING
+    ===================================================== */
 
     async askMing() {
 
@@ -789,7 +1109,9 @@ const MingFoodApp = {
             );
 
 
-        if (!inputElement) {
+        if (
+            !inputElement
+        ) {
 
             console.error(
                 "foodInput element not found."
@@ -804,7 +1126,9 @@ const MingFoodApp = {
             inputElement.value.trim();
 
 
-        if (!input) {
+        if (
+            !input
+        ) {
 
             this.showInputMessage();
 
@@ -817,19 +1141,15 @@ const MingFoodApp = {
             input;
 
 
-        const resultsSection =
-            document.getElementById(
-                "resultsSection"
-            );
-
-
         const resultSummary =
             document.getElementById(
                 "resultSummary"
             );
 
 
-        if (resultSummary) {
+        if (
+            resultSummary
+        ) {
 
             resultSummary.textContent =
                 this.getResultSummary(
@@ -855,7 +1175,29 @@ const MingFoodApp = {
         this.renderRestaurants();
 
 
-        if (resultsSection) {
+        this.updateMapMarkers(
+            restaurants
+                .map(
+                    restaurant =>
+                        this.findOriginalRestaurant(
+                            restaurant.id
+                        )
+                )
+                .filter(
+                    Boolean
+                )
+        );
+
+
+        const resultsSection =
+            document.getElementById(
+                "resultsSection"
+            );
+
+
+        if (
+            resultsSection
+        ) {
 
             resultsSection.classList.add(
                 "has-results"
@@ -886,9 +1228,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    SEARCH SUPABASE
-    ========================= */
+    /* =====================================================
+       SEARCH RESTAURANTS
+    ===================================================== */
 
     async searchRestaurants(
         input
@@ -897,8 +1239,11 @@ const MingFoodApp = {
         try {
 
             const {
+
                 data,
+
                 error
+
             } =
                 await supabaseClient
                     .from("restaurants")
@@ -907,10 +1252,12 @@ const MingFoodApp = {
                         "status",
                         "approved"
                     )
-                    .limit(50);
+                    .limit(100);
 
 
-            if (error) {
+            if (
+                error
+            ) {
 
                 console.error(
                     "Restaurant query failed:",
@@ -923,8 +1270,10 @@ const MingFoodApp = {
 
 
             if (
-                !data ||
-                data.length === 0
+                !data
+                ||
+                data.length ===
+                0
             ) {
 
                 return [];
@@ -945,7 +1294,8 @@ const MingFoodApp = {
 
                     const uniqueKey =
                         `${restaurant.name}-${restaurant.address}`
-                            .toLowerCase();
+                            .toLowerCase()
+                            .trim();
 
 
                     if (
@@ -980,7 +1330,8 @@ const MingFoodApp = {
                     )
                     .filter(
                         word =>
-                            word.length > 1
+                            word.length >
+                            1
                     );
 
 
@@ -1027,17 +1378,11 @@ const MingFoodApp = {
                             );
 
 
-                            if (
-                                restaurant.cuisine &&
-                                searchText.includes(
-                                    restaurant.cuisine.toLowerCase()
-                                )
-                            ) {
-
-                                score +=
-                                    30;
-
-                            }
+                            score +=
+                                this.calculateCuisineScore(
+                                    restaurant,
+                                    input
+                                );
 
 
                             score +=
@@ -1049,13 +1394,19 @@ const MingFoodApp = {
 
                             score +=
                                 (
+
                                     Number(
                                         restaurant.overall_score
                                     )
+
                                     ||
+
                                     0
+
                                 )
+
                                 *
+
                                 2;
 
 
@@ -1080,10 +1431,12 @@ const MingFoodApp = {
 
 
             return scoredRestaurants
+
                 .slice(
                     0,
                     6
                 )
+
                 .map(
                     item =>
                         this.normalizeRestaurant(
@@ -1093,7 +1446,9 @@ const MingFoodApp = {
 
         }
 
-        catch (error) {
+        catch (
+            error
+        ) {
 
             console.error(
                 "Search error:",
@@ -1107,9 +1462,152 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    PREFERENCE INTELLIGENCE
-    ========================= */
+    /* =====================================================
+       CUISINE MATCHING
+    ===================================================== */
+
+    calculateCuisineScore(
+        restaurant,
+        input
+    ) {
+
+        const text =
+            input.toLowerCase();
+
+
+        const cuisine =
+            (
+
+                restaurant.cuisine
+
+                ||
+
+                ""
+
+            )
+                .toLowerCase();
+
+
+        const cuisineZh =
+            (
+
+                restaurant.cuisine_zh
+
+                ||
+
+                ""
+
+            )
+                .toLowerCase();
+
+
+        let score =
+            0;
+
+
+        const matches = {
+
+            chinese: [
+
+                "chinese",
+
+                "中餐",
+
+                "华人",
+
+                "华人料理",
+
+                "cantonese",
+
+                "粤菜"
+
+            ],
+
+            indian: [
+
+                "indian",
+
+                "印度",
+
+                "印度菜"
+
+            ],
+
+            malaysian: [
+
+                "malaysian",
+
+                "malay",
+
+                "马来",
+
+                "马来西亚",
+
+                "melayu"
+
+            ]
+
+        };
+
+
+        Object
+            .entries(
+                matches
+            )
+            .forEach(
+                (
+                    [
+                        category,
+                        keywords
+                    ]
+                ) => {
+
+                    const userMentioned =
+                        keywords.some(
+                            keyword =>
+                                text.includes(
+                                    keyword
+                                )
+                        );
+
+
+                    if (
+                        userMentioned
+                    ) {
+
+                        if (
+
+                            cuisine.includes(
+                                category
+                            )
+
+                            ||
+
+                            cuisineZh.includes(
+                                category
+                            )
+
+                        ) {
+
+                            score +=
+                                40;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        return score;
+
+    },
+
+
+    /* =====================================================
+       PREFERENCE INTELLIGENCE
+    ===================================================== */
 
     calculatePreferenceScore(
         restaurant,
@@ -1126,26 +1624,28 @@ const MingFoodApp = {
 
         const parkingDifficulty =
             (
+
                 restaurant.parking_difficulty
+
                 ||
+
                 ""
-            ).toLowerCase();
+
+            )
+                .toLowerCase();
 
 
         const parkingNotes =
             (
+
                 restaurant.parking_notes
-                ||
-                ""
-            ).toLowerCase();
 
-
-        const cuisine =
-            (
-                restaurant.cuisine
                 ||
+
                 ""
-            ).toLowerCase();
+
+            )
+                .toLowerCase();
 
 
         const searchableText =
@@ -1164,40 +1664,38 @@ const MingFoodApp = {
                 .toLowerCase();
 
 
-        if (
-            text.includes("辣")
-            ||
-            text.includes("spicy")
-            ||
-            text.includes("pedas")
-        ) {
-
-            if (
-                searchableText.includes("spicy")
-                ||
-                searchableText.includes("辣")
-                ||
-                searchableText.includes("pedas")
-            ) {
-
-                score +=
-                    20;
-
-            }
-
-        }
-
+        /* BUDGET */
 
         if (
-            text.includes("便宜")
+
+            text.includes(
+                "便宜"
+            )
+
             ||
-            text.includes("budget")
+
+            text.includes(
+                "budget"
+            )
+
             ||
-            text.includes("cheap")
+
+            text.includes(
+                "cheap"
+            )
+
             ||
-            text.includes("affordable")
+
+            text.includes(
+                "affordable"
+            )
+
             ||
-            text.includes("bajet")
+
+            text.includes(
+                "bajet"
+            )
+
         ) {
 
             const priceMax =
@@ -1209,139 +1707,269 @@ const MingFoodApp = {
 
 
             if (
-                priceMax <= 50
+                priceMax <=
+                50
             ) {
 
                 score +=
-                    30;
+                    35;
+
+            }
+
+            else if (
+                priceMax <=
+                100
+            ) {
+
+                score +=
+                    10;
 
             }
 
         }
 
 
+        /* PARKING */
+
         if (
-            text.includes("停车")
+
+            text.includes(
+                "停车"
+            )
+
             ||
-            text.includes("parking")
+
+            text.includes(
+                "parking"
+            )
+
             ||
-            text.includes("parking mudah")
+
+            text.includes(
+                "parking mudah"
+            )
+
+            ||
+
+            text.includes(
+                "parking senang"
+            )
+
         ) {
 
             if (
-                parkingDifficulty.includes("easy")
+
+                parkingDifficulty.includes(
+                    "easy"
+                )
+
                 ||
-                parkingNotes.includes("easy")
+
+                parkingNotes.includes(
+                    "easy"
+                )
+
                 ||
-                parkingNotes.includes("structured")
+
+                parkingNotes.includes(
+                    "structured"
+                )
+
             ) {
 
                 score +=
-                    30;
+                    35;
 
             }
 
 
             if (
-                parkingDifficulty.includes("difficult")
+
+                parkingDifficulty.includes(
+                    "difficult"
+                )
+
             ) {
 
                 score -=
-                    20;
+                    25;
 
             }
 
         }
 
 
+        /* FAMILY */
+
         if (
-            text.includes("家庭")
+
+            text.includes(
+                "家庭"
+            )
+
             ||
-            text.includes("家人")
+
+            text.includes(
+                "家人"
+            )
+
             ||
-            text.includes("family")
+
+            text.includes(
+                "family"
+            )
+
             ||
-            text.includes("keluarga")
+
+            text.includes(
+                "keluarga"
+            )
+
         ) {
 
             if (
-                searchableText.includes("family")
+
+                searchableText.includes(
+                    "family"
+                )
+
                 ||
-                searchableText.includes("group")
+
+                searchableText.includes(
+                    "group"
+                )
+
                 ||
-                searchableText.includes("家庭")
+
+                searchableText.includes(
+                    "家庭"
+                )
+
                 ||
-                searchableText.includes("keluarga")
+
+                searchableText.includes(
+                    "keluarga"
+                )
+
+            ) {
+
+                score +=
+                    25;
+
+            }
+
+        }
+
+
+        /* HALAL */
+
+        if (
+
+            text.includes(
+                "halal"
+            )
+
+            ||
+
+            text.includes(
+                "清真"
+            )
+
+            ||
+
+            text.includes(
+                "穆斯林"
+            )
+
+            ||
+
+            text.includes(
+                "muslim"
+            )
+
+        ) {
+
+            const halal =
+                (
+
+                    restaurant.halal_status
+
+                    ||
+
+                    ""
+
+                )
+                    .toLowerCase();
+
+
+            if (
+                halal ===
+                "halal"
+            ) {
+
+                score +=
+                    50;
+
+            }
+
+
+            if (
+                halal ===
+                "not_halal"
+            ) {
+
+                score -=
+                    50;
+
+            }
+
+        }
+
+
+        /* SPICY */
+
+        if (
+
+            text.includes(
+                "辣"
+            )
+
+            ||
+
+            text.includes(
+                "spicy"
+            )
+
+            ||
+
+            text.includes(
+                "pedas"
+            )
+
+        ) {
+
+            if (
+
+                searchableText.includes(
+                    "spicy"
+                )
+
+                ||
+
+                searchableText.includes(
+                    "辣"
+                )
+
+                ||
+
+                searchableText.includes(
+                    "pedas"
+                )
+
             ) {
 
                 score +=
                     20;
-
-            }
-
-        }
-
-
-        if (
-            text.includes("chinese")
-            ||
-            text.includes("中餐")
-            ||
-            text.includes("华人")
-            ||
-            text.includes("cantonese")
-            ||
-            text.includes("粤菜")
-        ) {
-
-            if (
-                cuisine.includes("chinese")
-                ||
-                cuisine.includes("cantonese")
-            ) {
-
-                score +=
-                    30;
-
-            }
-
-        }
-
-
-        if (
-            text.includes("indian")
-            ||
-            text.includes("印度")
-        ) {
-
-            if (
-                cuisine.includes("indian")
-            ) {
-
-                score +=
-                    30;
-
-            }
-
-        }
-
-
-        if (
-            text.includes("malay")
-            ||
-            text.includes("马来")
-            ||
-            text.includes("melayu")
-        ) {
-
-            if (
-                cuisine.includes("malaysian")
-                ||
-                cuisine.includes("malay")
-            ) {
-
-                score +=
-                    30;
 
             }
 
@@ -1353,9 +1981,30 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    NORMALIZE DATABASE DATA
-    ========================= */
+    /* =====================================================
+       FIND ORIGINAL DATABASE RECORD
+    ===================================================== */
+
+    findOriginalRestaurant(
+        id
+    ) {
+
+        return this.allRestaurants.find(
+            restaurant =>
+                String(
+                    restaurant.id
+                ) ===
+                String(
+                    id
+                )
+        );
+
+    },
+
+
+    /* =====================================================
+       NORMALIZE DATABASE DATA
+    ===================================================== */
 
     normalizeRestaurant(
         restaurant
@@ -1590,6 +2239,7 @@ const MingFoodApp = {
                 hours:
                     openingHours,
 
+
                 lastOrder:
                     restaurant.last_order_time
                     ||
@@ -1619,7 +2269,7 @@ const MingFoodApp = {
                         "Ming is collecting more information",
 
                     bm:
-                        "Ming sedang mengumpul lebih banyak maklumat"
+                        "Ming sedang mengumpul更多资料"
 
                 }
 
@@ -1644,9 +2294,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    ARRAY HELPER
-    ========================= */
+    /* =====================================================
+       ARRAY HELPER
+    ===================================================== */
 
     convertToArray(
         value
@@ -1664,8 +2314,10 @@ const MingFoodApp = {
 
 
         if (
+
             typeof value ===
             "string"
+
         ) {
 
             try {
@@ -1691,13 +2343,16 @@ const MingFoodApp = {
             catch {
 
                 return value
+
                     .split(
                         ","
                     )
+
                     .map(
                         item =>
                             item.trim()
                     )
+
                     .filter(
                         Boolean
                     );
@@ -1716,9 +2371,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    RENDER RESTAURANTS
-    ========================= */
+    /* =====================================================
+       RENDER RESTAURANTS
+    ===================================================== */
 
     renderRestaurants() {
 
@@ -1728,7 +2383,9 @@ const MingFoodApp = {
             );
 
 
-        if (!grid) {
+        if (
+            !grid
+        ) {
 
             return;
 
@@ -1740,8 +2397,14 @@ const MingFoodApp = {
 
 
         if (
-            !this.restaurants ||
-            this.restaurants.length === 0
+
+            !this.restaurants
+
+            ||
+
+            this.restaurants.length ===
+            0
+
         ) {
 
             grid.innerHTML = `
@@ -1757,11 +2420,26 @@ const MingFoodApp = {
                     <h3>
 
                         ${
-                            language === "zh"
-                                ? "暂时找不到完全符合的餐厅"
-                                : language === "bm"
-                                    ? "Tiada restoran yang sepadan buat masa ini"
-                                    : "No matching restaurants found yet"
+                            language ===
+                            "zh"
+
+                                ?
+
+                            "暂时找不到完全符合的餐厅"
+
+                                :
+
+                            language ===
+                            "bm"
+
+                                ?
+
+                            "Tiada restoran yang sepadan buat masa ini"
+
+                                :
+
+                            "No matching restaurants found yet"
+
                         }
 
                     </h3>
@@ -1770,11 +2448,26 @@ const MingFoodApp = {
                     <p>
 
                         ${
-                            language === "zh"
-                                ? "我们正在不断增加马来西亚的餐厅资料。"
-                                : language === "bm"
-                                    ? "Kami sedang menambah lebih banyak restoran di Malaysia."
-                                    : "We are continuously adding more restaurants across Malaysia."
+                            language ===
+                            "zh"
+
+                                ?
+
+                            "我们正在不断增加马来西亚的餐厅资料。"
+
+                                :
+
+                            language ===
+                            "bm"
+
+                                ?
+
+                            "Kami sedang menambah lebih banyak restoran di Malaysia."
+
+                                :
+
+                            "We are continuously adding more restaurants across Malaysia."
+
                         }
 
                     </p>
@@ -1789,7 +2482,9 @@ const MingFoodApp = {
 
 
         grid.innerHTML =
+
             this.restaurants
+
                 .map(
                     restaurant => {
 
@@ -1807,6 +2502,7 @@ const MingFoodApp = {
                                         src="${restaurant.image}"
                                         alt="${restaurant.name[language]}"
                                         loading="lazy"
+                                        onerror="this.src='images/featured-ramen.jpg'"
                                     >
 
                                 </div>
@@ -1879,11 +2575,26 @@ const MingFoodApp = {
                                             >
 
                                                 ${
-                                                    language === "zh"
-                                                        ? "综合判断"
-                                                        : language === "bm"
-                                                            ? "Analisis keseluruhan"
-                                                            : "Overall analysis"
+                                                    language ===
+                                                    "zh"
+
+                                                        ?
+
+                                                    "综合判断"
+
+                                                        :
+
+                                                    language ===
+                                                    "bm"
+
+                                                        ?
+
+                                                    "Analisis keseluruhan"
+
+                                                        :
+
+                                                    "Overall analysis"
+
                                                 }
 
                                             </span>
@@ -1908,11 +2619,26 @@ const MingFoodApp = {
                                     >
 
                                         ${
-                                            language === "zh"
-                                                ? "查看 Ming 分析 →"
-                                                : language === "bm"
-                                                    ? "Lihat analisis Ming →"
-                                                    : "View Ming's analysis →"
+                                            language ===
+                                            "zh"
+
+                                                ?
+
+                                            "查看 Ming 分析 →"
+
+                                                :
+
+                                            language ===
+                                            "bm"
+
+                                                ?
+
+                                            "Lihat analisis Ming →"
+
+                                                :
+
+                                            "View Ming's analysis →"
+
                                         }
 
                                     </button>
@@ -1925,6 +2651,7 @@ const MingFoodApp = {
 
                     }
                 )
+
                 .join(
                     ""
                 );
@@ -1932,9 +2659,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    OPEN RESTAURANT MODAL
-    ========================= */
+    /* =====================================================
+       OPEN RESTAURANT MODAL
+    ===================================================== */
 
     openRestaurant(
         id
@@ -1995,7 +2722,9 @@ const MingFoodApp = {
             );
 
 
-        if (!content) {
+        if (
+            !content
+        ) {
 
             return;
 
@@ -2038,11 +2767,26 @@ const MingFoodApp = {
                 <h3>
 
                     ${
-                        language === "zh"
-                            ? "值得考虑"
-                            : language === "bm"
-                                ? "Berbaloi dipertimbangkan"
-                                : "Worth considering"
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "值得考虑"
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "Berbaloi dipertimbangkan"
+
+                            :
+
+                        "Worth considering"
+
                     }
 
                 </h3>
@@ -2064,11 +2808,26 @@ const MingFoodApp = {
                 <h4>
 
                     ${
-                        language === "zh"
-                            ? "👍 大家常常喜欢"
-                            : language === "bm"
-                                ? "👍 Perkara yang sering dipuji"
-                                : "👍 What people consistently like"
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "👍 大家常常喜欢"
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "👍 Perkara yang sering dipuji"
+
+                            :
+
+                        "👍 What people consistently like"
+
                     }
 
                 </h4>
@@ -2092,11 +2851,26 @@ const MingFoodApp = {
                 <h4>
 
                     ${
-                        language === "zh"
-                            ? "👎 常见问题"
-                            : language === "bm"
-                                ? "👎 Aduan biasa"
-                                : "👎 Common complaints"
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "👎 常见问题"
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "👎 Aduan biasa"
+
+                            :
+
+                        "👎 Common complaints"
+
                     }
 
                 </h4>
@@ -2119,12 +2893,29 @@ const MingFoodApp = {
 
                 <h4>
 
+                    📍
+
                     ${
-                        language === "zh"
-                            ? "📍 本地实用信息"
-                            : language === "bm"
-                                ? "📍 Maklumat tempatan"
-                                : "📍 Local intelligence"
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "本地实用信息"
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "Maklumat tempatan"
+
+                            :
+
+                        "Local intelligence"
+
                     }
 
                 </h4>
@@ -2141,11 +2932,26 @@ const MingFoodApp = {
                         <span>
 
                             ${
-                                language === "zh"
-                                    ? "营业时间"
-                                    : language === "bm"
-                                        ? "Waktu operasi"
-                                        : "Opening hours"
+                                language ===
+                                "zh"
+
+                                    ?
+
+                                "营业时间"
+
+                                    :
+
+                                language ===
+                                "bm"
+
+                                    ?
+
+                                "Waktu operasi"
+
+                                    :
+
+                                "Opening hours"
+
                             }
 
                         </span>
@@ -2169,11 +2975,26 @@ const MingFoodApp = {
                         <span>
 
                             ${
-                                language === "zh"
-                                    ? "最后点餐"
-                                    : language === "bm"
-                                        ? "Pesanan terakhir"
-                                        : "Last order"
+                                language ===
+                                "zh"
+
+                                    ?
+
+                                "最后点餐"
+
+                                    :
+
+                                language ===
+                                "bm"
+
+                                    ?
+
+                                "Pesanan terakhir"
+
+                                    :
+
+                                "Last order"
+
                             }
 
                         </span>
@@ -2195,11 +3016,26 @@ const MingFoodApp = {
                         <span>
 
                             ${
-                                language === "zh"
-                                    ? "停车难度"
-                                    : language === "bm"
-                                        ? "Kesukaran parking"
-                                        : "Parking difficulty"
+                                language ===
+                                "zh"
+
+                                    ?
+
+                                "停车难度"
+
+                                    :
+
+                                language ===
+                                "bm"
+
+                                    ?
+
+                                "Kesukaran parking"
+
+                                    :
+
+                                "Parking difficulty"
+
                             }
 
                         </span>
@@ -2221,11 +3057,26 @@ const MingFoodApp = {
                         <span>
 
                             ${
-                                language === "zh"
-                                    ? "建议时间"
-                                    : language === "bm"
-                                        ? "Masa terbaik"
-                                        : "Best time to visit"
+                                language ===
+                                "zh"
+
+                                    ?
+
+                                "建议时间"
+
+                                    :
+
+                                language ===
+                                "bm"
+
+                                    ?
+
+                                "Masa terbaik"
+
+                                    :
+
+                                "Best time to visit"
+
                             }
 
                         </span>
@@ -2253,11 +3104,26 @@ const MingFoodApp = {
                     🎥
 
                     ${
-                        language === "zh"
-                            ? "创作者覆盖"
-                            : language === "bm"
-                                ? "Liputan pencipta"
-                                : "Creator coverage"
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "创作者覆盖"
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "Liputan pencipta"
+
+                            :
+
+                        "Creator coverage"
+
                     }
 
                 </h4>
@@ -2280,11 +3146,14 @@ const MingFoodApp = {
             );
 
 
-        if (modal) {
+        if (
+            modal
+        ) {
 
             modal.classList.add(
                 "visible"
             );
+
 
             document.body.style.overflow =
                 "hidden";
@@ -2294,17 +3163,19 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    FORMAT OPENING HOURS
-    ========================= */
+    /* =====================================================
+       FORMAT OPENING HOURS
+    ===================================================== */
 
     formatOpeningHours(
         hours
     ) {
 
         if (
+
             typeof hours ===
             "string"
+
         ) {
 
             return hours;
@@ -2313,9 +3184,14 @@ const MingFoodApp = {
 
 
         if (
-            !hours ||
+
+            !hours
+
+            ||
+
             typeof hours !==
             "object"
+
         ) {
 
             return "Not yet verified";
@@ -2332,11 +3208,17 @@ const MingFoodApp = {
             zh: {
 
                 monday: "星期一",
+
                 tuesday: "星期二",
+
                 wednesday: "星期三",
+
                 thursday: "星期四",
+
                 friday: "星期五",
+
                 saturday: "星期六",
+
                 sunday: "星期日"
 
             },
@@ -2345,11 +3227,17 @@ const MingFoodApp = {
             en: {
 
                 monday: "Monday",
+
                 tuesday: "Tuesday",
+
                 wednesday: "Wednesday",
+
                 thursday: "Thursday",
+
                 friday: "Friday",
+
                 saturday: "Saturday",
+
                 sunday: "Sunday"
 
             },
@@ -2358,11 +3246,17 @@ const MingFoodApp = {
             bm: {
 
                 monday: "Isnin",
+
                 tuesday: "Selasa",
+
                 wednesday: "Rabu",
+
                 thursday: "Khamis",
+
                 friday: "Jumaat",
+
                 saturday: "Sabtu",
+
                 sunday: "Ahad"
 
             }
@@ -2416,9 +3310,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    CLOSE MODAL
-    ========================= */
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
 
     closeModal() {
 
@@ -2428,7 +3322,9 @@ const MingFoodApp = {
             );
 
 
-        if (modal) {
+        if (
+            modal
+        ) {
 
             modal.classList.remove(
                 "visible"
@@ -2443,9 +3339,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    RESET
-    ========================= */
+    /* =====================================================
+       RESET
+    ===================================================== */
 
     reset() {
 
@@ -2455,7 +3351,9 @@ const MingFoodApp = {
             );
 
 
-        if (foodInput) {
+        if (
+            foodInput
+        ) {
 
             foodInput.value =
                 "";
@@ -2469,7 +3367,9 @@ const MingFoodApp = {
             );
 
 
-        if (resultsSection) {
+        if (
+            resultsSection
+        ) {
 
             resultsSection.classList.remove(
                 "has-results"
@@ -2488,7 +3388,9 @@ const MingFoodApp = {
             );
 
 
-        if (grid) {
+        if (
+            grid
+        ) {
 
             grid.innerHTML =
                 "";
@@ -2508,13 +3410,20 @@ const MingFoodApp = {
             );
 
 
+        this.updateMapMarkers(
+            this.allRestaurants
+        );
+
+
         const assistant =
             document.getElementById(
                 "food-assistant"
             );
 
 
-        if (assistant) {
+        if (
+            assistant
+        ) {
 
             assistant.scrollIntoView(
                 {
@@ -2530,9 +3439,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    LOADING STATE
-    ========================= */
+    /* =====================================================
+       LOADING STATE
+    ===================================================== */
 
     showLoading() {
 
@@ -2542,7 +3451,9 @@ const MingFoodApp = {
             );
 
 
-        if (!grid) {
+        if (
+            !grid
+        ) {
 
             return;
 
@@ -2566,11 +3477,26 @@ const MingFoodApp = {
                 <h3>
 
                     ${
-                        language === "zh"
-                            ? "Ming 正在调查餐厅资料..."
-                            : language === "bm"
-                                ? "Ming sedang menyiasat restoran..."
-                                : "Ming is investigating restaurants..."
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "Ming 正在调查餐厅资料..."
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "Ming sedang menyiasat restoran..."
+
+                            :
+
+                        "Ming is investigating restaurants..."
+
                     }
 
                 </h3>
@@ -2579,11 +3505,26 @@ const MingFoodApp = {
                 <p>
 
                     ${
-                        language === "zh"
-                            ? "正在分析你的需求。"
-                            : language === "bm"
-                                ? "Ming sedang menganalisis keperluan anda."
-                                : "Ming is analysing what you are looking for."
+                        language ===
+                        "zh"
+
+                            ?
+
+                        "正在分析你的需求。"
+
+                            :
+
+                        language ===
+                        "bm"
+
+                            ?
+
+                        "Ming sedang menganalisis keperluan anda."
+
+                            :
+
+                        "Ming is analysing what you are looking for."
+
                     }
 
                 </p>
@@ -2595,9 +3536,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    RESULT SUMMARY
-    ========================= */
+    /* =====================================================
+       RESULT SUMMARY
+    ===================================================== */
 
     getResultSummary(
         input
@@ -2608,7 +3549,8 @@ const MingFoodApp = {
 
 
         if (
-            language === "zh"
+            language ===
+            "zh"
         ) {
 
             return `我根据你的情况分析了这次需求：「${input}」`;
@@ -2617,7 +3559,8 @@ const MingFoodApp = {
 
 
         if (
-            language === "bm"
+            language ===
+            "bm"
         ) {
 
             return `Saya menganalisis keperluan anda: “${input}”`;
@@ -2630,9 +3573,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    INPUT MESSAGE
-    ========================= */
+    /* =====================================================
+       INPUT MESSAGE
+    ===================================================== */
 
     showInputMessage() {
 
@@ -2642,7 +3585,9 @@ const MingFoodApp = {
             );
 
 
-        if (!input) {
+        if (
+            !input
+        ) {
 
             return;
 
@@ -2669,9 +3614,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    LANGUAGE
-    ========================= */
+    /* =====================================================
+       LANGUAGE
+    ===================================================== */
 
     cycleLanguage() {
 
@@ -2695,10 +3640,15 @@ const MingFoodApp = {
 
         const nextIndex =
             (
+
                 currentIndex +
+
                 1
+
             )
+
             %
+
             languages.length;
 
 
@@ -2718,10 +3668,15 @@ const MingFoodApp = {
 
 
         if (
-            resultsSection &&
+
+            resultsSection
+
+            &&
+
             resultsSection.classList.contains(
                 "has-results"
             )
+
         ) {
 
             this.renderRestaurants();
@@ -2773,7 +3728,9 @@ const MingFoodApp = {
             );
 
 
-        if (input) {
+        if (
+            input
+        ) {
 
             if (
                 language ===
@@ -2816,19 +3773,18 @@ const MingFoodApp = {
             );
 
 
-        const labels =
-            {
+        const labels = {
 
-                zh:
-                    "中文",
+            zh:
+                "中文",
 
-                en:
-                    "EN",
+            en:
+                "EN",
 
-                bm:
-                    "BM"
+            bm:
+                "BM"
 
-            };
+        };
 
 
         if (
@@ -2841,10 +3797,14 @@ const MingFoodApp = {
                 );
 
 
-            if (activeLabel) {
+            if (
+                activeLabel
+            ) {
 
                 activeLabel.textContent =
-                    labels[language];
+                    labels[
+                        language
+                    ];
 
             }
 
@@ -2853,9 +3813,9 @@ const MingFoodApp = {
     },
 
 
-    /* =========================
-    DARK MODE
-    ========================= */
+    /* =====================================================
+       DARK MODE
+    ===================================================== */
 
     toggleTheme() {
 
@@ -2872,8 +3832,10 @@ const MingFoodApp = {
 
         this.currentTheme =
             isDark
-                ? "dark"
-                : "light";
+                ?
+                "dark"
+                :
+                "light";
 
 
         localStorage.setItem(
@@ -2888,12 +3850,16 @@ const MingFoodApp = {
             );
 
 
-        if (themeIcon) {
+        if (
+            themeIcon
+        ) {
 
             themeIcon.textContent =
                 isDark
-                    ? "☀"
-                    : "☾";
+                    ?
+                    "☀"
+                    :
+                    "☾";
 
         }
 
@@ -2928,7 +3894,9 @@ const MingFoodApp = {
                 "dark";
 
 
-            if (themeIcon) {
+            if (
+                themeIcon
+            ) {
 
                 themeIcon.textContent =
                     "☀";
@@ -2936,7 +3904,6 @@ const MingFoodApp = {
             }
 
         }
-
 
         else {
 
@@ -2949,7 +3916,9 @@ const MingFoodApp = {
                 "light";
 
 
-            if (themeIcon) {
+            if (
+                themeIcon
+            ) {
 
                 themeIcon.textContent =
                     "☾";
@@ -2963,9 +3932,9 @@ const MingFoodApp = {
 };
 
 
-/* =========================
-START APPLICATION
-========================= */
+/* =========================================================
+   START APPLICATION
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
