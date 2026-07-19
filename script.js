@@ -3208,7 +3208,6 @@ loadTheme() {
     }
 
 }
-```
 
 };
 
@@ -3220,10 +3219,8 @@ document.addEventListener(
 "DOMContentLoaded",
 () => {
 
-```
     MingFoodApp.init();
 
 }
-```
 
 );
