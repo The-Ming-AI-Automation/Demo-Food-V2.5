@@ -1,617 +1,467 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="zh-CN">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Ming AI Food</title>
+```
+<title>Ming AI Food — Discover Food You Love</title>
 
-    <link rel="stylesheet" href="style.css">
+<meta name="description" content="Ming AI Food helps you decide where to eat using real reviews, local knowledge, creator coverage and AI-powered food intelligence.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+```
 
 </head>
 
-
 <body>
 
+```
+<!-- NAVIGATION -->
 
-    <!-- NAVIGATION -->
+<header class="navbar">
 
-    <header class="navbar">
+    <a href="#" class="brand">
+        <div class="brand-mark">M</div>
+        <span>Ming AI Food</span>
+    </a>
 
-        <a href="#" class="brand">
+    <nav class="nav-links">
+        <a href="#discover" data-i18n="navDiscover">发现美食</a>
+        <a href="#how-it-works" data-i18n="navHow">如何运作</a>
+        <a href="#trust" data-i18n="navTrust">真实评价</a>
+    </nav>
 
-            <div class="brand-icon">
-                M
+    <div class="nav-actions">
+
+        <button class="language-toggle" id="languageToggle" aria-label="Change language">
+            <span class="language-active">中文</span>
+            <span class="language-divider">/</span>
+            <span>EN</span>
+            <span class="language-divider">/</span>
+            <span>BM</span>
+        </button>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <span class="theme-icon">☾</span>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<main>
+
+    <section class="hero" id="discover">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                <span data-i18n="eyebrow">马来西亚本地美食智能</span>
             </div>
 
-            <span>
-                Ming AI Food
-            </span>
+            <h1>
+                <span data-i18n="heroLineOne">Discover</span>
+                <span class="hero-accent" data-i18n="heroLineTwo">food you love.</span>
+            </h1>
 
-        </a>
+            <p class="hero-description" data-i18n="heroDescription">
+                不只是评分。Ming 帮你了解一家餐厅真正值不值得去。
+            </p>
 
+            <div class="hero-actions">
 
-        <nav class="nav-links">
+                <a href="#food-assistant" class="primary-button">
+                    <span data-i18n="heroButton">开始探索</span>
+                    <span class="button-arrow">→</span>
+                </a>
 
-            <a href="#discover" data-i18n="navDiscover">
-                Discover
-            </a>
-
-            <a href="#trending" data-i18n="navTrending">
-                Trending
-            </a>
-
-            <a href="#how-it-works" data-i18n="navHow">
-                How it works
-            </a>
-
-        </nav>
-
-
-        <div class="nav-right">
-
-
-            <!-- LANGUAGE SELECTOR -->
-
-            <div class="language-selector">
-
-                <button
-                    class="language-button"
-                    id="languageButton"
-                >
-                    EN ▾
-                </button>
-
-
-                <div
-                    class="language-menu"
-                    id="languageMenu"
-                >
-
-                    <button data-language="en">
-                        🇬🇧 English
-                    </button>
-
-                    <button data-language="zh">
-                        🇨🇳 中文
-                    </button>
-
-                    <button data-language="ms">
-                        🇲🇾 Bahasa Melayu
-                    </button>
-
-                </div>
+                <a href="#how-it-works" class="secondary-button" data-i18n="heroSecondary">
+                    了解 Ming
+                </a>
 
             </div>
-
-
-            <!-- DARK MODE -->
-
-            <button
-                class="theme-button"
-                id="themeToggle"
-                aria-label="Toggle dark mode"
-                title="Toggle dark mode"
-            >
-                ☼
-            </button>
-
-
-            <a
-                href="#demo"
-                class="demo-button"
-                data-i18n="tryDemo"
-            >
-                Try the demo ↗
-            </a>
 
         </div>
 
-    </header>
+        <div class="hero-visual">
 
+            <div class="floating-card card-review">
 
-    <!-- MAIN -->
+                <div class="floating-card-top">
+                    <span class="small-label">MING INTELLIGENCE</span>
+                    <span class="status-dot"></span>
+                </div>
 
-    <main>
+                <div class="review-score">
+                    <strong>82</strong>
+                    <span>/100</span>
+                </div>
 
-
-        <!-- HERO -->
-
-        <section
-            class="hero"
-            id="discover"
-        >
-
-            <div class="hero-content">
-
-
-                <p
-                    class="eyebrow"
-                    data-i18n="heroEyebrow"
-                >
-                    AI-POWERED FOOD DISCOVERY
+                <p data-i18n="heroCardText">
+                    不只是好吃。真正值得去。
                 </p>
-
-
-                <h1 data-i18n="heroTitle">
-
-                    Discover food
-                    <br>
-
-                    <span>
-                        you'll love.
-                    </span>
-
-                </h1>
-
-
-                <p
-                    class="hero-description"
-                    data-i18n="heroDescription"
-                >
-
-                    Find your next favourite meal with a little help
-                    from AI.
-
-                </p>
-
-
-                <a
-                    href="#demo"
-                    class="hero-button"
-                    data-i18n="startDiscovering"
-                >
-                    Start discovering ↗
-                </a>
 
             </div>
 
+            <div class="hero-food-card">
 
-            <div class="hero-image">
+                <div class="food-card-image">
+                    <img src="images/featured-ramen.jpg" alt="Featured food">
+                </div>
 
-                <img
-                    src="featured-ramen.jpg"
-                    alt="Featured food"
-                >
+                <div class="food-card-overlay"></div>
 
-            </div>
+                <div class="food-card-content">
 
-        </section>
+                    <div class="food-card-tag" data-i18n="featuredTag">
+                        MING'S PICK
+                    </div>
 
+                    <h3 data-i18n="featuredTitle">
+                        今天，吃点好的。
+                    </h3>
 
-        <!-- TRENDING -->
-
-        <section
-            class="content-section"
-            id="trending"
-        >
-
-            <div class="section-header">
-
-                <div>
-
-                    <p
-                        class="section-label"
-                        data-i18n="trendingLabel"
-                    >
-                        TRENDING NOW
+                    <p data-i18n="featuredDescription">
+                        根据真实评价、你的喜好和当地情况。
                     </p>
-
-
-                    <h2 data-i18n="trendingTitle">
-                        What people are craving
-                    </h2>
 
                 </div>
 
-
-                <a
-                    href="#"
-                    data-i18n="seeAll"
-                >
-                    See all →
-                </a>
-
             </div>
 
+        </div>
 
-            <div class="food-grid">
-
-
-                <article class="food-card">
-
-                    <img
-                        src="featured-ramen.jpg"
-                        alt="Ramen"
-                    >
-
-                    <div class="food-card-content">
-
-                        <span data-i18n="japanese">
-                            Japanese
-                        </span>
+    </section>
 
 
-                        <h3 data-i18n="ramenTitle">
-                            Rich Tonkotsu Ramen
-                        </h3>
+    <!-- FOOD ASSISTANT -->
 
-                    </div>
+    <section class="assistant-section" id="food-assistant">
 
-                </article>
+        <div class="section-heading">
 
-
-                <article class="food-card">
-
-                    <img
-                        src="featured-sushi.jpg"
-                        alt="Sushi"
-                    >
-
-                    <div class="food-card-content">
-
-                        <span data-i18n="japanese">
-                            Japanese
-                        </span>
-
-
-                        <h3 data-i18n="sushiTitle">
-                            Fresh Sushi
-                        </h3>
-
-                    </div>
-
-                </article>
-
-
-                <article class="food-card">
-
-                    <img
-                        src="featured-matcha.jpg"
-                        alt="Matcha"
-                    >
-
-                    <div class="food-card-content">
-
-                        <span data-i18n="japanese">
-                            Japanese
-                        </span>
-
-
-                        <h3 data-i18n="matchaTitle">
-                            Premium Matcha
-                        </h3>
-
-                    </div>
-
-                </article>
-
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                <span data-i18n="assistantEyebrow">ASK MING</span>
             </div>
 
-        </section>
-
-
-        <!-- HOW IT WORKS -->
-
-        <section
-            class="how-section"
-            id="how-it-works"
-        >
-
-            <p
-                class="section-label"
-                data-i18n="howLabel"
-            >
-                HOW IT WORKS
-            </p>
-
-
-            <h2 data-i18n="howTitle">
-
-                Your next favourite meal
-                <br>
-
-                is closer than you think.
-
+            <h2 data-i18n="assistantTitle">
+                今天想吃什么？
             </h2>
 
-        </section>
+            <p data-i18n="assistantDescription">
+                告诉 Ming 你真正想要的。我们不只是给你一个评分。
+            </p>
+
+        </div>
 
 
-        <!-- DEMO -->
+        <div class="assistant-box">
 
-        <section
-            class="demo-section"
-            id="demo"
-        >
-
-            <div class="demo-content">
-
-                <p
-                    class="section-label"
-                    data-i18n="readyLabel"
-                >
-                    READY TO EXPLORE?
-                </p>
-
-
-                <h2 data-i18n="demoTitle">
-
-                    Let AI help you
-                    <br>
-
-                    find something delicious.
-
-                </h2>
-
-            </div>
-
-
-            <button
-                class="demo-button-large"
-                id="openFoodDemo"
-                data-i18n="tryDemo"
-            >
-                Try the demo ↗
-            </button>
-
-        </section>
-
-
-        <!-- FOOD MODAL -->
-
-        <div
-            class="food-modal"
-            id="foodModal"
-        >
-
-            <div class="food-modal-overlay"></div>
-
-
-            <div class="food-modal-card">
-
-
-                <button
-                    class="close-modal"
-                    id="closeFoodDemo"
-                >
-                    ×
-                </button>
-
-
-                <div class="food-modal-header">
-
-
-                    <p
-                        class="section-label"
-                        data-i18n="modalBrand"
-                    >
-                        MING AI FOOD
-                    </p>
-
-
-                    <h2 data-i18n="modalTitle">
-
-                        What are you
-                        <br>
-
-                        craving today?
-
-                    </h2>
-
-
-                    <p data-i18n="modalDescription">
-
-                        Tell Ming AI what you're in the mood for.
-                        There are no wrong answers.
-
-                    </p>
-
-                </div>
-
-
-                <!-- SUGGESTIONS -->
-
-                <div class="food-suggestions">
-
-
-                    <button
-                        class="suggestion-button"
-                        data-i18n="warm"
-                    >
-                        🍜 Something warm
-                    </button>
-
-
-                    <button
-                        class="suggestion-button"
-                        data-i18n="spicy"
-                    >
-                        🌶️ Something spicy
-                    </button>
-
-
-                    <button
-                        class="suggestion-button"
-                        data-i18n="indulgent"
-                    >
-                        🍔 Something indulgent
-                    </button>
-
-
-                    <button
-                        class="suggestion-button"
-                        data-i18n="healthy"
-                    >
-                        🥗 Something healthy
-                    </button>
-
-                </div>
-
+            <div class="assistant-input-wrapper">
 
                 <textarea
                     id="foodInput"
-                    placeholder="Example: I'm tired, it's raining and I want something warm and comforting..."
-                ></textarea>
+                    rows="3"
+                    data-placeholder-zh="例如：我在怡保，想吃点好的，带爸妈，预算每人 RM50，停车方便一点。"
+                    data-placeholder-en="Example: I am in Ipoh, want something good, bringing my parents, RM50 per person, easy parking."
+                    data-placeholder-bm="Contoh: Saya di Ipoh, nak makan sedap dengan ibu bapa, bajet RM50 seorang, parking senang."
+                    placeholder="例如：我在怡保，想吃点好的，带爸妈，预算每人 RM50，停车方便一点。">
+                </textarea>
 
+                <div class="input-bottom">
 
-                <button
-                    class="find-food-button"
-                    id="findFoodButton"
-                    data-i18n="askMingAI"
-                >
-                    Ask Ming AI ✨
-                </button>
+                    <span class="input-hint" data-i18n="inputHint">
+                        Ming 会分析你的情况
+                    </span>
 
-
-                <!-- LOADING -->
-
-                <div
-                    class="food-loading"
-                    id="foodLoading"
-                >
-
-                    <div class="loading-dots">
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </div>
-
-
-                    <p data-i18n="loadingText">
-                        Ming AI is thinking about food...
-                    </p>
-
-                </div>
-
-
-                <!-- RESULT -->
-
-                <div
-                    class="food-result"
-                    id="foodResult"
-                >
-
-
-                    <div class="result-icon">
-                        🍜
-                    </div>
-
-
-                    <p
-                        class="result-label"
-                        data-i18n="recommendationLabel"
-                    >
-                        MING AI RECOMMENDS
-                    </p>
-
-
-                    <h3 id="resultTitle">
-                        Spicy Tonkotsu Ramen
-                    </h3>
-
-
-                    <p
-                        id="resultDescription"
-                        data-i18n="resultDescription"
-                    >
-                        A rich, warming bowl of ramen with a spicy kick.
-                    </p>
-
-
-                    <div class="result-reasons">
-
-                        <span data-i18n="warmReason">
-                            ✓ Warm
-                        </span>
-
-                        <span data-i18n="comfortingReason">
-                            ✓ Comforting
-                        </span>
-
-                        <span data-i18n="flavourReason">
-                            ✓ Full of flavour
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        class="nearby-food-button"
-                        id="nearbyFoodButton"
-                        data-i18n="nearbyButton"
-                    >
-                        📍 Find this near me
+                    <button class="ask-button" id="askMingButton">
+                        <span>✦</span>
+                        <span data-i18n="askMing">问 Ming</span>
                     </button>
 
-
-                    <!-- MAP -->
-
-                    <div
-                        class="map-container"
-                        id="mapContainer"
-                    >
-
-                        <iframe
-                            id="foodMap"
-                            title="Nearby food map"
-                            loading="lazy"
-                        ></iframe>
-
-                    </div>
-
-
                 </div>
 
             </div>
 
+
+            <div class="quick-preferences">
+
+                <span class="quick-label" data-i18n="quickLabel">
+                    或者告诉 Ming：
+                </span>
+
+                <button class="preference-chip" data-preference="spicy">
+                    🌶️ <span data-i18n="chipSpicy">辣一点</span>
+                </button>
+
+                <button class="preference-chip" data-preference="comfort">
+                    🍜 <span data-i18n="chipComfort">热乎乎的</span>
+                </button>
+
+                <button class="preference-chip" data-preference="budget">
+                    💰 <span data-i18n="chipBudget">便宜一点</span>
+                </button>
+
+                <button class="preference-chip" data-preference="family">
+                    👨‍👩‍👧‍👦 <span data-i18n="chipFamily">适合一家人</span>
+                </button>
+
+                <button class="preference-chip" data-preference="parking">
+                    🅿️ <span data-i18n="chipParking">停车方便</span>
+                </button>
+
+            </div>
+
         </div>
 
-    </main>
+    </section>
 
 
-    <!-- FOOTER -->
+    <!-- RESULT SECTION -->
 
-    <footer>
+    <section class="results-section" id="resultsSection">
+
+        <div class="results-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    <span data-i18n="resultsEyebrow">MING'S RECOMMENDATION</span>
+                </div>
+
+                <h2 data-i18n="resultsTitle">
+                    我觉得你应该看看这些。
+                </h2>
+
+                <p id="resultSummary" data-i18n="resultSummary">
+                    不是简单按照评分排序，而是根据你的情况。
+                </p>
+
+            </div>
+
+            <button class="reset-button" id="resetButton" data-i18n="resetButton">
+                重新开始
+            </button>
+
+        </div>
 
 
-        <div class="brand">
+        <div class="restaurant-grid" id="restaurantGrid">
 
-            <div class="brand-icon">
-                M
+            <!-- Generated by JavaScript -->
+
+        </div>
+
+    </section>
+
+
+    <!-- TRUST SECTION -->
+
+    <section class="trust-section" id="trust">
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                <span data-i18n="trustEyebrow">BEYOND THE RATING</span>
+            </div>
+
+            <h2 data-i18n="trustTitle">
+                不只是看评分。
+            </h2>
+
+            <p data-i18n="trustDescription">
+                Ming 帮你了解一家餐厅真正的样子。
+            </p>
+
+        </div>
+
+
+        <div class="trust-grid">
+
+            <div class="trust-card">
+
+                <div class="trust-icon">✦</div>
+
+                <h3 data-i18n="trustCardOneTitle">
+                    Review Consensus
+                </h3>
+
+                <p data-i18n="trustCardOneText">
+                    AI 阅读多个评价，找出大家真正反复提到的优点和问题。
+                </p>
+
             </div>
 
 
-            <span>
-                Ming AI Food
-            </span>
+            <div class="trust-card">
+
+                <div class="trust-icon">◎</div>
+
+                <h3 data-i18n="trustCardTwoTitle">
+                    Creator Coverage
+                </h3>
+
+                <p data-i18n="trustCardTwoText">
+                    看看哪些创作者去过，以及是否公开了付费或赠送餐食。
+                </p>
+
+            </div>
+
+
+            <div class="trust-card">
+
+                <div class="trust-icon">⌖</div>
+
+                <h3 data-i18n="trustCardThreeTitle">
+                    Local Intelligence
+                </h3>
+
+                <p data-i18n="trustCardThreeText">
+                    停车、拥挤时间、最后点餐时间，以及真正实用的本地建议。
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="how-section" id="how-it-works">
+
+        <div class="section-heading centered">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                <span data-i18n="howEyebrow">HOW MING THINKS</span>
+            </div>
+
+            <h2 data-i18n="howTitle">
+                From craving to confidence.
+            </h2>
 
         </div>
 
 
-        <p data-i18n="footerDescription">
-            Discover something delicious.
+        <div class="steps">
+
+            <div class="step">
+
+                <span class="step-number">01</span>
+
+                <h3 data-i18n="stepOneTitle">
+                    Tell Ming
+                </h3>
+
+                <p data-i18n="stepOneText">
+                    告诉 Ming 你的心情、预算、地点和你真正想吃的东西。
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <span class="step-number">02</span>
+
+                <h3 data-i18n="stepTwoTitle">
+                    Ming investigates
+                </h3>
+
+                <p data-i18n="stepTwoText">
+                    分析评价、常见优缺点、创作者内容和本地实用信息。
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <span class="step-number">03</span>
+
+                <h3 data-i18n="stepThreeTitle">
+                    You decide
+                </h3>
+
+                <p data-i18n="stepThreeText">
+                    不再盲目跟风。你知道为什么值得去，或者为什么应该避开。
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-brand">
+
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>Ming AI Food</span>
+        </div>
+
+        <p data-i18n="footerText">
+            Don't just read the rating. Ask Ming.
         </p>
 
+    </div>
 
-        <span>
-            © 2026 Ming AI Automations
+    <div class="footer-bottom">
+
+        <span>© 2026 Ming AI Food</span>
+
+        <span data-i18n="footerDisclaimer">
+            Built for better food decisions in Malaysia.
         </span>
 
-    </footer>
+    </div>
+
+</footer>
 
 
-    <script src="script.js"></script>
+<!-- RESTAURANT MODAL -->
+
+<div class="modal-overlay" id="restaurantModal">
+
+    <div class="restaurant-modal">
+
+        <button class="modal-close" id="modalClose">×</button>
+
+        <div id="modalContent">
+
+            <!-- Generated by JavaScript -->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+```
 
 </body>
-
 </html>
