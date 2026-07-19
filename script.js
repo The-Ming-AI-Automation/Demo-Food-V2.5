@@ -25,7 +25,7 @@ MING FOOD APP
 
 const MingFoodApp = {
 
-```
+
 currentLanguage: "zh",
 
 currentTheme: "light",
