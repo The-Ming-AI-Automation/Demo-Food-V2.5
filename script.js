@@ -1,3 +1,32 @@
+/* =========================================================
+   MING AI FOOD
+   REAL SUPABASE DATABASE CONNECTION
+========================================================= */
+
+
+/* =========================
+   SUPABASE CONFIGURATION
+========================= */
+
+const SUPABASE_URL =
+    "https://njbfenzwvocqgnseivje.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_1wisnEH7RnLI7iMwIke45g_9l7LoUSM";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================
+   MING FOOD APP
+========================= */
+
 const MingFoodApp = {
 
 
@@ -7,501 +36,10 @@ const MingFoodApp = {
     currentTheme: "light",
 
 
-    restaurants: [
+    restaurants: [],
 
 
-        {
-
-
-            id: "restaurant-a",
-
-
-            name: {
-
-                zh: "老街胡椒猪肚汤",
-
-                en: "Old Street Pepper Soup",
-
-                bm: "Sup Lada Jalan Lama"
-
-            },
-
-
-            location: {
-
-                zh: "怡保 · 旧街场",
-
-                en: "Ipoh · Old Town",
-
-                bm: "Ipoh · Old Town"
-
-            },
-
-
-            image: "images/featured-ramen.jpg",
-
-
-            tag: {
-
-                zh: "最适合你的情况",
-
-                en: "BEST MATCH FOR YOU",
-
-                bm: "PALING SESUAI UNTUK ANDA"
-
-            },
-
-
-            score: 86,
-
-
-            verdict: {
-
-                zh: "如果你想吃热乎乎的东西，而且希望一家人都吃得舒服，我会优先考虑这里。",
-
-                en: "If you want something comforting and want the whole family to eat comfortably, this would be one of my first choices.",
-
-                bm: "Kalau anda mahukan makanan yang panas dan selesa untuk seisi keluarga, ini antara pilihan pertama saya."
-
-            },
-
-
-            positives: {
-
-                zh: [
-
-                    "汤底和招牌菜经常被顾客称赞",
-
-                    "适合一家人一起吃",
-
-                    "整体价格相对合理"
-
-                ],
-
-                en: [
-
-                    "Signature dishes are frequently praised",
-
-                    "Suitable for family dining",
-
-                    "Generally reasonable value"
-
-                ],
-
-                bm: [
-
-                    "Hidangan istimewa sering dipuji",
-
-                    "Sesuai untuk makan bersama keluarga",
-
-                    "Nilai keseluruhan agak berpatutan"
-
-                ]
-
-            },
-
-
-            negatives: {
-
-                zh: [
-
-                    "晚餐高峰期可能需要等待",
-
-                    "周末停车比较困难"
-
-                ],
-
-                en: [
-
-                    "Waiting times may increase during dinner peak hours",
-
-                    "Parking can be difficult on weekends"
-
-                ],
-
-                bm: [
-
-                    "Masa menunggu mungkin lebih lama waktu makan malam",
-
-                    "Parking boleh menjadi sukar pada hujung minggu"
-
-                ]
-
-            },
-
-
-            practical: {
-
-                hours: "11:00 – 22:00",
-
-                lastOrder: "21:15",
-
-
-                parking: {
-
-                    zh: "中等难度",
-
-                    en: "Moderate difficulty",
-
-                    bm: "Kesukaran sederhana"
-
-                },
-
-
-                bestTime: {
-
-                    zh: "建议 17:30 前到达",
-
-                    en: "Arrive before 5:30 PM",
-
-                    bm: "Datang sebelum 5:30 petang"
-
-                }
-
-            },
-
-
-            creatorStatus: {
-
-                zh: "3 位创作者曾经介绍过",
-
-                en: "Covered by 3 creators",
-
-                bm: "Pernah diliputi oleh 3 pencipta kandungan"
-
-            }
-
-        },
-
-
-        {
-
-
-            id: "restaurant-b",
-
-
-            name: {
-
-                zh: "南方炭烧鸡饭",
-
-                en: "Southern Charcoal Chicken Rice",
-
-                bm: "Nasi Ayam Arang Selatan"
-
-            },
-
-
-            location: {
-
-                zh: "怡保 · 市中心",
-
-                en: "Ipoh · City Centre",
-
-                bm: "Ipoh · Pusat Bandar"
-
-            },
-
-
-            image: "images/featured-ramen.jpg",
-
-
-            tag: {
-
-                zh: "食物评价最高",
-
-                en: "BEST FOOD CONSENSUS",
-
-                bm: "KONSENSUS MAKANAN TERBAIK"
-
-            },
-
-
-            score: 91,
-
-
-            verdict: {
-
-                zh: "食物本身可能是这几家里面最强的，但停车和等待时间是你需要考虑的问题。",
-
-                en: "The food may be the strongest of the group, but parking and waiting time are the main trade-offs.",
-
-                bm: "Makanannya mungkin yang terbaik dalam senarai ini, tetapi parking dan masa menunggu perlu dipertimbangkan."
-
-            },
-
-
-            positives: {
-
-                zh: [
-
-                    "鸡肉和招牌酱料评价非常稳定",
-
-                    "许多顾客认为味道值得专程前往",
-
-                    "价格相对亲民"
-
-                ],
-
-                en: [
-
-                    "Chicken and signature sauce receive consistently strong praise",
-
-                    "Many customers consider it worth travelling for",
-
-                    "Generally affordable"
-
-                ],
-
-                bm: [
-
-                    "Ayam dan sos istimewa menerima pujian konsisten",
-
-                    "Ramai pelanggan rasa berbaloi untuk datang khas",
-
-                    "Harga secara umum berpatutan"
-
-                ]
-
-            },
-
-
-            negatives: {
-
-                zh: [
-
-                    "高峰期排队问题较明显",
-
-                    "附近停车位有限"
-
-                ],
-
-                en: [
-
-                    "Queues are more noticeable during peak periods",
-
-                    "Limited parking nearby"
-
-                ],
-
-                bm: [
-
-                    "Beratur lebih ketara pada waktu puncak",
-
-                    "Tempat parking berdekatan terhad"
-
-                ]
-
-            },
-
-
-            practical: {
-
-                hours: "10:30 – 21:30",
-
-                lastOrder: "20:45",
-
-
-                parking: {
-
-                    zh: "困难",
-
-                    en: "Difficult",
-
-                    bm: "Sukar"
-
-                },
-
-
-                bestTime: {
-
-                    zh: "避开 12:00 – 14:00",
-
-                    en: "Avoid 12:00 – 2:00 PM",
-
-                    bm: "Elakkan 12:00 – 2:00 petang"
-
-                }
-
-            },
-
-
-            creatorStatus: {
-
-                zh: "5 位创作者曾经介绍过",
-
-                en: "Covered by 5 creators",
-
-                bm: "Pernah diliputi oleh 5 pencipta kandungan"
-
-            }
-
-        },
-
-
-        {
-
-
-            id: "restaurant-c",
-
-
-            name: {
-
-                zh: "阿姨家常面馆",
-
-                en: "Auntie's Home Noodles",
-
-                bm: "Mi Homemade Auntie"
-
-            },
-
-
-            location: {
-
-                zh: "怡保 · 新城区",
-
-                en: "Ipoh · New Town",
-
-                bm: "Ipoh · New Town"
-
-            },
-
-
-            image: "images/featured-ramen.jpg",
-
-
-            tag: {
-
-                zh: "最划算",
-
-                en: "BEST VALUE",
-
-                bm: "NILAI TERBAIK"
-
-            },
-
-
-            score: 79,
-
-
-            verdict: {
-
-                zh: "如果你的预算有限，这里可能是最安全的选择，但食物质量的评价没有前两家那么一致。",
-
-                en: "If budget is your priority, this may be the safest choice, although food consistency is more mixed.",
-
-                bm: "Jika bajet ialah keutamaan anda, ini mungkin pilihan paling selamat walaupun konsistensi makanan agak bercampur."
-
-            },
-
-
-            positives: {
-
-                zh: [
-
-                    "价格非常亲民",
-
-                    "份量整体令人满意",
-
-                    "适合简单快速用餐"
-
-                ],
-
-                en: [
-
-                    "Very affordable",
-
-                    "Portions are generally satisfying",
-
-                    "Good for a simple meal"
-
-                ],
-
-                bm: [
-
-                    "Sangat berpatutan",
-
-                    "Hidangan secara umum memuaskan",
-
-                    "Sesuai untuk makan ringkas"
-
-                ]
-
-            },
-
-
-            negatives: {
-
-                zh: [
-
-                    "不同日期的食物质量可能有差异",
-
-                    "整体体验比较简单"
-
-                ],
-
-                en: [
-
-                    "Food consistency can vary",
-
-                    "The overall experience is fairly basic"
-
-                ],
-
-                bm: [
-
-                    "Konsistensi makanan boleh berubah",
-
-                    "Pengalaman keseluruhan agak ringkas"
-
-                ]
-
-            },
-
-
-            practical: {
-
-                hours: "09:00 – 20:30",
-
-                lastOrder: "20:00",
-
-
-                parking: {
-
-                    zh: "相对容易",
-
-                    en: "Relatively easy",
-
-                    bm: "Agak mudah"
-
-                },
-
-
-                bestTime: {
-
-                    zh: "午餐前或下午",
-
-                    en: "Before lunch or in the afternoon",
-
-                    bm: "Sebelum makan tengah hari atau waktu petang"
-
-                }
-
-            },
-
-
-            creatorStatus: {
-
-                zh: "1 位创作者曾经介绍过",
-
-                en: "Covered by 1 creator",
-
-                bm: "Pernah diliputi oleh 1 pencipta kandungan"
-
-            }
-
-        }
-
-    ],
+    lastSearch: "",
 
 
     translations: {
@@ -525,7 +63,8 @@ const MingFoodApp = {
             heroLineTwo: "food you love.",
 
 
-            heroDescription: "不只是评分。Ming 帮你了解一家餐厅真正值不值得去。",
+            heroDescription:
+                "不只是评分。Ming 帮你了解一家餐厅真正值不值得去。",
 
 
             heroButton: "开始探索",
@@ -533,101 +72,164 @@ const MingFoodApp = {
             heroSecondary: "了解 Ming",
 
 
-            heroCardText: "不只是好吃。真正值得去。",
+            heroCardText:
+                "不只是好吃。真正值得去。",
 
 
-            featuredTag: "MING'S PICK",
-
-            featuredTitle: "今天，吃点好的。",
-
-            featuredDescription: "根据真实评价、你的喜好和当地情况。",
+            featuredTag:
+                "MING'S PICK",
 
 
-            assistantEyebrow: "ASK MING",
-
-            assistantTitle: "今天想吃什么？",
-
-            assistantDescription: "告诉 Ming 你真正想要的。我们不只是给你一个评分。",
+            featuredTitle:
+                "今天，吃点好的。",
 
 
-            inputHint: "Ming 会分析你的情况",
-
-            askMing: "问 Ming",
-
-
-            quickLabel: "或者告诉 Ming：",
+            featuredDescription:
+                "根据真实评价、你的喜好和当地情况。",
 
 
-            chipSpicy: "辣一点",
-
-            chipComfort: "热乎乎的",
-
-            chipBudget: "便宜一点",
-
-            chipFamily: "适合一家人",
-
-            chipParking: "停车方便",
+            assistantEyebrow:
+                "ASK MING",
 
 
-            emptyResultsTitle: "Your next meal starts here.",
-
-            emptyResultsText: "告诉 Ming 你想吃什么，我们从那里开始调查。",
-
-
-            resultsEyebrow: "MING'S RECOMMENDATION",
-
-            resultsTitle: "我觉得你应该看看这些。",
-
-            resultSummary: "不是简单按照评分排序，而是根据你的情况。",
-
-            resetButton: "重新开始",
+            assistantTitle:
+                "今天想吃什么？",
 
 
-            trustEyebrow: "BEYOND THE RATING",
-
-            trustTitle: "不只是看评分。",
-
-            trustDescription: "Ming 帮你了解一家餐厅真正的样子。",
+            assistantDescription:
+                "告诉 Ming 你真正想要的。我们不只是给你一个评分。",
 
 
-            trustCardOneTitle: "Review Consensus",
-
-            trustCardOneText: "AI 阅读多个评价，找出大家真正反复提到的优点和问题。",
-
-
-            trustCardTwoTitle: "Creator Coverage",
-
-            trustCardTwoText: "看看哪些创作者去过，以及是否公开了付费或赠送餐食。",
+            inputHint:
+                "Ming 会分析你的情况",
 
 
-            trustCardThreeTitle: "Local Intelligence",
-
-            trustCardThreeText: "停车、拥挤时间、最后点餐时间，以及真正实用的本地建议。",
-
-
-            howEyebrow: "HOW MING THINKS",
-
-            howTitle: "From craving to confidence.",
+            askMing:
+                "问 Ming",
 
 
-            stepOneTitle: "Tell Ming",
-
-            stepOneText: "告诉 Ming 你的心情、预算、地点和你真正想吃的东西。",
-
-
-            stepTwoTitle: "Ming investigates",
-
-            stepTwoText: "分析评价、常见优缺点、创作者内容和本地实用信息。",
+            quickLabel:
+                "或者告诉 Ming：",
 
 
-            stepThreeTitle: "You decide",
+            chipSpicy:
+                "辣一点",
 
-            stepThreeText: "不再盲目跟风。你知道为什么值得去，或者为什么应该避开。",
+
+            chipComfort:
+                "热乎乎的",
 
 
-            footerText: "Don't just read the rating. Ask Ming.",
+            chipBudget:
+                "便宜一点",
 
-            footerDisclaimer: "Built for better food decisions in Malaysia."
+
+            chipFamily:
+                "适合一家人",
+
+
+            chipParking:
+                "停车方便",
+
+
+            emptyResultsTitle:
+                "Your next meal starts here.",
+
+
+            emptyResultsText:
+                "告诉 Ming 你想吃什么，我们从那里开始调查。",
+
+
+            resultsEyebrow:
+                "MING'S RECOMMENDATION",
+
+
+            resultsTitle:
+                "我觉得你应该看看这些。",
+
+
+            resultSummary:
+                "不是简单按照评分排序，而是根据你的情况。",
+
+
+            resetButton:
+                "重新开始",
+
+
+            trustEyebrow:
+                "BEYOND THE RATING",
+
+
+            trustTitle:
+                "不只是看评分。",
+
+
+            trustDescription:
+                "Ming 帮你了解一家餐厅真正的样子。",
+
+
+            trustCardOneTitle:
+                "Review Consensus",
+
+
+            trustCardOneText:
+                "AI 阅读多个评价，找出大家真正反复提到的优点和问题。",
+
+
+            trustCardTwoTitle:
+                "Creator Coverage",
+
+
+            trustCardTwoText:
+                "看看哪些创作者去过，以及是否公开了付费或赠送餐食。",
+
+
+            trustCardThreeTitle:
+                "Local Intelligence",
+
+
+            trustCardThreeText:
+                "停车、拥挤时间、最后点餐时间，以及真正实用的本地建议。",
+
+
+            howEyebrow:
+                "HOW MING THINKS",
+
+
+            howTitle:
+                "From craving to confidence.",
+
+
+            stepOneTitle:
+                "Tell Ming",
+
+
+            stepOneText:
+                "告诉 Ming 你的心情、预算、地点和你真正想吃的东西。",
+
+
+            stepTwoTitle:
+                "Ming investigates",
+
+
+            stepTwoText:
+                "分析评价、常见优缺点、创作者内容和本地实用信息。",
+
+
+            stepThreeTitle:
+                "You decide",
+
+
+            stepThreeText:
+                "不再盲目跟风。你知道为什么值得去，或者为什么应该避开。",
+
+
+            footerText:
+                "Don't just read the rating. Ask Ming.",
+
+
+            footerDisclaimer:
+                "Built for better food decisions in Malaysia."
 
         },
 
@@ -635,124 +237,200 @@ const MingFoodApp = {
         en: {
 
 
-            navDiscover: "Discover",
+            navDiscover:
+                "Discover",
 
-            navHow: "How it works",
 
-            navTrust: "Real opinions",
+            navHow:
+                "How it works",
 
 
-            eyebrow: "LOCAL FOOD INTELLIGENCE FOR MALAYSIA",
+            navTrust:
+                "Real opinions",
 
 
-            heroLineOne: "Discover",
+            eyebrow:
+                "LOCAL FOOD INTELLIGENCE FOR MALAYSIA",
 
-            heroLineTwo: "food you love.",
 
+            heroLineOne:
+                "Discover",
 
-            heroDescription: "Not just ratings. Ming helps you understand whether a restaurant is actually worth going to.",
 
+            heroLineTwo:
+                "food you love.",
 
-            heroButton: "Start exploring",
 
-            heroSecondary: "How Ming works",
+            heroDescription:
+                "Not just ratings. Ming helps you understand whether a restaurant is actually worth going to.",
 
 
-            heroCardText: "Not just good food. Actually worth going.",
+            heroButton:
+                "Start exploring",
 
 
-            featuredTag: "MING'S PICK",
+            heroSecondary:
+                "How Ming works",
 
-            featuredTitle: "Eat something good today.",
 
-            featuredDescription: "Based on real opinions, your preferences and local context.",
+            heroCardText:
+                "Not just good food. Actually worth going.",
 
 
-            assistantEyebrow: "ASK MING",
+            featuredTag:
+                "MING'S PICK",
 
-            assistantTitle: "What do you feel like eating?",
 
-            assistantDescription: "Tell Ming what you actually want. We do more than show you a rating.",
+            featuredTitle:
+                "Eat something good today.",
 
 
-            inputHint: "Ming will understand your situation",
+            featuredDescription:
+                "Based on real opinions, your preferences and local context.",
 
-            askMing: "Ask Ming",
 
+            assistantEyebrow:
+                "ASK MING",
 
-            quickLabel: "Or tell Ming:",
 
+            assistantTitle:
+                "What do you feel like eating?",
 
-            chipSpicy: "Something spicy",
 
-            chipComfort: "Something comforting",
+            assistantDescription:
+                "Tell Ming what you actually want. We do more than show you a rating.",
 
-            chipBudget: "Keep it affordable",
 
-            chipFamily: "Family-friendly",
+            inputHint:
+                "Ming will understand your situation",
 
-            chipParking: "Easy parking",
 
+            askMing:
+                "Ask Ming",
 
-            emptyResultsTitle: "Your next meal starts here.",
 
-            emptyResultsText: "Tell Ming what you feel like eating and we'll investigate from there.",
+            quickLabel:
+                "Or tell Ming:",
 
 
-            resultsEyebrow: "MING'S RECOMMENDATION",
+            chipSpicy:
+                "Something spicy",
 
-            resultsTitle: "I think you should look at these.",
 
-            resultSummary: "Not simply ranked by rating — matched to your situation.",
+            chipComfort:
+                "Something comforting",
 
-            resetButton: "Start over",
 
+            chipBudget:
+                "Keep it affordable",
 
-            trustEyebrow: "BEYOND THE RATING",
 
-            trustTitle: "More than a rating.",
+            chipFamily:
+                "Family-friendly",
 
-            trustDescription: "Ming helps you understand what a restaurant is actually like.",
 
+            chipParking:
+                "Easy parking",
 
-            trustCardOneTitle: "Review Consensus",
 
-            trustCardOneText: "Ming analyses repeated patterns across reviews to find what people consistently love and complain about.",
+            emptyResultsTitle:
+                "Your next meal starts here.",
 
 
-            trustCardTwoTitle: "Creator Coverage",
+            emptyResultsText:
+                "Tell Ming what you feel like eating and we'll investigate from there.",
 
-            trustCardTwoText: "See which creators have visited and whether paid or complimentary visits were disclosed.",
 
+            resultsEyebrow:
+                "MING'S RECOMMENDATION",
 
-            trustCardThreeTitle: "Local Intelligence",
 
-            trustCardThreeText: "Parking, peak times, last order times and practical local advice.",
+            resultsTitle:
+                "I think you should look at these.",
 
 
-            howEyebrow: "HOW MING THINKS",
+            resultSummary:
+                "Not simply ranked by rating — matched to your situation.",
 
-            howTitle: "From craving to confidence.",
 
+            resetButton:
+                "Start over",
 
-            stepOneTitle: "Tell Ming",
 
-            stepOneText: "Tell Ming your mood, budget, location and what you actually feel like eating.",
+            trustEyebrow:
+                "BEYOND THE RATING",
 
 
-            stepTwoTitle: "Ming investigates",
+            trustTitle:
+                "More than a rating.",
 
-            stepTwoText: "Ming analyses reviews, repeated pros and cons, creator coverage and local information.",
 
+            trustDescription:
+                "Ming helps you understand what a restaurant is actually like.",
 
-            stepThreeTitle: "You decide",
 
-            stepThreeText: "Stop blindly following hype. Understand why a place is worth visiting — or why you should skip it.",
+            trustCardOneTitle:
+                "Review Consensus",
 
 
-            footerText: "Don't just read the rating. Ask Ming.",
+            trustCardOneText:
+                "Ming analyses repeated patterns across reviews to find what people consistently love and complain about.",
 
-            footerDisclaimer: "Built for better food decisions in Malaysia."
+
+            trustCardTwoTitle:
+                "Creator Coverage",
+
+
+            trustCardTwoText:
+                "See which creators have visited and whether paid or complimentary visits were disclosed.",
+
+
+            trustCardThreeTitle:
+                "Local Intelligence",
+
+
+            trustCardThreeText:
+                "Parking, peak times, last order times and practical local advice.",
+
+
+            howEyebrow:
+                "HOW MING THINKS",
+
+
+            howTitle:
+                "From craving to confidence.",
+
+
+            stepOneTitle:
+                "Tell Ming",
+
+
+            stepOneText:
+                "Tell Ming your mood, budget, location and what you actually feel like eating.",
+
+
+            stepTwoTitle:
+                "Ming investigates",
+
+
+            stepTwoText:
+                "Ming analyses reviews, repeated pros and cons, creator coverage and local information.",
+
+
+            stepThreeTitle:
+                "You decide",
+
+
+            stepThreeText:
+                "Stop blindly following hype. Understand why a place is worth visiting — or why you should skip it.",
+
+
+            footerText:
+                "Don't just read the rating. Ask Ming.",
+
+
+            footerDisclaimer:
+                "Built for better food decisions in Malaysia."
 
         },
 
@@ -760,131 +438,211 @@ const MingFoodApp = {
         bm: {
 
 
-            navDiscover: "Terokai",
+            navDiscover:
+                "Terokai",
 
-            navHow: "Cara ia berfungsi",
 
-            navTrust: "Pendapat sebenar",
+            navHow:
+                "Cara ia berfungsi",
 
 
-            eyebrow: "KECERDASAN MAKANAN TEMPATAN MALAYSIA",
+            navTrust:
+                "Pendapat sebenar",
 
 
-            heroLineOne: "Discover",
+            eyebrow:
+                "KECERDASAN MAKANAN TEMPATAN MALAYSIA",
 
-            heroLineTwo: "food you love.",
 
+            heroLineOne:
+                "Discover",
 
-            heroDescription: "Bukan sekadar rating. Ming membantu anda memahami sama ada restoran itu benar-benar berbaloi untuk dikunjungi.",
 
+            heroLineTwo:
+                "food you love.",
 
-            heroButton: "Mula meneroka",
 
-            heroSecondary: "Cara Ming berfungsi",
+            heroDescription:
+                "Bukan sekadar rating. Ming membantu anda memahami sama ada restoran itu benar-benar berbaloi untuk dikunjungi.",
 
 
-            heroCardText: "Bukan sekadar sedap. Betul-betul berbaloi.",
+            heroButton:
+                "Mula meneroka",
 
 
-            featuredTag: "MING'S PICK",
+            heroSecondary:
+                "Cara Ming berfungsi",
 
-            featuredTitle: "Makan sesuatu yang sedap hari ini.",
 
-            featuredDescription: "Berdasarkan pendapat sebenar, pilihan anda dan konteks tempatan.",
+            heroCardText:
+                "Bukan sekadar sedap. Betul-betul berbaloi.",
 
 
-            assistantEyebrow: "ASK MING",
+            featuredTag:
+                "MING'S PICK",
 
-            assistantTitle: "Anda rasa nak makan apa?",
 
-            assistantDescription: "Beritahu Ming apa yang anda mahukan. Kami buat lebih daripada sekadar menunjukkan rating.",
+            featuredTitle:
+                "Makan sesuatu yang sedap hari ini.",
 
 
-            inputHint: "Ming akan memahami situasi anda",
+            featuredDescription:
+                "Berdasarkan pendapat sebenar, pilihan anda dan konteks tempatan.",
 
-            askMing: "Tanya Ming",
 
+            assistantEyebrow:
+                "ASK MING",
 
-            quickLabel: "Atau beritahu Ming:",
 
+            assistantTitle:
+                "Anda rasa nak makan apa?",
 
-            chipSpicy: "Nak pedas",
 
-            chipComfort: "Makanan panas",
+            assistantDescription:
+                "Beritahu Ming apa yang anda mahukan. Kami buat lebih daripada sekadar menunjukkan rating.",
 
-            chipBudget: "Bajet",
 
-            chipFamily: "Sesuai untuk keluarga",
+            inputHint:
+                "Ming akan memahami situasi anda",
 
-            chipParking: "Parking mudah",
 
+            askMing:
+                "Tanya Ming",
 
-            emptyResultsTitle: "Your next meal starts here.",
 
-            emptyResultsText: "Beritahu Ming apa yang anda mahu makan dan kami akan menyiasat dari situ.",
+            quickLabel:
+                "Atau beritahu Ming:",
 
 
-            resultsEyebrow: "CADANGAN MING",
+            chipSpicy:
+                "Nak pedas",
 
-            resultsTitle: "Saya rasa anda patut tengok yang ini.",
 
-            resultSummary: "Bukan sekadar berdasarkan rating — disesuaikan dengan situasi anda.",
+            chipComfort:
+                "Makanan panas",
 
-            resetButton: "Mula semula",
 
+            chipBudget:
+                "Bajet",
 
-            trustEyebrow: "LEBIH DARIPADA RATING",
 
-            trustTitle: "Bukan sekadar rating.",
+            chipFamily:
+                "Sesuai untuk keluarga",
 
-            trustDescription: "Ming membantu anda memahami keadaan sebenar sesebuah restoran.",
 
+            chipParking:
+                "Parking mudah",
 
-            trustCardOneTitle: "Review Consensus",
 
-            trustCardOneText: "Ming menganalisis corak berulang dalam review untuk mengetahui perkara yang selalu dipuji dan dikritik.",
+            emptyResultsTitle:
+                "Your next meal starts here.",
 
 
-            trustCardTwoTitle: "Creator Coverage",
+            emptyResultsText:
+                "Beritahu Ming apa yang anda mahu makan dan kami akan menyiasat dari situ.",
 
-            trustCardTwoText: "Lihat pencipta kandungan yang pernah datang dan sama ada lawatan berbayar atau makanan percuma didedahkan.",
 
+            resultsEyebrow:
+                "CADANGAN MING",
 
-            trustCardThreeTitle: "Local Intelligence",
 
-            trustCardThreeText: "Parking, waktu sibuk, waktu pesanan terakhir dan nasihat tempatan yang praktikal.",
+            resultsTitle:
+                "Saya rasa anda patut tengok yang ini.",
 
 
-            howEyebrow: "CARA MING BERFIKIR",
+            resultSummary:
+                "Bukan sekadar berdasarkan rating — disesuaikan dengan situasi anda.",
 
-            howTitle: "From craving to confidence.",
 
+            resetButton:
+                "Mula semula",
 
-            stepOneTitle: "Tell Ming",
 
-            stepOneText: "Beritahu Ming mood, bajet, lokasi dan apa yang anda sebenarnya mahu makan.",
+            trustEyebrow:
+                "LEBIH DARIPADA RATING",
 
 
-            stepTwoTitle: "Ming investigates",
+            trustTitle:
+                "Bukan sekadar rating.",
 
-            stepTwoText: "Ming menganalisis review, kelebihan dan masalah berulang, kandungan pencipta serta maklumat tempatan.",
 
+            trustDescription:
+                "Ming membantu anda memahami keadaan sebenar sesebuah restoran.",
 
-            stepThreeTitle: "You decide",
 
-            stepThreeText: "Jangan ikut hype secara membuta tuli. Fahami kenapa sesuatu tempat berbaloi — atau patut dielakkan.",
+            trustCardOneTitle:
+                "Review Consensus",
 
 
-            footerText: "Don't just read the rating. Ask Ming.",
+            trustCardOneText:
+                "Ming menganalisis corak berulang dalam review untuk mengetahui perkara yang selalu dipuji dan dikritik.",
 
-            footerDisclaimer: "Built for better food decisions in Malaysia."
+
+            trustCardTwoTitle:
+                "Creator Coverage",
+
+
+            trustCardTwoText:
+                "Lihat pencipta kandungan yang pernah datang dan sama ada lawatan berbayar atau makanan percuma didedahkan.",
+
+
+            trustCardThreeTitle:
+                "Local Intelligence",
+
+
+            trustCardThreeText:
+                "Parking, waktu sibuk, waktu pesanan terakhir dan nasihat tempatan yang praktikal.",
+
+
+            howEyebrow:
+                "CARA MING BERFIKIR",
+
+
+            howTitle:
+                "From craving to confidence.",
+
+
+            stepOneTitle:
+                "Tell Ming",
+
+
+            stepOneText:
+                "Beritahu Ming mood, bajet, lokasi dan apa yang anda sebenarnya mahu makan.",
+
+
+            stepTwoTitle:
+                "Ming investigates",
+
+
+            stepTwoText:
+                "Ming menganalisis review, kelebihan dan masalah berulang, kandungan pencipta serta maklumat tempatan.",
+
+
+            stepThreeTitle:
+                "You decide",
+
+
+            stepThreeText:
+                "Jangan ikut hype secara membuta tuli. Fahami kenapa sesuatu tempat berbaloi — atau patut dielakkan.",
+
+
+            footerText:
+                "Don't just read the rating. Ask Ming.",
+
+
+            footerDisclaimer:
+                "Built for better food decisions in Malaysia."
 
         }
 
     },
 
 
-    init() {
+    /* =========================
+       INITIALIZATION
+    ========================= */
+
+    async init() {
 
 
         this.bindEvents();
@@ -896,14 +654,85 @@ const MingFoodApp = {
         this.applyLanguage();
 
 
+        console.log(
+            "Ming AI Food loaded."
+        );
+
+
+        await this.testDatabaseConnection();
+
     },
 
+
+    /* =========================
+       DATABASE TEST
+    ========================= */
+
+    async testDatabaseConnection() {
+
+
+        try {
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("restaurants")
+                    .select("*")
+                    .limit(1);
+
+
+            if (error) {
+
+
+                console.error(
+                    "Supabase connection error:",
+                    error
+                );
+
+
+                return;
+
+
+            }
+
+
+            console.log(
+                "Supabase connected successfully.",
+                data
+            );
+
+
+        }
+
+
+        catch (error) {
+
+
+            console.error(
+                "Unexpected Supabase error:",
+                error
+            );
+
+
+        }
+
+    },
+
+
+    /* =========================
+       EVENT BINDINGS
+    ========================= */
 
     bindEvents() {
 
 
         document
-            .getElementById("themeToggle")
+            .getElementById(
+                "themeToggle"
+            )
             .addEventListener(
                 "click",
                 () => this.toggleTheme()
@@ -911,7 +740,9 @@ const MingFoodApp = {
 
 
         document
-            .getElementById("languageToggle")
+            .getElementById(
+                "languageToggle"
+            )
             .addEventListener(
                 "click",
                 () => this.cycleLanguage()
@@ -919,7 +750,9 @@ const MingFoodApp = {
 
 
         document
-            .getElementById("askMingButton")
+            .getElementById(
+                "askMingButton"
+            )
             .addEventListener(
                 "click",
                 () => this.askMing()
@@ -927,7 +760,9 @@ const MingFoodApp = {
 
 
         document
-            .getElementById("resetButton")
+            .getElementById(
+                "resetButton"
+            )
             .addEventListener(
                 "click",
                 () => this.reset()
@@ -935,7 +770,9 @@ const MingFoodApp = {
 
 
         document
-            .getElementById("modalClose")
+            .getElementById(
+                "modalClose"
+            )
             .addEventListener(
                 "click",
                 () => this.closeModal()
@@ -943,14 +780,17 @@ const MingFoodApp = {
 
 
         document
-            .getElementById("restaurantModal")
+            .getElementById(
+                "restaurantModal"
+            )
             .addEventListener(
                 "click",
                 (event) => {
 
 
                     if (
-                        event.target.id === "restaurantModal"
+                        event.target.id ===
+                        "restaurantModal"
                     ) {
 
 
@@ -965,7 +805,9 @@ const MingFoodApp = {
 
 
         document
-            .querySelectorAll(".preference-chip")
+            .querySelectorAll(
+                ".preference-chip"
+            )
             .forEach(
                 (chip) => {
 
@@ -1011,9 +853,10 @@ const MingFoodApp = {
 
 
                             const input =
-                                document.getElementById(
-                                    "foodInput"
-                                );
+                                document
+                                    .getElementById(
+                                        "foodInput"
+                                    );
 
 
                             const current =
@@ -1035,16 +878,22 @@ const MingFoodApp = {
 
 
         document
-            .getElementById("foodInput")
+            .getElementById(
+                "foodInput"
+            )
             .addEventListener(
                 "keydown",
                 (event) => {
 
 
                     if (
-                        (event.metaKey || event.ctrlKey)
+                        (
+                            event.metaKey ||
+                            event.ctrlKey
+                        )
                         &&
-                        event.key === "Enter"
+                        event.key ===
+                        "Enter"
                     ) {
 
 
@@ -1060,17 +909,25 @@ const MingFoodApp = {
     },
 
 
-    askMing() {
+    /* =========================
+       ASK MING
+    ========================= */
+
+    async askMing() {
 
 
         const input =
             document
-                .getElementById("foodInput")
+                .getElementById(
+                    "foodInput"
+                )
                 .value
                 .trim();
 
 
-        if (!input) {
+        if (
+            !input
+        ) {
 
 
             this.showInputMessage();
@@ -1082,16 +939,22 @@ const MingFoodApp = {
         }
 
 
+        this.lastSearch =
+            input;
+
+
         const resultsSection =
-            document.getElementById(
-                "resultsSection"
-            );
+            document
+                .getElementById(
+                    "resultsSection"
+                );
 
 
         const resultSummary =
-            document.getElementById(
-                "resultSummary"
-            );
+            document
+                .getElementById(
+                    "resultSummary"
+                );
 
 
         resultSummary.textContent =
@@ -1100,27 +963,45 @@ const MingFoodApp = {
             );
 
 
+        this.showLoading();
+
+
+        const restaurants =
+            await this.searchRestaurants(
+                input
+            );
+
+
+        this.restaurants =
+            restaurants;
+
+
         this.renderRestaurants();
 
 
-        resultsSection.classList.add(
-            "has-results"
-        );
+        resultsSection
+            .classList
+            .add(
+                "has-results"
+            );
 
 
         setTimeout(
             () => {
 
 
-                resultsSection.scrollIntoView(
-                    {
+                resultsSection
+                    .scrollIntoView(
+                        {
 
-                        behavior: "smooth",
+                            behavior:
+                                "smooth",
 
-                        block: "start"
+                            block:
+                                "start"
 
-                    }
-                );
+                        }
+                    );
 
 
             },
@@ -1130,57 +1011,818 @@ const MingFoodApp = {
     },
 
 
-    getResultSummary(input) {
+    /* =========================
+       SEARCH SUPABASE
+    ========================= */
+
+    async searchRestaurants(
+        input
+    ) {
+
+
+        try {
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "restaurants"
+                    )
+                    .select("*")
+                    .limit(50);
+
+
+            if (
+                error
+            ) {
+
+
+                console.error(
+                    "Restaurant query failed:",
+                    error
+                );
+
+
+                return [];
+
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+
+                return [];
+
+
+            }
+
+
+            const searchText =
+                input
+                    .toLowerCase();
+
+
+            const words =
+                searchText
+                    .split(
+                        /\s+/
+                    )
+                    .filter(
+                        word =>
+                            word.length > 1
+                    );
+
+
+            const scoredRestaurants =
+                data
+                    .map(
+                        restaurant => {
+
+
+                            const searchableText =
+                                Object
+                                    .values(
+                                        restaurant
+                                    )
+                                    .filter(
+                                        value =>
+                                            typeof value ===
+                                            "string"
+                                    )
+                                    .join(
+                                        " "
+                                    )
+                                    .toLowerCase();
+
+
+                            let score =
+                                0;
+
+
+                            words
+                                .forEach(
+                                    word => {
+
+
+                                        if (
+                                            searchableText
+                                                .includes(
+                                                    word
+                                                )
+                                        ) {
+
+
+                                            score +=
+                                                10;
+
+
+                                        }
+
+
+                                    }
+                                );
+
+
+                            const preferenceScore =
+                                this
+                                    .calculatePreferenceScore(
+                                        restaurant,
+                                        input
+                                    );
+
+
+                            score +=
+                                preferenceScore;
+
+
+                            return {
+
+
+                                restaurant,
+
+
+                                score
+
+
+                            };
+
+
+                        }
+                    )
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            b.score -
+                            a.score
+                    );
+
+
+            return scoredRestaurants
+                .slice(
+                    0,
+                    6
+                )
+                .map(
+                    item =>
+                        this.normalizeRestaurant(
+                            item.restaurant
+                        )
+                );
+
+
+        }
+
+
+        catch (
+            error
+        ) {
+
+
+            console.error(
+                "Search error:",
+                error
+            );
+
+
+            return [];
+
+
+        }
+
+    },
+
+
+    /* =========================
+       PREFERENCE INTELLIGENCE
+    ========================= */
+
+    calculatePreferenceScore(
+        restaurant,
+        input
+    ) {
+
+
+        const text =
+            input
+                .toLowerCase();
+
+
+        let score =
+            0;
+
+
+        const searchableText =
+            Object
+                .values(
+                    restaurant
+                )
+                .filter(
+                    value =>
+                        typeof value ===
+                        "string"
+                )
+                .join(
+                    " "
+                )
+                .toLowerCase();
+
+
+        if (
+            text.includes(
+                "辣"
+            )
+            ||
+            text.includes(
+                "spicy"
+            )
+        ) {
+
+
+            if (
+                searchableText.includes(
+                    "spicy"
+                )
+                ||
+                searchableText.includes(
+                    "辣"
+                )
+            ) {
+
+
+                score +=
+                    20;
+
+
+            }
+
+
+        }
+
+
+        if (
+            text.includes(
+                "便宜"
+            )
+            ||
+            text.includes(
+                "budget"
+            )
+            ||
+            text.includes(
+                "cheap"
+            )
+        ) {
+
+
+            if (
+                searchableText.includes(
+                    "cheap"
+                )
+                ||
+                searchableText.includes(
+                    "budget"
+                )
+                ||
+                searchableText.includes(
+                    "affordable"
+                )
+                ||
+                searchableText.includes(
+                    "便宜"
+                )
+            ) {
+
+
+                score +=
+                    20;
+
+
+            }
+
+
+        }
+
+
+        if (
+            text.includes(
+                "停车"
+            )
+            ||
+            text.includes(
+                "parking"
+            )
+        ) {
+
+
+            if (
+                searchableText.includes(
+                    "easy"
+                )
+                ||
+                searchableText.includes(
+                    "方便"
+                )
+            ) {
+
+
+                score +=
+                    20;
+
+
+            }
+
+
+        }
+
+
+        if (
+            text.includes(
+                "家庭"
+            )
+            ||
+            text.includes(
+                "家人"
+            )
+            ||
+            text.includes(
+                "family"
+            )
+        ) {
+
+
+            if (
+                searchableText.includes(
+                    "family"
+                )
+                ||
+                searchableText.includes(
+                    "家庭"
+                )
+            ) {
+
+
+                score +=
+                    20;
+
+
+            }
+
+
+        }
+
+
+        return score;
+
+    },
+
+
+    /* =========================
+       NORMALIZE DATABASE DATA
+    ========================= */
+
+    normalizeRestaurant(
+        restaurant
+    ) {
 
 
         const language =
             this.currentLanguage;
 
 
-        if (
-            language === "zh"
-        ) {
+        const name =
+            restaurant.name ||
+            restaurant.name_en ||
+            restaurant.name_zh ||
+            "Unnamed Restaurant";
 
 
-            return `我根据你的情况分析了这次需求：「${input}」`;
+        const nameZh =
+            restaurant.name_zh ||
+            restaurant.name ||
+            name;
 
 
-        }
+        const nameEn =
+            restaurant.name_en ||
+            restaurant.name ||
+            name;
 
 
-        if (
-            language === "bm"
-        ) {
+        const nameBm =
+            restaurant.name_bm ||
+            restaurant.name_en ||
+            restaurant.name ||
+            name;
 
 
-            return `Saya menganalisis keperluan anda: “${input}”`;
+        const city =
+            restaurant.city ||
+            restaurant.location ||
+            "Malaysia";
 
 
-        }
+        const cuisine =
+            restaurant.cuisine ||
+            "Local Food";
 
 
-        return `I analysed what you are looking for: “${input}”`;
+        const score =
+            restaurant.ming_score ||
+            restaurant.score ||
+            restaurant.rating ||
+            restaurant.google_rating ||
+            0;
+
+
+        const image =
+            restaurant.image_url ||
+            restaurant.image ||
+            "images/featured-ramen.jpg";
+
+
+        return {
+
+
+            id:
+                restaurant.id,
+
+
+            name: {
+
+
+                zh:
+                    nameZh,
+
+
+                en:
+                    nameEn,
+
+
+                bm:
+                    nameBm
+
+
+            },
+
+
+            location: {
+
+
+                zh:
+                    `${city} · ${cuisine}`,
+
+
+                en:
+                    `${city} · ${cuisine}`,
+
+
+                bm:
+                    `${city} · ${cuisine}`
+
+
+            },
+
+
+            image,
+
+
+            tag: {
+
+
+                zh:
+                    "MING 推荐",
+
+
+                en:
+                    "MING RECOMMENDED",
+
+
+                bm:
+                    "CADANGAN MING"
+
+
+            },
+
+
+            score,
+
+
+            verdict: {
+
+
+                zh:
+                    restaurant.ai_summary ||
+                    restaurant.summary ||
+                    "Ming 正在分析这家餐厅的真实情况。",
+
+
+                en:
+                    restaurant.ai_summary ||
+                    restaurant.summary ||
+                    "Ming is analysing what this restaurant is actually like.",
+
+
+                bm:
+                    restaurant.ai_summary ||
+                    restaurant.summary ||
+                    "Ming sedang menganalisis keadaan sebenar restoran ini."
+
+
+            },
+
+
+            positives: {
+
+
+                zh:
+                    this.convertToArray(
+                        restaurant.pros ||
+                        restaurant.positive_points
+                    ),
+
+
+                en:
+                    this.convertToArray(
+                        restaurant.pros ||
+                        restaurant.positive_points
+                    ),
+
+
+                bm:
+                    this.convertToArray(
+                        restaurant.pros ||
+                        restaurant.positive_points
+                    )
+
+
+            },
+
+
+            negatives: {
+
+
+                zh:
+                    this.convertToArray(
+                        restaurant.cons ||
+                        restaurant.negative_points
+                    ),
+
+
+                en:
+                    this.convertToArray(
+                        restaurant.cons ||
+                        restaurant.negative_points
+                    ),
+
+
+                bm:
+                    this.convertToArray(
+                        restaurant.cons ||
+                        restaurant.negative_points
+                    )
+
+
+            },
+
+
+            practical: {
+
+
+                hours:
+                    restaurant.opening_hours ||
+                    restaurant.hours ||
+                    "Not yet verified",
+
+
+                lastOrder:
+                    restaurant.last_order_time ||
+                    restaurant.last_call_time ||
+                    "Not yet verified",
+
+
+                parking: {
+
+
+                    zh:
+                        restaurant.parking_info ||
+                        "资料收集中",
+
+
+                    en:
+                        restaurant.parking_info ||
+                        "Information being collected",
+
+
+                    bm:
+                        restaurant.parking_info ||
+                        "Maklumat sedang dikumpulkan"
+
+
+                },
+
+
+                bestTime: {
+
+
+                    zh:
+                        restaurant.best_time ||
+                        "Ming 正在收集更多资料",
+
+
+                    en:
+                        restaurant.best_time ||
+                        "Ming is collecting more information",
+
+
+                    bm:
+                        restaurant.best_time ||
+                        "Ming sedang mengumpul lebih banyak maklumat"
+
+
+                }
+
+
+            },
+
+
+            creatorStatus: {
+
+
+                zh:
+                    restaurant.creator_count
+                        ? `${restaurant.creator_count} 位创作者曾经介绍过`
+                        : "创作者资料正在收集",
+
+
+                en:
+                    restaurant.creator_count
+                        ? `Covered by ${restaurant.creator_count} creators`
+                        : "Creator coverage is being collected",
+
+
+                bm:
+                    restaurant.creator_count
+                        ? `Pernah diliputi oleh ${restaurant.creator_count} pencipta kandungan`
+                        : "Maklumat pencipta kandungan sedang dikumpulkan"
+
+
+            }
+
+
+        };
 
     },
 
+
+    /* =========================
+       ARRAY HELPER
+    ========================= */
+
+    convertToArray(
+        value
+    ) {
+
+
+        if (
+            Array.isArray(
+                value
+            )
+        ) {
+
+
+            return value;
+
+
+        }
+
+
+        if (
+            typeof value ===
+            "string"
+        ) {
+
+
+            return value
+                .split(
+                    ","
+                )
+                .map(
+                    item =>
+                        item.trim()
+                )
+                .filter(
+                    Boolean
+                );
+
+
+        }
+
+
+        return [
+
+            "More information is being collected."
+
+        ];
+
+    },
+
+
+    /* =========================
+       RENDER RESTAURANTS
+    ========================= */
 
     renderRestaurants() {
 
 
         const grid =
-            document.getElementById(
-                "restaurantGrid"
-            );
+            document
+                .getElementById(
+                    "restaurantGrid"
+                );
 
 
         const language =
             this.currentLanguage;
 
 
+        if (
+            !this.restaurants ||
+            this.restaurants.length ===
+            0
+        ) {
+
+
+            grid.innerHTML = `
+
+
+                <div
+                    style="
+                        grid-column: 1 / -1;
+                        text-align: center;
+                        padding: 60px 20px;
+                    "
+                >
+
+
+                    <h3>
+
+
+                        ${
+                            language ===
+                            "zh"
+                                ? "暂时找不到完全符合的餐厅"
+                                : language ===
+                                  "bm"
+                                    ? "Tiada restoran yang sepadan buat masa ini"
+                                    : "No matching restaurants found yet"
+                        }
+
+
+                    </h3>
+
+
+                    <p>
+
+
+                        ${
+                            language ===
+                            "zh"
+                                ? "我们正在不断增加马来西亚的餐厅资料。"
+                                : language ===
+                                  "bm"
+                                    ? "Kami sedang menambah lebih banyak restoran di Malaysia."
+                                    : "We are continuously adding more restaurants across Malaysia."
+                        }
+
+
+                    </p>
+
+
+                </div>
+
+
+            `;
+
+
+            return;
+
+
+        }
+
+
         grid.innerHTML =
             this.restaurants
                 .map(
-                    (restaurant) => {
+                    restaurant => {
 
 
                         return `
@@ -1277,11 +1919,15 @@ const MingFoodApp = {
                                                 class="score-label"
                                             >
 
-                                                ${language === "zh"
-                                                    ? "综合判断"
-                                                    : language === "bm"
-                                                        ? "Analisis keseluruhan"
-                                                        : "Overall analysis"}
+                                                ${
+                                                    language ===
+                                                    "zh"
+                                                        ? "综合判断"
+                                                        : language ===
+                                                          "bm"
+                                                            ? "Analisis keseluruhan"
+                                                            : "Overall analysis"
+                                                }
 
                                             </span>
 
@@ -1306,11 +1952,17 @@ const MingFoodApp = {
                                         onclick="MingFoodApp.openRestaurant('${restaurant.id}')"
                                     >
 
-                                        ${language === "zh"
-                                            ? "查看 Ming 分析 →"
-                                            : language === "bm"
-                                                ? "Lihat analisis Ming →"
-                                                : "View Ming's analysis →"}
+
+                                        ${
+                                            language ===
+                                            "zh"
+                                                ? "查看 Ming 分析 →"
+                                                : language ===
+                                                  "bm"
+                                                    ? "Lihat analisis Ming →"
+                                                    : "View Ming's analysis →"
+                                        }
+
 
                                     </button>
 
@@ -1326,22 +1978,38 @@ const MingFoodApp = {
 
                     }
                 )
-                .join("");
+                .join(
+                    ""
+                );
 
     },
 
 
-    openRestaurant(id) {
+    /* =========================
+       OPEN RESTAURANT MODAL
+    ========================= */
+
+    openRestaurant(
+        id
+    ) {
 
 
         const restaurant =
-            this.restaurants.find(
-                (item) =>
-                    item.id === id
-            );
+            this.restaurants
+                .find(
+                    item =>
+                        String(
+                            item.id
+                        ) ===
+                        String(
+                            id
+                        )
+                );
 
 
-        if (!restaurant) {
+        if (
+            !restaurant
+        ) {
 
 
             return;
@@ -1355,27 +2023,38 @@ const MingFoodApp = {
 
 
         const positives =
-            restaurant.positives[language]
+            restaurant
+                .positives[
+                    language
+                ]
                 .map(
-                    (item) =>
+                    item =>
                         `<li>${item}</li>`
                 )
-                .join("");
+                .join(
+                    ""
+                );
 
 
         const negatives =
-            restaurant.negatives[language]
+            restaurant
+                .negatives[
+                    language
+                ]
                 .map(
-                    (item) =>
+                    item =>
                         `<li>${item}</li>`
                 )
-                .join("");
+                .join(
+                    ""
+                );
 
 
         const content =
-            document.getElementById(
-                "modalContent"
-            );
+            document
+                .getElementById(
+                    "modalContent"
+                );
 
 
         content.innerHTML = `
@@ -1416,11 +2095,15 @@ const MingFoodApp = {
                 <h3>
 
 
-                    ${language === "zh"
-                        ? "值得考虑"
-                        : language === "bm"
-                            ? "Berbaloi dipertimbangkan"
-                            : "Worth considering"}
+                    ${
+                        language ===
+                        "zh"
+                            ? "值得考虑"
+                            : language ===
+                              "bm"
+                                ? "Berbaloi dipertimbangkan"
+                                : "Worth considering"
+                    }
 
 
                 </h3>
@@ -1444,11 +2127,15 @@ const MingFoodApp = {
                 <h4>
 
 
-                    ${language === "zh"
-                        ? "👍 大家常常喜欢"
-                        : language === "bm"
-                            ? "👍 Perkara yang sering dipuji"
-                            : "👍 What people consistently like"}
+                    ${
+                        language ===
+                        "zh"
+                            ? "👍 大家常常喜欢"
+                            : language ===
+                              "bm"
+                                ? "👍 Perkara yang sering dipuji"
+                                : "👍 What people consistently like"
+                    }
 
 
                 </h4>
@@ -1474,11 +2161,15 @@ const MingFoodApp = {
                 <h4>
 
 
-                    ${language === "zh"
-                        ? "👎 常见问题"
-                        : language === "bm"
-                            ? "👎 Aduan biasa"
-                            : "👎 Common complaints"}
+                    ${
+                        language ===
+                        "zh"
+                            ? "👎 常见问题"
+                            : language ===
+                              "bm"
+                                ? "👎 Aduan biasa"
+                                : "👎 Common complaints"
+                    }
 
 
                 </h4>
@@ -1504,11 +2195,15 @@ const MingFoodApp = {
                 <h4>
 
 
-                    ${language === "zh"
-                        ? "📍 本地实用信息"
-                        : language === "bm"
-                            ? "📍 Maklumat tempatan"
-                            : "📍 Local intelligence"}
+                    ${
+                        language ===
+                        "zh"
+                            ? "📍 本地实用信息"
+                            : language ===
+                              "bm"
+                                ? "📍 Maklumat tempatan"
+                                : "📍 Local intelligence"
+                    }
 
 
                 </h4>
@@ -1525,11 +2220,15 @@ const MingFoodApp = {
 
                         <span>
 
-                            ${language === "zh"
-                                ? "营业时间"
-                                : language === "bm"
-                                    ? "Waktu operasi"
-                                    : "Opening hours"}
+                            ${
+                                language ===
+                                "zh"
+                                    ? "营业时间"
+                                    : language ===
+                                      "bm"
+                                        ? "Waktu operasi"
+                                        : "Opening hours"
+                            }
 
                         </span>
 
@@ -1549,11 +2248,15 @@ const MingFoodApp = {
 
                         <span>
 
-                            ${language === "zh"
-                                ? "最后点餐"
-                                : language === "bm"
-                                    ? "Pesanan terakhir"
-                                    : "Last order"}
+                            ${
+                                language ===
+                                "zh"
+                                    ? "最后点餐"
+                                    : language ===
+                                      "bm"
+                                        ? "Pesanan terakhir"
+                                        : "Last order"
+                            }
 
                         </span>
 
@@ -1573,11 +2276,15 @@ const MingFoodApp = {
 
                         <span>
 
-                            ${language === "zh"
-                                ? "停车难度"
-                                : language === "bm"
-                                    ? "Kesukaran parking"
-                                    : "Parking difficulty"}
+                            ${
+                                language ===
+                                "zh"
+                                    ? "停车难度"
+                                    : language ===
+                                      "bm"
+                                        ? "Kesukaran parking"
+                                        : "Parking difficulty"
+                            }
 
                         </span>
 
@@ -1597,11 +2304,15 @@ const MingFoodApp = {
 
                         <span>
 
-                            ${language === "zh"
-                                ? "建议时间"
-                                : language === "bm"
-                                    ? "Masa terbaik"
-                                    : "Best time to visit"}
+                            ${
+                                language ===
+                                "zh"
+                                    ? "建议时间"
+                                    : language ===
+                                      "bm"
+                                        ? "Masa terbaik"
+                                        : "Best time to visit"
+                            }
 
                         </span>
 
@@ -1630,11 +2341,16 @@ const MingFoodApp = {
 
                     🎥
 
-                    ${language === "zh"
-                        ? "创作者覆盖"
-                        : language === "bm"
-                            ? "Liputan pencipta"
-                            : "Creator coverage"}
+                    ${
+                        language ===
+                        "zh"
+                            ? "创作者覆盖"
+                            : language ===
+                              "bm"
+                                ? "Liputan pencipta"
+                                : "Creator coverage"
+                    }
+
 
                 </h4>
 
@@ -1656,7 +2372,8 @@ const MingFoodApp = {
             .getElementById(
                 "restaurantModal"
             )
-            .classList.add(
+            .classList
+            .add(
                 "visible"
             );
 
@@ -1667,6 +2384,10 @@ const MingFoodApp = {
     },
 
 
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
     closeModal() {
 
 
@@ -1674,7 +2395,8 @@ const MingFoodApp = {
             .getElementById(
                 "restaurantModal"
             )
-            .classList.remove(
+            .classList
+            .remove(
                 "visible"
             );
 
@@ -1684,6 +2406,10 @@ const MingFoodApp = {
 
     },
 
+
+    /* =========================
+       RESET
+    ========================= */
 
     reset() {
 
@@ -1700,9 +2426,22 @@ const MingFoodApp = {
             .getElementById(
                 "resultsSection"
             )
-            .classList.remove(
+            .classList
+            .remove(
                 "has-results"
             );
+
+
+        this.restaurants =
+            [];
+
+
+        document
+            .getElementById(
+                "restaurantGrid"
+            )
+            .innerHTML =
+            "";
 
 
         document
@@ -1710,15 +2449,11 @@ const MingFoodApp = {
                 ".preference-chip"
             )
             .forEach(
-                (chip) => {
-
-
-                    chip.classList.remove(
-                        "active"
-                    );
-
-
-                }
+                chip =>
+                    chip.classList
+                        .remove(
+                            "active"
+                        )
             );
 
 
@@ -1729,7 +2464,8 @@ const MingFoodApp = {
             .scrollIntoView(
                 {
 
-                    behavior: "smooth"
+                    behavior:
+                        "smooth"
 
                 }
             );
@@ -1737,13 +2473,132 @@ const MingFoodApp = {
     },
 
 
+    /* =========================
+       LOADING STATE
+    ========================= */
+
+    showLoading() {
+
+
+        const grid =
+            document
+                .getElementById(
+                    "restaurantGrid"
+                );
+
+
+        const language =
+            this.currentLanguage;
+
+
+        grid.innerHTML = `
+
+
+            <div
+                style="
+                    grid-column: 1 / -1;
+                    text-align: center;
+                    padding: 60px 20px;
+                "
+            >
+
+
+                <h3>
+
+
+                    ${
+                        language ===
+                        "zh"
+                            ? "Ming 正在调查餐厅资料..."
+                            : language ===
+                              "bm"
+                                ? "Ming sedang menyiasat restoran..."
+                                : "Ming is investigating restaurants..."
+                    }
+
+
+                </h3>
+
+
+                <p>
+
+
+                    ${
+                        language ===
+                        "zh"
+                            ? "正在分析你的需求。"
+                            : language ===
+                              "bm"
+                                ? "Ming sedang menganalisis keperluan anda."
+                                : "Ming is analysing what you are looking for."
+                    }
+
+
+                </p>
+
+
+            </div>
+
+
+        `;
+
+    },
+
+
+    /* =========================
+       RESULT SUMMARY
+    ========================= */
+
+    getResultSummary(
+        input
+    ) {
+
+
+        const language =
+            this.currentLanguage;
+
+
+        if (
+            language ===
+            "zh"
+        ) {
+
+
+            return `我根据你的情况分析了这次需求：「${input}」`;
+
+
+        }
+
+
+        if (
+            language ===
+            "bm"
+        ) {
+
+
+            return `Saya menganalisis keperluan anda: “${input}”`;
+
+
+        }
+
+
+        return `I analysed what you are looking for: “${input}”`;
+
+    },
+
+
+    /* =========================
+       INPUT MESSAGE
+    ========================= */
+
     showInputMessage() {
 
 
         const input =
-            document.getElementById(
-                "foodInput"
-            );
+            document
+                .getElementById(
+                    "foodInput"
+                );
 
 
         input.focus();
@@ -1768,6 +2623,10 @@ const MingFoodApp = {
     },
 
 
+    /* =========================
+       LANGUAGE
+    ========================= */
+
     cycleLanguage() {
 
 
@@ -1784,21 +2643,25 @@ const MingFoodApp = {
 
 
         const currentIndex =
-            languages.indexOf(
-                this.currentLanguage
-            );
+            languages
+                .indexOf(
+                    this.currentLanguage
+                );
 
 
         const nextIndex =
             (
-                currentIndex + 1
+                currentIndex +
+                1
             )
             %
             languages.length;
 
 
         this.currentLanguage =
-            languages[nextIndex];
+            languages[
+                nextIndex
+            ];
 
 
         this.applyLanguage();
@@ -1842,7 +2705,7 @@ const MingFoodApp = {
                 "[data-i18n]"
             )
             .forEach(
-                (element) => {
+                element => {
 
 
                     const key =
@@ -1850,12 +2713,16 @@ const MingFoodApp = {
 
 
                     if (
-                        dictionary[key]
+                        dictionary[
+                            key
+                        ]
                     ) {
 
 
                         element.textContent =
-                            dictionary[key];
+                            dictionary[
+                                key
+                            ];
 
 
                     }
@@ -1866,64 +2733,78 @@ const MingFoodApp = {
 
 
         const input =
-            document.getElementById(
-                "foodInput"
-            );
+            document
+                .getElementById(
+                    "foodInput"
+                );
 
 
         if (
-            language === "zh"
+            language ===
+            "zh"
         ) {
 
 
             input.placeholder =
-                input.dataset.placeholderZh;
+                input.dataset
+                    .placeholderZh;
 
 
         }
 
 
         if (
-            language === "en"
+            language ===
+            "en"
         ) {
 
 
             input.placeholder =
-                input.dataset.placeholderEn;
+                input.dataset
+                    .placeholderEn;
 
 
         }
 
 
         if (
-            language === "bm"
+            language ===
+            "bm"
         ) {
 
 
             input.placeholder =
-                input.dataset.placeholderBm;
+                input.dataset
+                    .placeholderBm;
 
 
         }
 
 
         const languageToggle =
-            document.getElementById(
-                "languageToggle"
-            );
+            document
+                .getElementById(
+                    "languageToggle"
+                );
 
 
-        const labels = {
+        const labels =
+            {
 
 
-            zh: "中文",
-
-            en: "EN",
-
-            bm: "BM"
+                zh:
+                    "中文",
 
 
-        };
+                en:
+                    "EN",
+
+
+                bm:
+                    "BM"
+
+
+            };
 
 
         languageToggle
@@ -1931,11 +2812,16 @@ const MingFoodApp = {
                 ".language-active"
             )
             .textContent =
-            labels[language];
-
+            labels[
+                language
+            ];
 
     },
 
+
+    /* =========================
+       DARK MODE
+    ========================= */
 
     toggleTheme() {
 
@@ -1991,7 +2877,8 @@ const MingFoodApp = {
 
 
         if (
-            savedTheme === "dark"
+            savedTheme ===
+            "dark"
         ) {
 
 
@@ -2048,13 +2935,18 @@ const MingFoodApp = {
 };
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+/* =========================
+   START APPLICATION
+========================= */
+
+document
+    .addEventListener(
+        "DOMContentLoaded",
+        () => {
 
 
-        MingFoodApp.init();
+            MingFoodApp.init();
 
 
-    }
-);
+        }
+    );
