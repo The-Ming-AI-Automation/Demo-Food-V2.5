@@ -1228,238 +1228,519 @@ const MingFoodApp = {
     },
 
 
-    /* =====================================================
-       SEARCH RESTAURANTS
-    ===================================================== */
+    async searchRestaurants(input) {
 
-    async searchRestaurants(
-        input
+```
+try {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("restaurants")
+            .select("*")
+            .eq(
+                "status",
+                "approved"
+            )
+            .limit(100);
+
+
+    if (error) {
+
+        console.error(
+            "Restaurant query failed:",
+            error
+        );
+
+        return [];
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
     ) {
 
-        try {
+        return [];
 
-            const {
+    }
 
-                data,
 
-                error
+    /*
+    ==========================================
+    REMOVE DUPLICATE RESTAURANTS
+    ==========================================
+    */
 
-            } =
-                await supabaseClient
-                    .from("restaurants")
-                    .select("*")
-                    .eq(
-                        "status",
-                        "approved"
-                    )
-                    .limit(100);
+    const uniqueRestaurants =
+        [];
+
+    const seenRestaurants =
+        new Set();
+
+
+    data.forEach(
+        restaurant => {
+
+            const uniqueKey =
+                `${restaurant.name}-${restaurant.address}`
+                    .toLowerCase();
 
 
             if (
-                error
+                !seenRestaurants.has(
+                    uniqueKey
+                )
             ) {
 
-                console.error(
-                    "Restaurant query failed:",
-                    error
+                seenRestaurants.add(
+                    uniqueKey
                 );
 
-                return [];
+
+                uniqueRestaurants.push(
+                    restaurant
+                );
 
             }
 
-
-            if (
-                !data
-                ||
-                data.length ===
-                0
-            ) {
-
-                return [];
-
-            }
+        }
+    );
 
 
-            const uniqueRestaurants =
-                [];
+    /*
+    ==========================================
+    NORMALISE USER SEARCH
+    ==========================================
+    */
+
+    const searchText =
+        input
+            .toLowerCase()
+            .trim();
 
 
-            const seenRestaurants =
-                new Set();
+    /*
+    ==========================================
+    DETECT USER INTENT
+    ==========================================
+    */
+
+    const wantsChinese =
+        searchText.includes("chinese")
+        ||
+        searchText.includes("中餐")
+        ||
+        searchText.includes("华人")
+        ||
+        searchText.includes("华人料理")
+        ||
+        searchText.includes("cantonese")
+        ||
+        searchText.includes("粤菜");
 
 
-            data.forEach(
+    const wantsIndian =
+        searchText.includes("indian")
+        ||
+        searchText.includes("印度")
+        ||
+        searchText.includes("印度菜");
+
+
+    const wantsMalaysian =
+        searchText.includes("malaysian")
+        ||
+        searchText.includes("malay")
+        ||
+        searchText.includes("马来")
+        ||
+        searchText.includes("马来西亚")
+        ||
+        searchText.includes("melayu");
+
+
+    const wantsBudget =
+        searchText.includes("cheap")
+        ||
+        searchText.includes("affordable")
+        ||
+        searchText.includes("budget")
+        ||
+        searchText.includes("bajet")
+        ||
+        searchText.includes("便宜")
+        ||
+        searchText.includes("预算");
+
+
+    const wantsParking =
+        searchText.includes("parking")
+        ||
+        searchText.includes("停车")
+        ||
+        searchText.includes("parking mudah");
+
+
+    /*
+    ==========================================
+    SCORE RESTAURANTS
+    ==========================================
+    */
+
+    const scoredRestaurants =
+        uniqueRestaurants
+            .map(
                 restaurant => {
 
-                    const uniqueKey =
-                        `${restaurant.name}-${restaurant.address}`
-                            .toLowerCase()
-                            .trim();
+                    const cuisine =
+                        (
+                            restaurant.cuisine
+                            ||
+                            ""
+                        )
+                        .toLowerCase();
 
+
+                    const cuisineZh =
+                        (
+                            restaurant.cuisine_zh
+                            ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    const searchableText =
+                        Object
+                            .values(
+                                restaurant
+                            )
+                            .filter(
+                                value =>
+                                    typeof value ===
+                                    "string"
+                            )
+                            .join(
+                                " "
+                            )
+                            .toLowerCase();
+
+
+                    let score =
+                        0;
+
+
+                    /*
+                    ==================================
+                    HARD CUISINE MATCHING
+                    ==================================
+                    */
 
                     if (
-                        !seenRestaurants.has(
-                            uniqueKey
-                        )
+                        wantsChinese
                     ) {
 
-                        seenRestaurants.add(
-                            uniqueKey
-                        );
+                        if (
+                            cuisine.includes(
+                                "chinese"
+                            )
+                            ||
+                            cuisine.includes(
+                                "cantonese"
+                            )
+                            ||
+                            cuisineZh.includes(
+                                "中餐"
+                            )
+                            ||
+                            cuisineZh.includes(
+                                "粤菜"
+                            )
+                            ||
+                            cuisineZh.includes(
+                                "华人"
+                            )
+                        ) {
 
+                            score +=
+                                100;
 
-                        uniqueRestaurants.push(
-                            restaurant
-                        );
+                        }
+
+                        else {
+
+                            score -=
+                                1000;
+
+                        }
 
                     }
 
-                }
-            );
+
+                    if (
+                        wantsIndian
+                    ) {
+
+                        if (
+                            cuisine.includes(
+                                "indian"
+                            )
+                            ||
+                            cuisineZh.includes(
+                                "印度"
+                            )
+                        ) {
+
+                            score +=
+                                100;
+
+                        }
+
+                        else {
+
+                            score -=
+                                1000;
+
+                        }
+
+                    }
 
 
-            const searchText =
-                input.toLowerCase();
+                    if (
+                        wantsMalaysian
+                    ) {
+
+                        if (
+                            cuisine.includes(
+                                "malaysian"
+                            )
+                            ||
+                            cuisine.includes(
+                                "malay"
+                            )
+                            ||
+                            cuisineZh.includes(
+                                "马来"
+                            )
+                            ||
+                            cuisineZh.includes(
+                                "马来西亚"
+                            )
+                        ) {
+
+                            score +=
+                                100;
+
+                        }
+
+                        else {
+
+                            score -=
+                                1000;
+
+                        }
+
+                    }
 
 
-            const words =
-                searchText
-                    .split(
-                        /\s+/
-                    )
-                    .filter(
-                        word =>
-                            word.length >
-                            1
-                    );
+                    /*
+                    ==================================
+                    BUDGET MATCHING
+                    ==================================
+                    */
+
+                    if (
+                        wantsBudget
+                    ) {
+
+                        const priceMax =
+                            Number(
+                                restaurant.price_max
+                            )
+                            ||
+                            999;
 
 
-            const scoredRestaurants =
-                uniqueRestaurants
-                    .map(
-                        restaurant => {
+                        if (
+                            priceMax <=
+                            50
+                        ) {
 
-                            const searchableText =
-                                Object
-                                    .values(
-                                        restaurant
-                                    )
-                                    .filter(
-                                        value =>
-                                            typeof value ===
-                                            "string"
-                                    )
-                                    .join(
-                                        " "
-                                    )
-                                    .toLowerCase();
+                            score +=
+                                50;
 
+                        }
 
-                            let score =
-                                0;
+                        else {
+
+                            score -=
+                                20;
+
+                        }
+
+                    }
 
 
-                            words.forEach(
-                                word => {
+                    /*
+                    ==================================
+                    PARKING MATCHING
+                    ==================================
+                    */
 
-                                    if (
-                                        searchableText.includes(
-                                            word
-                                        )
-                                    ) {
+                    if (
+                        wantsParking
+                    ) {
 
-                                        score +=
-                                            10;
+                        const parkingDifficulty =
+                            (
+                                restaurant.parking_difficulty
+                                ||
+                                ""
+                            )
+                            .toLowerCase();
 
-                                    }
 
-                                }
+                        if (
+                            parkingDifficulty ===
+                            "easy"
+                        ) {
+
+                            score +=
+                                50;
+
+                        }
+
+
+                        if (
+                            parkingDifficulty ===
+                            "difficult"
+                        ) {
+
+                            score -=
+                                50;
+
+                        }
+
+                    }
+
+
+                    /*
+                    ==================================
+                    GENERAL WORD MATCHING
+                    ==================================
+                    */
+
+                    const words =
+                        searchText
+                            .split(
+                                /\s+/
+                            )
+                            .filter(
+                                word =>
+                                    word.length >
+                                    1
                             );
 
 
-                            score +=
-                                this.calculateCuisineScore(
-                                    restaurant,
-                                    input
-                                );
+                    words.forEach(
+                        word => {
 
-
-                            score +=
-                                this.calculatePreferenceScore(
-                                    restaurant,
-                                    input
-                                );
-
-
-                            score +=
-                                (
-
-                                    Number(
-                                        restaurant.overall_score
-                                    )
-
-                                    ||
-
-                                    0
-
+                            if (
+                                searchableText.includes(
+                                    word
                                 )
+                            ) {
 
-                                *
+                                score +=
+                                    10;
 
-                                2;
-
-
-                            return {
-
-                                restaurant,
-
-                                score
-
-                            };
+                            }
 
                         }
-                    )
-                    .sort(
-                        (
-                            a,
-                            b
-                        ) =>
-                            b.score -
-                            a.score
                     );
 
 
-            return scoredRestaurants
+                    /*
+                    ==================================
+                    OVERALL MING SCORE
+                    ==================================
+                    */
 
-                .slice(
-                    0,
-                    6
-                )
-
-                .map(
-                    item =>
-                        this.normalizeRestaurant(
-                            item.restaurant
+                    score +=
+                        (
+                            Number(
+                                restaurant.overall_score
+                            )
+                            ||
+                            0
                         )
-                );
+                        *
+                        2;
 
-        }
 
-        catch (
-            error
-        ) {
+                    return {
 
-            console.error(
-                "Search error:",
-                error
+                        restaurant,
+
+                        score
+
+                    };
+
+                }
+            )
+            .filter(
+                item =>
+                    item.score >
+                    -500
+            )
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    b.score -
+                    a.score
             );
 
-            return [];
 
-        }
+    /*
+    ==========================================
+    RETURN TOP RESULTS
+    ==========================================
+    */
 
-    },
+    return scoredRestaurants
+        .slice(
+            0,
+            6
+        )
+        .map(
+            item =>
+                this.normalizeRestaurant(
+                    item.restaurant
+                )
+        );
+
+}
+
+catch (error) {
+
+    console.error(
+        "Search error:",
+        error
+    );
+
+    return [];
+
+}
+
+
+},
+
 
 
     /* =====================================================
